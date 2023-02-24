@@ -2,6 +2,7 @@ import { createTheme } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 // Create a theme instance.
 const theme = createTheme({
+
     typography: {
         fontFamily:' "Nunito", sans-serif',
         
@@ -13,12 +14,28 @@ const theme = createTheme({
         
     },
     components:{
+        MuiTextField:{
+            styleOverrides:{
+                root:{
+                    width:'100%',
+                    maxWidth:'800px',
+                    paddingTop:'5px',
+                    paddingBottom:'5px'
+                }  
+            }
+        },
         MuiCard:{
             styleOverrides:{
                 root:{
                   
-                    margin:40,
-                    boxShadow:'rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;'
+                    margin:18,
+                    boxShadow:'rgba(0, 0, 0, 0.1) 0px 10px 15px;',
+                    borderRadius:'20px',
+                    minHeight:'200px',
+                    padding:'20px',
+                    width:'100%', 
+                    maxWidth: '550px', 
+                                        
                 }
             }
         },

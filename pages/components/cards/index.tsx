@@ -18,8 +18,7 @@ const CardComp = memo(({children, ...props}:CardTypes) => {
         <Card 
 
             sx={{
-                width:'100%', 
-                maxWidth: '500px', 
+
                 ...sx,
             }}
             {...cProps}

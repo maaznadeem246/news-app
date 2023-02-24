@@ -21,8 +21,9 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
   const [supabase] = useState(() => createBrowserSupabaseClient())
 
   return(
+    <CacheProvider value={emotionCache}>
     <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
-      <CacheProvider value={emotionCache}>
+   
       <ThemeProvider theme={theme}>
           <CssBaseline />
           <AuthLayout>
@@ -31,7 +32,8 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
             </MainLayout>
           </AuthLayout>
       </ThemeProvider>
-      </CacheProvider>
+   
      </SessionContextProvider>
+     </CacheProvider>
      )
 }

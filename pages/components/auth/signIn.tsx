@@ -1,6 +1,10 @@
+
+import { Box } from "@mui/material";
+
 import { handleToggle } from ".";
-import CardComp from "../cards";
+
 import Heading from "../headings";
+
 
 
 
@@ -11,14 +15,29 @@ type SigninTypes  = {
 
 
 
-
 const SignIn = ({}:SigninTypes) => {
+
+
+
     return (
-            <>
-                <Heading variant="h3">
-                    Login
+        <Box
+            component="form"
+            
+            noValidate
+            autoComplete="off"
+        >
+                <Heading 
+                    variant="h4"
+                    sx={{
+                        fontWeight:'600',
+                        textAlign:'center',
+                    }}
+                >
+                    Sign In
                 </Heading>
-            </>
+
+                
+        </Box>
              
    )
 }
