@@ -9,8 +9,8 @@ import {ReactElement, ReactNode} from 'react'
 export default function AuthLayout({ children  }: { children: ReactElement | ReactNode}) {
  
     
-    // console.log(session)
-    const session = useAuth();
+
+     const session = useAuth();
 
  
     if(session.loading)  {return ( <Box>Loading</Box>)}
