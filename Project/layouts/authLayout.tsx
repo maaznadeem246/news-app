@@ -1,16 +1,21 @@
 
 
 import Auth from '@/components/auth'
-import { useSession } from '@supabase/auth-helpers-react'
+import useAuth from '@/modules/hooks/useAuth'
 import {ReactElement, ReactNode} from 'react'
 
 
 export default function AuthLayout({ children  }: { children: ReactElement | ReactNode}) {
-    const session = useSession()
+ 
     
+    // console.log(session)
+    const user = useAuth();
+
+ 
+
     return (
       <>
-         {!session ? (
+         {!user ? (
         // <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} theme="dark" />
         <Auth />
        

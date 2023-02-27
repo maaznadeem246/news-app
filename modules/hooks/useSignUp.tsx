@@ -1,47 +1,34 @@
 import { signUpForType } from '@/components/auth/signUp';
+import { keyable, keyable2 } from '@/types';
 import { useMutation } from '@tanstack/react-query';
-import { z } from 'zod';
+import { QueryErrorResetBoundaryProps, QueryErrorResetBoundaryValue } from '@tanstack/react-query/build/lib/QueryErrorResetBoundary';
+import { extendShape, z } from 'zod';
+import { signUpService } from '../services';
+import { signUpServiceType } from '../services/auth';
 import { supabase } from "../supabase";
 
 
 
 
-const createUser = async (user: signUpForType) => {
-  // Check if username exists
-  const { data: userWithUsername } = await supabase
-    .from('users')
-    .select('*')
-    .eq('email', user.email)
-    .single()
 
-  if(userWithUsername) {
-    throw new Error('User with Email exists')
-  }
 
-  const { data, error: signUpError } = await supabase.auth.signUp({
-    email: user.email,
-    password: user.password
-  })
-
-  if(signUpError) {
-    throw signUpError
-  }
-
-  return data
-}
-
-export default function useSignup(user: signUpForType) {
-  return useMutation(() => createUser(user), {
-    onSuccess: async(data) => {
+export default function useSignup() {
+  return useMutation<keyable, Error, signUpServiceType, unknown>((user: signUpServiceType) => signUpService(user), {
+    onSuccess: async(data:keyable,variables) => {
+      console.log(data)
+   
       const { data: insertData, error: insertError } = await supabase
-        .from('users')
+        .from('users')  
         .insert({
-          fullname: user.fullname,
-          email: user.email,
-          id: data.user?.id || ""
-        })
+          fullname: variables.fullname,
+          email: data?.user?.email || '',
+          id: data?.user?.id || '',
+          
+        }
+        )
 
       if(insertError) {
+        console.log(insertError)
         throw insertError
       }
 

@@ -1,13 +1,14 @@
 import { handleToggle } from ".";
 import Heading from "../headings";
 import InputField from "../inputs/inputField";
-import { z } from "zod";
+import { unknown, z } from "zod";
 import useFormHook from "@/modules/hooks/useFormHook";
 import CustomButton from "../inputs/customButton";
 import { Box, Stack } from "@mui/material";
 import { SubmitHandler } from "react-hook-form";
 import { memo } from "react";
 import useSignup from "@/modules/hooks/useSignUp";
+import theme from "@/styles/theme/theme";
 
 type SignUpTypes  = {
     handleToggle: handleToggle 
@@ -37,28 +38,30 @@ const SignUp = memo(({
     const formData = useFormHook({
         formSchema:singInFormSchema,
        defaulvalues:{
-            fullname:'',
-            email:'',
-            password:'',
-            confirmPassword:'',
+            fullname:'test1',
+            email:'test1@gmail.com',
+            password:'123123123',
+            confirmPassword:'123123123',
         },
   
       
     })
     
+    const signUpMutaion = useSignup()    
 
-    const handleSubmit : SubmitHandler<signUpForType>= (data) => {
-        console.log('data')
-        console.log(data)   
-        const createUserMutation = useSignup({
+    const handleSubmit : SubmitHandler<signUpForType>= async(data) => {
+      
+       
+        signUpMutaion.mutate({
             fullname:data.fullname,
             email:data.email,
             password:data.password,
-            confirmPassword:''
-          })     
+          })  
+        //   console.log('response')
+        //   console.log(response)
     }
-    // console.log(formData.errors)
 
+    console.log(signUpMutaion)
     return (
         <Stack
             component="form"
@@ -78,6 +81,17 @@ const SignUp = memo(({
                     >
                     Sign Up
                 </Heading>
+              <Box
+                    sx={{
+                        fontWeight:'600',
+                        color:theme.palette.error.light,
+                        textAlign:'center',
+                        maringTop:'4px',
+                        marginBottom:'4px',
+                    }}
+                >
+                    { signUpMutaion?.isError ?  signUpMutaion?.error?.message : ''}
+                </Box>
                 <InputField 
                     name="fullname"
                     control={formData.control}
@@ -131,7 +145,7 @@ const SignUp = memo(({
                             maxWidth:['100%','300px']
                         }}
                         type="submit"
-
+                        disabled={signUpMutaion.isLoading}
                 >
                     Sign Up
                 </CustomButton>
@@ -152,6 +166,7 @@ const SignUp = memo(({
                                 textDecoration:'underline',
                             }
                         }}
+                        
                         onClick={()=>handleToggle()}
                     >
                         Sign In

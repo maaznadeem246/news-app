@@ -7,9 +7,11 @@ import theme from '../styles/theme/theme';
 import createEmotionCache from '../styles/theme/createEmotionCache';
 import { AuthLayout, MainLayout } from '../Project/layouts';
 
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { createBrowserSupabaseClient, SessionContextProvider } from '../modules/supabase';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 
 const clientSideEmotionCache = createEmotionCache();
@@ -30,11 +32,12 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
       <ThemeProvider theme={theme}>
           <CssBaseline />
           <AuthLayout>
-            <MainLayout>
+            <MainLayout >
               <Component {...pageProps} />
             </MainLayout>
           </AuthLayout>
       </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
      </SessionContextProvider>
      </CacheProvider>
