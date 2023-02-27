@@ -61,7 +61,7 @@ const SignUp = memo(({
         //   console.log(response)
     }
 
-    console.log(signUpMutaion)
+
     return (
         <Stack
             component="form"

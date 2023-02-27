@@ -8,6 +8,8 @@ import { Stack } from "@mui/material";
 import { SubmitHandler } from "react-hook-form";
 import { memo } from "react";
 import { Box } from "@mui/system";
+import useSignIn from "@/modules/hooks/useSignIn";
+import theme from "@/styles/theme/theme";
 
 type SignInTypes  = {
     handleToggle: handleToggle 
@@ -38,12 +40,22 @@ const SignIn = memo(({handleToggle}:SignInTypes) => {
   
       
     })
+
+    const signInMutaion = useSignIn()    
+
+    const handleSubmit : SubmitHandler<signInForType>= async(data) => {
+      
+       
+        signInMutaion.mutate({
+            email:data.email,
+            password:data.password,
+          })  
+        //   console.log('response')
+        //   console.log(response)
+    }
     
 
-    const handleSubmit : SubmitHandler<signInForType>= (data) => {
-        console.log('data')
-        console.log(data)        
-    }
+
     // console.log(formData.errors)
 
     return (
@@ -65,7 +77,17 @@ const SignIn = memo(({handleToggle}:SignInTypes) => {
                     >
                     Sign In
                 </Heading>
-               
+                <Box
+                    sx={{
+                        fontWeight:'600',
+                        color:theme.palette.error.light,
+                        textAlign:'center',
+                        maringTop:'4px',
+                        marginBottom:'4px',
+                    }}
+                >
+                    { signInMutaion?.isError ?  signInMutaion?.error?.message : ''}
+                </Box>
                 <InputField 
                     name="email"
                     control={formData.control}

@@ -31,11 +31,13 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
           <CssBaseline />
-          <AuthLayout>
-            <MainLayout >
-              <Component {...pageProps} />
-            </MainLayout>
-          </AuthLayout>
+          <MainLayout >
+            <AuthLayout>
+
+                <Component {...pageProps} />
+
+            </AuthLayout>
+          </MainLayout>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

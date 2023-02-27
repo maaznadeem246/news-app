@@ -1,23 +1,14 @@
+import { signInForType } from "@/components/auth/signIn";
 import { signUpForType } from "@/components/auth/signUp";
 import { supabase } from "../supabase";
 
 
 export type signUpServiceType = Omit<signUpForType,'confirmPassword'>
+export type signInServiceType = signInForType
         
 
 export const signUpService = async (user: signUpServiceType) => {
-    // Check if username exists
-    // const { data: email } = await supabase
-    //   .from('users')
-    //   .select('*')
-    //   .eq('email', user.email)
-    //   .single()
-  
-
-    // if(email) {
-    //   throw new Error('User with Email exists')
-    // }
-  
+ 
     const { data, error: signUpError } = await supabase.auth.signUp({
       ...user,
     
@@ -32,3 +23,20 @@ export const signUpService = async (user: signUpServiceType) => {
     return data
   }
 
+
+
+  export const signInService = async (user: signInServiceType) => {
+   
+    const { data, error:signUpError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: user.password,
+    })
+    
+    console.log(data)
+    console.log(signUpError)
+    if(signUpError) {
+      throw signUpError
+    }
+  
+    return data
+  }

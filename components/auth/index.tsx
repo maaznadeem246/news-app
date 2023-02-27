@@ -9,7 +9,7 @@ import SignUp from "./signUp";
 export type handleToggle = (val?:boolean | undefined) => void
 
 export default function Auth(){
-    const [active,setActive] = useState<boolean>(false)
+    const [active,setActive] = useState<boolean>(true)
 
     const handleToggle:handleToggle= (val) => {
         if(val == undefined){
