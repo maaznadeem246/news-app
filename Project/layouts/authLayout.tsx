@@ -1,5 +1,6 @@
 
-import Auth from '@/pages/components/auth'
+
+import Auth from '@/components/auth'
 import { useSession } from '@supabase/auth-helpers-react'
 import {ReactElement, ReactNode} from 'react'
 
