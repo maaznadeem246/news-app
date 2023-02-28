@@ -25,27 +25,27 @@ const queryClient = new QueryClient()
 
 
 export default function App({ Component, pageProps,  emotionCache = clientSideEmotionCache, }: MyAppProps) {
-  const [supabase] = useState(() => createBrowserSupabaseClient())
+  // const [supabase] = useState(() => createBrowserSupabaseClient())
 
   return(
     <CacheProvider value={emotionCache}>
-    <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
+    {/* <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}> */}
      <AuthProvider > 
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
           <CssBaseline />
           <MainLayout >
-            <AuthLayout>
+            {/* <AuthLayout> */}
 
                 <Component {...pageProps} />
 
-            </AuthLayout>
+            {/* </AuthLayout> */}
           </MainLayout>
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
       </AuthProvider>
-     </SessionContextProvider>
+     {/* </SessionContextProvider> */}
      </CacheProvider>
      )
 }
