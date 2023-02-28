@@ -1,4 +1,5 @@
 
+import { Nav } from '@/components/header'
 import { Box } from '@mui/system'
 import {ReactElement, ReactNode} from 'react'
 
@@ -7,9 +8,9 @@ export default function MainLayout({ children  }: { children: ReactElement | Rea
     return (
       <>
         {/* <Navbar /> */}
-        <Box>
-          Header
-        </Box>
+        <Nav 
+          
+        />
         <>{children}</>
         {/* <Footer /> */}
       </>

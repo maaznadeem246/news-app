@@ -1,8 +1,7 @@
 import { createTheme } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
-import { breakpoints, createBreakpoints } from '@mui/system';
+
 // Create a theme instance.
-let themebrea = createTheme({});
+let themebrek = createTheme({});
 const theme = createTheme({
 
     typography: {
@@ -17,12 +16,37 @@ const theme = createTheme({
     },
     palette: {
         primary:{
+                
             light:'#DBD1B1',
             main:'#C5BCA1',
             dark:'#B4AC94',
         }
     },
     components:{
+        MuiAppBar:{
+            styleOverrides:{
+                root:{
+                    background:'transparent',
+                    boxShadow:'none',
+                }
+            }        
+        },
+        MuiToolbar:{
+            styleOverrides:{
+                root:{
+                    background:'white',
+                    width:'80%',
+                    margin:'auto',
+                    marginTop:'1rem',
+                    marginBottom:'1rem',
+                    boxShadow:'rgba(0, 0, 0, 0.1) 0px 8px 8px;',
+                    borderRadius:'10px',
+                    [themebrek.breakpoints.down('sm')]:{
+                        width:'90%',
+                    }
+                }
+            }
+        },
         MuiTextField:{
             styleOverrides:{
                 root:{
@@ -69,7 +93,7 @@ const theme = createTheme({
                     padding:'20px',
                     width:'100%', 
                     maxWidth: '550px', 
-                    [themebrea.breakpoints.down('sm')]:{
+                    [themebrek.breakpoints.down('sm')]:{
                         padding:'5px',
                         margin:5,
                     }
