@@ -34,16 +34,14 @@ const theme = createTheme({
         MuiToolbar:{
             styleOverrides:{
                 root:{
-                    background:'white',
-                    width:'80%',
-                    margin:'auto',
+                  
                     marginTop:'1rem',
                     marginBottom:'1rem',
-                    boxShadow:'rgba(0, 0, 0, 0.1) 0px 8px 8px;',
                     borderRadius:'10px',
-                    [themebrek.breakpoints.down('sm')]:{
-                        width:'90%',
-                    }
+                    height:'80px',
+                    // paddigTop:'1rem',
+                    // paddigBottom:'1rem',
+                    
                 }
             }
         },

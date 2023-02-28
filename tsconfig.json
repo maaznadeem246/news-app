@@ -13,12 +13,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "jsxImportSource": "@emotion/react",
     "incremental": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]
-    }
+    },
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.tsx","pages/_document.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.tsx","pages/_document.jsx", "pages/api/create-stripe-customer.js"],
   "exclude": ["node_modules"]
 }

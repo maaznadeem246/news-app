@@ -18,9 +18,11 @@ export default function useSignup() {
     onSuccess: async(data:keyable,variables) => {
       console.log(data)
    
-      const insertData = await createUser({data,variables});
+      // const insertData = await createUser({data,variables});
 
-      return insertData
+      
+
+      return data
     }
   })
 }

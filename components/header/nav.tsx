@@ -1,18 +1,30 @@
 import { AppBar, Toolbar } from "@mui/material"
 import Heading from "../headings"
 import theme from "@/styles/theme/theme"
+import { Box } from "@mui/system"
 
 
 const Nav = () => {
     return (
-        <AppBar position="fixed">
-            <Toolbar>
+        <AppBar component='nav'>
+            <Toolbar
+                sx={{
+                    background:'white',
+                    width:'80%',
+                    margin:'auto',
+                    marginTop:'1rem',
+                    marginBottom:'1rem',
+                    boxShadow:'rgba(0, 0, 0, 0.1) 0px 8px 8px;',
+                    // borderRadius:'10px',
+                    [theme.breakpoints.down('sm')]:{
+                        width:'90%',
+                    }
+                }}
+            >
                 <Heading
-                    variant="h3"
-                    sx={{
-                        backgroundColor:theme.palette.primary.light,
-                        backdropFilter:'blur(10px);'
-                    }}
+                    variant="h4"
+                    headingStyle={true}
+                    
                 >
                 News
                 </Heading>

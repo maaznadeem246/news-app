@@ -1,31 +1,60 @@
 
 import { TypographyUtils } from "@mui/material/styles/createTypography";
-import { typography, TypographyProps } from "@mui/system";
+import { SxProps, typography, TypographyProps } from "@mui/system";
 import { FC, memo, ReactNode } from "react";
-import { styled } from '@mui/material/styles';
+import { styled, TypographyVariant } from '@mui/material/styles';
 import { Typography } from "@mui/material";
+import theme from "@/styles/theme/theme";
 
 
 
 
 
 
-type HeadingType = {
+interface HeadingType extends TypographyProps{
         children: string|ReactNode,
+        headingStyle?:Boolean,
+        variant?:TypographyVariant,
+        sx?:SxProps,
 } 
 
 
+const StyledTypography = styled(Typography)<{customHeadStyle:SxProps}>(props => ({
+    ...props.customHeadStyle,
 
-const Heading : FC<HeadingType>  = memo(({children,...props})=>{
+}))
+
+
+const Heading : FC<HeadingType  >  = memo(({children,headingStyle=false,...props})=>{
+
+   const customHeadStyle = {
+    position:'relative',
+    width:'fit-content',
+    ':after':{
+        content:"''",
+        position:'absolute',
+        width:'100%',
+        height:'40%',
+        scale:'1.1',
+        top:'0',
+        left:'0',
+        backgroundColor:theme.palette.primary.light,
+        mixBlendMode: 'multiply',
+        borderTopRightRadius:'10px',
+        borderTopLeftRadius:'10px',
+    }
+}
+
     return (
-        <Typography 
-            {...props}
+        <StyledTypography 
+            customHeadStyle={headingStyle ? customHeadStyle : {}}
             
+            {...props}
         >
             {children}
-        </Typography>
+        </StyledTypography>
     )
 })
 
 
-export default Heading as typeof Typography;
+export default Heading ;

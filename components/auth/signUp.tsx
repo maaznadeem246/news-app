@@ -9,9 +9,10 @@ import { SubmitHandler } from "react-hook-form";
 import { memo } from "react";
 import useSignup from "@/modules/hooks/useSignUp";
 import theme from "@/styles/theme/theme";
+import { useRouter } from "next/router";
 
 type SignUpTypes  = {
-    handleToggle: handleToggle 
+    handleToggle?: handleToggle 
 }
 
 const singInFormSchema = z.object({
@@ -35,6 +36,7 @@ export type signUpForType =  z.infer<typeof singInFormSchema>
 const SignUp = memo(({
     handleToggle
 }:SignUpTypes) => {
+    const router = useRouter()
     const formData = useFormHook({
         formSchema:singInFormSchema,
        defaulvalues:{
@@ -70,17 +72,21 @@ const SignUp = memo(({
             autoComplete="off"
             onSubmit={ formData.handleSubmit(handleSubmit)}
         >
+            <Box>
                 <Heading 
                     variant="h4"
                     sx={{
                         fontWeight:'600',
                         textAlign:'center',
+                        margin:'auto',
                         marginBottom:'30px',
                         marginTop:'30px'
                         }}
+                        headingStyle={true}
                     >
                     Sign Up
                 </Heading>
+            </Box>
               <Box
                     sx={{
                         fontWeight:'600',
@@ -166,8 +172,8 @@ const SignUp = memo(({
                                 textDecoration:'underline',
                             }
                         }}
-                        
-                        onClick={()=>handleToggle()}
+
+                        onClick={()=>(router.push('/signin'))}
                     >
                         Sign In
                     </Box>
