@@ -4,7 +4,7 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import "@fontsource/nunito"
 import { useUser } from '@/modules/hooks/useUser'
-import { createServerSupabaseClient } from '@/modules/supabase'
+import { createServerSupabaseClient, supabase } from '@/modules/supabase'
 import { NextRequest } from 'next/server'
 import { GetServerSidePropsContext, NextPage } from 'next'
 
@@ -30,15 +30,29 @@ const Home = (props:NextPage) => {
 }
 
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  console.log('test')
-  const supabase = createServerSupabaseClient(ctx);
-  const user = await supabase.auth.getSession()
-  console.log(user)
+// export const getServerSideProps = async (req:NextRequest) => {
+//   console.log('test')
+//   console.log(req)
+//   const cookie = parse(req.headers.get('Cookie') || '');
+ 
+//   const accessToken  = cookie['my-access-token']
+// const  refreshToken = cookie['my-refresh-token']
 
-  return {
-    props:{}
-  }
-}
+// if (refreshToken && accessToken) {
+  
+//   console.log('fdfdf')
+  
+//  const {data: { session }} =  await supabase.auth.setSession({
+//     access_token: accessToken,
+//     refresh_token: refreshToken,
+   
+//   })
+//   const user = await supabase.auth.getSession()
+//   console.log(user)
+
+//   return {
+//     props:{}
+//   }
+// }
 
 export default Home;
