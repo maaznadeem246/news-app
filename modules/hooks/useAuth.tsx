@@ -29,31 +29,40 @@ export const AuthContext = createContext<ContextType>(initialData);
 const useAuthContext = () =>  useContext(AuthContext)
 
 export const useAuth  = ()  => {
-    
+  const [authStatus,setAuthStatus] = useState<string|null>(null)
   const [data, setData] = useState<ContextType>({
    
   })
 
+  const setUserData = () => {
+  
+  }
+
+
 
       useEffect(() => {
-        console.log('mounter')
-        const userD = getUserData()
-        if(userD != null){
-          setData({
-            ...userD
-          })
-        }
+       
+       
 
-      supabase.auth.onAuthStateChange((_event, session) => {
-        
-         const userD = getUserData()
-         if(userD != null){
-            setData({
-              ...userD
-            })
+        supabase.auth.onAuthStateChange((_event, session) => {
+          console.log(_event)
+          console.log('mounter 1')
+          console.log(_event != authStatus)
+          if(_event != authStatus){
+            console.log('mounter 2')
+            // setUserData()
+            const userD = getUserData()
+            if(userD != null){
+              setData({
+                ...userD
+              })
+            }
+            setAuthStatus(_event)
+            
           }
-    
-      })
+      
+      
+        })
 
 
 

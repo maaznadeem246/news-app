@@ -44,9 +44,13 @@ export const getUserData = async() => {
       }
    
     }
-  }catch(er){
-
-    return null
-  }
+    return {
+        ...userSession,
+          
+      } 
+    }catch(er){
+      console.log(er)
+      return null
+    }
 
     }
