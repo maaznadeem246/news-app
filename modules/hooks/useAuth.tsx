@@ -15,21 +15,56 @@ import { useContext } from "react";
 import { createContext } from "react";
 import { keyable } from "@/types"
 import { initialData } from "@/components/context/AuthProvider"
+import { UserResponse } from "@supabase/supabase-js"
+import { getUserData } from "../services/user"
 
-export interface ContextType {
-  user:keyable | null,
-  loading:boolean,
+export interface ContextType  {
+  [key: string]: any  
 }
-
 
 
 
 export const AuthContext = createContext<ContextType>(initialData);
 
+const useAuthContext = () =>  useContext(AuthContext)
 
-export const useAuth= ()  => useContext(AuthContext)
+export const useAuth  = ()  => {
+    
+  const [data, setData] = useState<ContextType>({
+   
+  })
+
+
+      useEffect(() => {
+        console.log('mounter')
+        const userD = getUserData()
+        if(userD != null){
+          setData({
+            ...userD
+          })
+        }
+
+      supabase.auth.onAuthStateChange((_event, session) => {
+        
+         const userD = getUserData()
+         if(userD != null){
+            setData({
+              ...userD
+            })
+          }
+    
+      })
 
 
 
+      }, [])
 
-export default  useAuth
+    
+
+      return data
+
+}
+
+
+
+export default  useAuthContext

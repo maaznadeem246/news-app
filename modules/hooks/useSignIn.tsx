@@ -14,6 +14,7 @@ import { supabase } from "../supabase";
 
 export default function useSignIn() {
   return useMutation<keyable, Error, signInServiceType, unknown>((user: signInServiceType) => signInService(user), {
+      retry:0,
     onSuccess: async(data:keyable,variables) => {
       console.log(data)
    
