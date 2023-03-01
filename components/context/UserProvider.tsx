@@ -1,6 +1,6 @@
 
 
-import { AuthContext , useAuth} from "@/modules/hooks/useAuth";
+import { UserContext , useUser} from "@/modules/hooks/useUser";
 import { supabase } from "@/modules/supabase";
 import { keyable } from "@/types";
 import { User, UserResponse } from "@supabase/supabase-js";
@@ -19,11 +19,11 @@ export const initialData ={
 }
 
 
-const AuthProvider : FC<ProviderType>  = ({children}) => {
+const UserProvider : FC<ProviderType>  = ({children}) => {
 
-    const data = useAuth()
+    const data = useUser()
 
-
+    // console.log(data)
 
   
      
@@ -32,9 +32,9 @@ const AuthProvider : FC<ProviderType>  = ({children}) => {
         ...data
     } 
 
-    return <AuthContext.Provider value={ctxData}>{children}</AuthContext.Provider>
+    return <UserContext.Provider value={ctxData}>{children}</UserContext.Provider>
 }
 
 
 
-export default AuthProvider;
+export default UserProvider;

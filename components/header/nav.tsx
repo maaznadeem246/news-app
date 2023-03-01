@@ -2,9 +2,11 @@ import { AppBar, Toolbar } from "@mui/material"
 import Heading from "../headings"
 import theme from "@/styles/theme/theme"
 import { Box } from "@mui/system"
+import { useRouter } from "next/router"
 
 
 const Nav = () => {
+    const router = useRouter()
     return (
         <AppBar component='nav'>
             <Toolbar
@@ -24,9 +26,9 @@ const Nav = () => {
                 <Heading
                     variant="h4"
                     headingStyle={true}
-                    
+                   
                 >
-                News
+                    <Box   onClick={() => router.push('/')}>News</Box>
                 </Heading>
             </Toolbar>
         </AppBar>

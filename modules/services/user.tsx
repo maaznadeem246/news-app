@@ -32,25 +32,29 @@ export const createUser = async ({data,variables}:createUser)=> {
 export const getUserData = async() => {
       
   try{
-    const userSession:UserResponse= await  supabase.auth.getUser();
+    const userSession= await  supabase.auth.getSession();
+    const userData:UserResponse= await  supabase.auth.getUser();
     console.log(userSession)
 
-    if(userSession && userSession?.data?.user){
+    if(userData && userData?.data?.user){
 
-    const {data:users} = await supabase.from("users").select("*").eq('id',userSession.data.user.id).single()
+    const {data:users} = await supabase.from("users").select("*").eq('id',userData.data.user.id).single()
       return {
-        ...userSession,
-            ...users
+        session:userSession.data.session,
+        user:{...userData.data,userData:users}
       }
    
     }
     return {
-        ...userSession,
-          
-      } 
+      session:null,
+       user:null
+     }
     }catch(er){
-      console.log(er)
-      return null
+      // console.log(er)
+      return {
+        session:null,
+         user:null
+       }
     }
 
     }

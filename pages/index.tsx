@@ -3,13 +3,17 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import "@fontsource/nunito"
+import { useUser } from '@/modules/hooks/useUser'
+import { createServerSupabaseClient } from '@/modules/supabase'
+import { NextRequest } from 'next/server'
+import { GetServerSidePropsContext, NextPage } from 'next'
 
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+const Home = (props:NextPage) => {
+  console.log(props)
  
-
   return (
     <>
       <Head>
@@ -24,3 +28,17 @@ export default function Home() {
     </>
   )
 }
+
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  console.log('test')
+  const supabase = createServerSupabaseClient(ctx);
+  const user = await supabase.auth.getSession()
+  console.log(user)
+
+  return {
+    props:{}
+  }
+}
+
+export default Home;

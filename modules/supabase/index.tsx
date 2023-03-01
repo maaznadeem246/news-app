@@ -1,4 +1,4 @@
-import { createBrowserSupabaseClient, createServerSupabaseClient  } from '@supabase/auth-helpers-nextjs'
+import { createBrowserSupabaseClient, createServerSupabaseClient , createMiddlewareSupabaseClient, Session } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { createClient } from '@supabase/supabase-js';
 import { Database } from './types/supabase'
@@ -12,7 +12,9 @@ export {
     createBrowserSupabaseClient,
     createServerSupabaseClient,
     SessionContextProvider,
-    supabase
+    createMiddlewareSupabaseClient,
+    supabase,
+    
 }
 
 

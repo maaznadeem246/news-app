@@ -1,7 +1,7 @@
 
 
 import Auth from '@/components/auth'
-import useAuth from '@/modules/hooks/useAuth'
+import useUser from '@/modules/hooks/useUser'
 import { Box } from '@mui/material';
 import { useRouter } from 'next/router';
 import {ReactElement, ReactNode} from 'react'
@@ -11,7 +11,7 @@ export default function AuthLayout({ children  }: { children: ReactElement | Rea
  
   const router = useRouter()  
 
-     const session = useAuth();
+     const session = useUser();
     console.log(session)
   
     if(session.loading )  {return ( <Box>Loading</Box>)}
