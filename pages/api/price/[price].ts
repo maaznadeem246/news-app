@@ -34,29 +34,37 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
                                                 .single();
   
           console.log(qData?.data?.stripe_customer)
-          //@ts-ignore
-          const stripe  = await initStripe(process.env.STRIPE_SECRET_KEY) 
+     
+          if(qData?.data?.stripe_customer){
+            //@ts-ignore
+            const stripe  = await initStripe(process.env.STRIPE_SECRET_KEY) 
   
-          const {priceId} = req.query;
+            const {priceId} = req.query;
+    
+            const lineItems = [{
+              price:priceId,
+              quantity:1,
+            }]
+    
+            const stripSession = await stripe.checkout.sessions.create({
+              customer: qData?.data?.stripe_customer ,
+              mode:'subscription',
+              payment_method_types:['cards'],
+              line_items:lineItems,
+              success_url:'http://localhost:3000/payment/success',
+              cancel_url: 'http://localhost:3000/payment/canceled'
+            })
+            res.send({ 
+              id:stripSession.id
+            })
+            
+          }else{
+            res.status(400).send("User not Authorized")
+          }
+ 
+
   
-          const lineItems = [{
-            price:priceId,
-            quantity:1,
-          }]
-  
-          const stripSession = await stripe.checkout.sessions.create({
-            customer: qData?.data?.stripe_customer ,
-            mode:'subscription',
-            payment_method_types:['cards'],
-            line_items:lineItems,
-            success_url:'http://localhost:3000/payment/success',
-            cancel_url: 'http://localhost:3000/payment/canceled'
-          })
-  
-  
-          res.send({
-            id:'stripSession.id'
-          })
+         
 
         }catch(er){
           res.status(400).send("User not Authorized")

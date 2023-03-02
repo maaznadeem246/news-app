@@ -10,15 +10,16 @@ import { GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'n
 import initStripe from "stripe";
 import { keyable } from '@/types'
 import { promise } from 'zod'
+import Subscription from '@/components/subscription'
 
 
 const inter = Inter({ subsets: ['latin'] })
 
-interface SubscriptionType {
-  plans: keyable
+export interface SubscriptionType {
+  plans: Array<Object>
 }
 
-const Subscription = (props:SubscriptionType) => {
+const SubscriptionPage = (props:SubscriptionType) => {
   const {plans} = props
 
   return (
@@ -30,8 +31,8 @@ const Subscription = (props:SubscriptionType) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-          Subscription
-          <pre>{JSON.stringify(plans,null,2)}</pre>
+          
+          <Subscription plans={plans} />
       </main>
     </>
   )
@@ -78,4 +79,4 @@ const {data:prices} = await stripe.prices.list()
   }
 }
 
-export default Subscription;
+export default SubscriptionPage;
