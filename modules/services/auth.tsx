@@ -40,3 +40,15 @@ export const signUpService = async (user: signUpServiceType) => {
   
     return data
   }
+
+
+  export const signOutService = async () => {
+   
+    const { error } = await supabase.auth.signOut()
+    
+
+    if(error) {
+      throw error
+    }
+    return true
+  }

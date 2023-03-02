@@ -4,30 +4,29 @@ import { useMutation } from '@tanstack/react-query';
 import { QueryErrorResetBoundaryProps, QueryErrorResetBoundaryValue } from '@tanstack/react-query/build/lib/QueryErrorResetBoundary';
 import { extendShape, z } from 'zod';
 import { signUpService } from '../services';
-import { signInService, signInServiceType } from '../services/auth';
 import { supabase } from "../supabase";
 import { useRouter } from 'next/router';
+import { signOutService } from '../services/auth';
 
 
 
 
 
 
-export default function useSignIn() {
+export default function useSignOut() {
 
   const router = useRouter()
-  const { redirectedFrom } = router.query
 
-  return useMutation<keyable, Error, signInServiceType, unknown>((user: signInServiceType) => signInService(user), {
+
+  return useMutation(() => signOutService(), {
       retry:0,
-    onSuccess: async(data:keyable,variables) => {
+    onSuccess: async(data:boolean) => {
       console.log(data)
-      if(redirectedFrom && typeof redirectedFrom == 'string'){
-        router.push(redirectedFrom)        
-      }
+    
+        router.push('/signIn')        
      
 
-      return data
+      return true
     }
   })
 }

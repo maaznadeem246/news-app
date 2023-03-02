@@ -16,6 +16,7 @@ import { keyable } from "@/types"
 import { initialData } from "@/components/context/UserProvider"
 import { UserResponse } from "@supabase/supabase-js"
 import { getUserData } from "../services/user"
+import useSignIn from "./useSignIn"
 
 export interface ContextType  {
   [key: string]: any  
@@ -29,6 +30,7 @@ const useUserContext = () =>  useContext(UserContext)
 
 export const useUser  = ()  => {
   const [UserStatus,setUserStatus] = useState<string|null>(null)
+  // const signInMutaion = useSignIn()    
   const [data, setData] = useState<ContextType>({
     user:null,
     session:null
@@ -43,6 +45,10 @@ export const useUser  = ()  => {
       })
     }
   }
+  
+  // useEffect(()=>{
+  //   console.log(signInMutaion.isLoading)
+  // },[signInMutaion.isLoading])
 
       useEffect(()=>{
          
@@ -63,7 +69,7 @@ export const useUser  = ()  => {
         setUserData()
        
 
-        supabase.auth.onAuthStateChange(async (_event, session) => {
+        const { data: authListener } =  supabase.auth.onAuthStateChange(async (_event, session) => {
           console.log(_event)
           // console.log('mounter 1')
           // console.log(_event != UserStatus)
@@ -91,7 +97,9 @@ export const useUser  = ()  => {
       
         })
 
-
+        return () => {
+          authListener?.subscription.unsubscribe();
+        };
 
       }, [])
 
