@@ -15,16 +15,12 @@ import { signOutService } from '../services/auth';
 
 export default function useSignOut() {
 
-  const router = useRouter()
 
 
   return useMutation(() => signOutService(), {
       retry:0,
   onSuccess: async(data:boolean) => {
-      console.log(data)
-    
-        router.push('/signin')        
-     
+
 
       return true
     }

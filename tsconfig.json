@@ -20,6 +20,6 @@
       "@/*": ["./*"]
     },
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.tsx","pages/_document.jsx", "pages/api/create-stripe-customer.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/_document.tsx","pages/_document.jsx", "pages/api/create-stripe-customer.ts"],
   "exclude": ["node_modules"]
 }

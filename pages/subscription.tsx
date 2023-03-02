@@ -6,14 +6,21 @@ import "@fontsource/nunito"
 import { useUser } from '@/modules/hooks/useUser'
 import { createServerSupabaseClient, supabase } from '@/modules/supabase'
 import { NextRequest } from 'next/server'
-import { GetServerSidePropsContext, NextPage } from 'next'
+import { GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'next'
+import initStripe from "stripe";
+import { keyable } from '@/types'
+import { promise } from 'zod'
 
 
 const inter = Inter({ subsets: ['latin'] })
 
-const Subscription = (props:NextPage) => {
-  console.log(props)
- 
+interface SubscriptionType {
+  plans: keyable
+}
+
+const Subscription = (props:SubscriptionType) => {
+  const {plans} = props
+
   return (
     <>
       <Head>
@@ -24,13 +31,14 @@ const Subscription = (props:NextPage) => {
       </Head>
       <main>
           Subscription
+          <pre>{JSON.stringify(plans,null,2)}</pre>
       </main>
     </>
   )
 }
 
 
-// export const getServerSideProps = async (req:NextRequest) => {
+export const getServerSideProps = async (req:NextRequest) => {
 //   console.log('test')
 //   console.log(req)
 //   const cookie = parse(req.headers.get('Cookie') || '');
@@ -46,13 +54,28 @@ const Subscription = (props:NextPage) => {
 //     access_token: accessToken,
 //     refresh_token: refreshToken,
    
-//   })
-//   const user = await supabase.auth.getSession()
+//   }) 
+//   const user = await sa  `upabase.auth.getSession()
 //   console.log(user)
 
-//   return {
-//     props:{}
-//   }
-// }
+//@ts-ignore
+const stripe = initStripe(process.env.STRIPE_SECRET_KEY)
+
+const {data:prices} = await stripe.prices.list()
+
+ const plans =  await Promise.all(prices.map(async(price:keyable) => {
+    const product = await stripe.products.retrieve(price.product)
+    return {
+      id:price.id,
+      name:product.name,
+      price:price.unit_amount,
+      currency:price.currency
+    }
+  }))
+
+  return {
+    props:{plans}
+  }
+}
 
 export default Subscription;

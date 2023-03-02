@@ -38,7 +38,8 @@ export const getUserData = async() => {
 
     if(userData && userData?.data?.user){
 
-    const {data:users} = await supabase.from("users").select("*").eq('id',userData.data.user.id).single()
+    const {data:users} = await supabase.from("users_profile").select("*").eq('id',userData.data.user.id).single()
+    console.log(users)
       return {
         session:userSession.data.session,
         user:{...userData.data,userData:users}

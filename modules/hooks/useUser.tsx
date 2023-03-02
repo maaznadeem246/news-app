@@ -29,26 +29,53 @@ export const UserContext = createContext<ContextType>(initialData);
 const useUserContext = () =>  useContext(UserContext)
 
 export const useUser  = ()  => {
-  const [UserStatus,setUserStatus] = useState<string|null>(null)
+
   const statusRef = useRef<string|null>(null)
-  // const signInMutaion = useSignIn()    
+  // const signInMutaion = useSignIn() 
+  const router = useRouter()
+  const { redirectedFrom } = router.query
   const [data, setData] = useState<ContextType>({
     user:null,
-    session:null
+    session:null,
+    loading:true,
   })
 
   const setUserData = async(ev:string) => {
+    setData(() => ({
+      loading:true,
+    }))
     const userD = await getUserData()
-    // console.log(userD)
+    console.log('userD1')
+    console.log(userD)
     if(userD != null && (statusRef.current != ev)){
-      setData({
-        ...userD
-      })
+      console.log('userD2')
+      setData((props) => ({
+        ...props,
+        ...userD,
+        loading:false,
+      }))
       statusRef.current = ev
+      
+      if(redirectedFrom && typeof redirectedFrom == 'string'){
+
+        router.push(redirectedFrom)        
+      }else if (ev === 'SIGNED_IN' ){
+        router.push('/') 
+        if(userD?.user?.userData?.is_subscribed){
+          router.push('/')
+        }else{
+          router.push('/subscription') 
+        }
+      }else if (ev === 'SIGNED_OUT' || ev === 'USER_DELETED'){
+        router.push('/signin')  
+      }
+
     }
   }
 
   useEffect(() => {
+
+   
     setUserData('init')
    
 
@@ -58,8 +85,8 @@ export const useUser  = ()  => {
       // console.log(_event != UserStatus)
       // if(_event != UserStatus){
         // console.log('mounter 2')
-        console.log(_event)
-        console.log(session)
+        // console.log(_event)
+        // console.log(session)
 
          
 
@@ -94,19 +121,7 @@ export const useUser  = ()  => {
   //   console.log(signInMutaion.isLoading)
   // },[signInMutaion.isLoading])
 
-      useEffect(()=>{
-         
-          if(data.user?.user?.id)
-          console.log(data)
-          console.log('tttt')
-          // fetch('/api/set-supabase-cookie',{
-          //   method:'POST',
-          //   body: JSON.stringify({
-          //     event: data ? 'SIGNED_IN':'SIGNED_OUT',
-          //     session:data.session
-          //   }),
-          // })        
-      },[data.user?.user?.id])  
+    
 
 
 
