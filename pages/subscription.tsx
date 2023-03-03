@@ -16,7 +16,7 @@ import Subscription from '@/components/subscription'
 const inter = Inter({ subsets: ['latin'] })
 
 export interface SubscriptionType {
-  plans: Array<Object>
+  plans: Array<keyable>
 }
 
 const SubscriptionPage = (props:SubscriptionType) => {
@@ -32,7 +32,7 @@ const SubscriptionPage = (props:SubscriptionType) => {
       </Head>
       <main>
           
-          <Subscription plans={plans} />
+          <Subscription plans={plans.reverse()} />
       </main>
     </>
   )

@@ -17,6 +17,7 @@ import { initialData } from "@/components/context/UserProvider"
 import { UserResponse } from "@supabase/supabase-js"
 import { getUserData } from "../services/user"
 import useSignIn from "./useSignIn"
+import { __String } from "typescript"
 
 export interface ContextType  {
   [key: string]: any  
@@ -47,28 +48,28 @@ export const useUser  = ()  => {
     const userD = await getUserData()
     console.log('userD1')
     console.log(userD)
-    if(userD != null && (statusRef.current != ev)){
+    if(userD != null){
       console.log('userD2')
       setData((props) => ({
         ...props,
         ...userD,
         loading:false,
       }))
-      statusRef.current = ev
-      
-      if(redirectedFrom && typeof redirectedFrom == 'string'){
 
-        router.push(redirectedFrom)        
-      }else if (ev === 'SIGNED_IN' ){
-        router.push('/') 
-        if(userD?.user?.userData?.is_subscribed){
-          router.push('/')
-        }else{
-          router.push('/subscription') 
-        }
-      }else if (ev === 'SIGNED_OUT' || ev === 'USER_DELETED'){
-        router.push('/signin')  
-      }
+      
+      // if(redirectedFrom && typeof redirectedFrom == 'string'){
+
+      //   router.push(redirectedFrom)        
+      // }else if (ev === 'SIGNED_IN' || ev === 'init' ){
+      //   router.push('/') 
+      //   if(userD?.user?.userData?.is_subscribed){
+      //     router.push('/')
+      //   }else{
+      //     router.push('/subscription') 
+      //   }
+      // }else if (ev === 'SIGNED_OUT' || ev === 'USER_DELETED'){
+      //   router.push('/signin')  
+      // }
 
     }
   }
@@ -83,7 +84,7 @@ export const useUser  = ()  => {
     
       // console.log('mounter 1')
       // console.log(_event != UserStatus)
-      // if(_event != UserStatus){
+      if(_event != statusRef.current){
         // console.log('mounter 2')
         // console.log(_event)
         // console.log(session)
@@ -103,10 +104,10 @@ export const useUser  = ()  => {
           await setUserData(_event)
 
 
-        
+          statusRef.current = _event
          //  await setUserStatus(_event)
         
-      // }
+      }
   
   
     })

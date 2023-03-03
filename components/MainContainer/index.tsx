@@ -1,4 +1,5 @@
-import { Container } from "@mui/material";
+import { useUser } from "@/modules/hooks/useUser";
+import { Box, Container } from "@mui/material";
 import { FC, ReactNode } from "react";
 
 
@@ -7,13 +8,23 @@ interface MainContainerType{
 }
 
 const MainContainer : FC<MainContainerType>= ({children}) => {
+    const {loading} = useUser()  
+  
         return (
             <Container maxWidth="lg"
                 sx={{
-                    // border:'1px solid'
+                    width:['80%','80%','80%', '100%'],
+                    // border:'1px solid',
+                    marginTop:'3rem',
                 }}
             >
-                {children}
+                {
+                 loading ?
+                    <Box>Loading</Box>
+                 :
+                    children
+                }
+
             </Container>
         )
 }

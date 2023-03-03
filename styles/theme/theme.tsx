@@ -89,7 +89,7 @@ const theme = createTheme({
                     borderRadius:'20px',
                     minHeight:'200px',
                     padding:'20px',
-                    width:'100%', 
+                    width:'auto', 
                     maxWidth: '550px', 
                     [themebrek.breakpoints.down('sm')]:{
                         padding:'5px',

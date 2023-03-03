@@ -33,7 +33,7 @@ export default function SignUpPage() {
         >
             <CardComp 
                 sx={{
-                    
+                  width:'100%'  
                 }}
             >
 

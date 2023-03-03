@@ -23,7 +23,7 @@ const CustomButton  = ({children,sx, ...props}:customButtonType) => {
 
           marginTop:'10px',
           marginBottom:'10px',
-          minWidth:'300px',
+          minWidth:'100px',
           // aspectRatio:'1/0.13',
           minHeight:'35px',
           maxHeight:'45px',

@@ -31,7 +31,7 @@ export default function SingInPage() {
         >
             <CardComp 
                 sx={{
-                    
+                  width:'100%'       
                 }}
             >
 
