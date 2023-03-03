@@ -8,7 +8,7 @@ import createEmotionCache from '../styles/theme/createEmotionCache';
 import { AuthLayout, MainLayout } from '../Project/layouts';
 
 import { MouseEvent, useState } from 'react';
-import { createBrowserSupabaseClient, SessionContextProvider } from '../modules/supabase';
+import { createBrowserSupabaseClient, SessionContextProvider, supabase } from '../modules/supabase';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -25,12 +25,13 @@ const queryClient = new QueryClient()
 
 
 export default function App({ Component, pageProps,  emotionCache = clientSideEmotionCache, }: MyAppProps) {
-  const [supabase] = useState(() => createBrowserSupabaseClient())
+  // const [supabase] = useState(() => createBrowserSupabaseClient())
 
   return(
+    <AuthProvider > 
     <CacheProvider value={emotionCache}>
     <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
-     <AuthProvider > 
+ 
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -44,8 +45,9 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-      </AuthProvider>
+
      </SessionContextProvider>
      </CacheProvider>
+     </AuthProvider>
      )
 }

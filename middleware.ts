@@ -11,28 +11,29 @@ export async function middleware(req:NextRequest,res:NextResponse) {
 
   // Create authenticated Supabase Client
     // console.log(req)
-  const cookie = parse(req.headers.get('Cookie') || '');
-  console.log(cookie)
-  const accessToken  = cookie['my-access-token']
-const  refreshToken = cookie['my-refresh-token']
+    console.log(req.headers.get('cookie'))
+  const access_token = parse(req.headers.get('cookie') || '')['my-access-token'];
+  const refresh_token = parse(req.headers.get('cookie') || '')['my-refresh-token'];
+  console.log(access_token)
 
-if (refreshToken && accessToken) {
+
+if (access_token && refresh_token) {
   
   console.log('fdfdf')
 
- const {data: { session }} =  await supabase.auth.setSession({
-    access_token: accessToken,
-    refresh_token: refreshToken,
+ const data =  await supabase.auth.setSession({
+    access_token: access_token,
+    refresh_token: refresh_token,
    
   })
 
   
 
 
-  // Check auth condition
+  // Check auth conditions
   console.log('fdfdf')
-  // console.log(session)
-  if (session?.user.email?.endsWith('@gmail.com')) {
+  console.log(data)
+  if (data?.data?.session?.user.email) {
     // Authentication successful, forward request to protected route.
     const response = NextResponse.next()
     return response;
