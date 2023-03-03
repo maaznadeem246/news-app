@@ -40,10 +40,10 @@ const SignUp = memo(({
     const formData = useFormHook({
         formSchema:singInFormSchema,
        defaulvalues:{
-            fullname:'test1',
-            email:'test1@gmail.com',
-            password:'123123123',
-            confirmPassword:'123123123',
+            fullname:'',
+            email:'',
+            password:'',
+            confirmPassword:'',
         },
   
       
