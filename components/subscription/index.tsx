@@ -26,7 +26,7 @@ const Subscription = ({plans}:SubscriptionType) => {
 
     const handleSubscrbie = async(pId:string) => {
             const {data:{id}, error} = await  subscriptionService(pId)
-            console.log(pId)
+            console.log(id)
             if(process.env.NEXT_PUBLIC_STRIPE_KEY != undefined && id && error == null){
                 const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
                 await stripe?.redirectToCheckout({sessionId:id})

@@ -8,6 +8,8 @@ import { createServerSupabaseClient, supabase } from '@/modules/supabase'
 import { NextRequest } from 'next/server'
 import { GetServerSidePropsContext, NextPage } from 'next'
 
+import { keyable } from '@/types'
+import getUserByCookie from '@/utils/getUserByCookie'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,29 +32,29 @@ const Home = (props:NextPage) => {
 }
 
 
-// export const getServerSideProps = async (req:NextRequest) => {
-//   console.log('test')
-//   console.log(req)
-//   const cookie = parse(req.headers.get('Cookie') || '');
- 
-//   const accessToken  = cookie['my-access-token']
-// const  refreshToken = cookie['my-refresh-token']
 
-// if (refreshToken && accessToken) {
+export const getServerSideProps = async (context:GetServerSidePropsContext) => {
+  console.log('test')
+  // console.log(context.req.headers)
   
-//   console.log('fdfdf')
-  
-//  const {data: { session }} =  await supabase.auth.setSession({
-//     access_token: accessToken,
-//     refresh_token: refreshToken,
-   
-//   })
-//   const user = await supabase.auth.getSession()
-//   console.log(user)
+  const data = await getUserByCookie(context)
 
-//   return {
-//     props:{}
-//   }
-// }
+  if(data == null){
+    return{
+      redirect:{
+        permanent:false,
+        destination:'/signin'
+      },
+      
+      props:{}
+    }
+  }
+
+
+
+  return {
+    props:{}
+  }
+}
 
 export default Home;

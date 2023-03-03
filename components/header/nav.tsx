@@ -5,6 +5,8 @@ import { Box } from "@mui/system"
 import { useRouter } from "next/router"
 import Logout from "../auth/logout"
 import { useUser } from "@/modules/hooks/useUser"
+import Link from "next/link"
+import CustomButton from "../inputs/customButton"
 
 
 
@@ -24,9 +26,13 @@ const Nav = () => {
                     boxShadow:'rgba(0, 0, 0, 0.1) 0px 8px 8px;',
                     display:'flex',
                     justifyContent:'space-between',
+
                     // borderRadius:'10px',
                     [theme.breakpoints.down('sm')]:{
                         width:'90%',
+                        flexDirection:'column',
+                        justifyContent:'space-around',
+                        // gap:'10px'
                     }
                 }}
             >
@@ -39,11 +45,35 @@ const Nav = () => {
                     <Box   onClick={() => router.push('/')}>News</Box>
                 </Heading>
                 </Box>
-                <Box>
+                
+                <Box 
+                        sx={{display:'flex', gap:'7px'}}
+                >
                     {userData?.user &&
-                        <Box>
+                    <>
+                        <Box
+                          
+                          >
+                              <Link href={'/subscription'}>
+                                 <CustomButton
+                                  sx={{
+                                     borderRadius:'10px',
+                                     background:'transparent',
+                                     border:'1px solid',
+                                     minWidth:'fit-content !important',
+                                 }}
+                                 >
+                                     Subscription
+                                 </CustomButton>
+                             </Link>
+                         </Box>
+                        <Box
+                        
+                        >
                             <Logout />
                         </Box>
+                       
+                        </>
                     }
                 </Box>
             </Toolbar>

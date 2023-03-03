@@ -11,6 +11,7 @@ import initStripe from "stripe";
 import { keyable } from '@/types'
 import { promise } from 'zod'
 import Subscription from '@/components/subscription'
+import getUserByCookie from '@/utils/getUserByCookie'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -30,34 +31,27 @@ const SubscriptionPage = (props:SubscriptionType) => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-          
-          <Subscription plans={plans.reverse()} />
+      <main>     
+          <Subscription plans={plans} />
       </main>
     </>
   )
 }
 
 
-export const getServerSideProps = async (req:NextRequest) => {
-//   console.log('test')
-//   console.log(req)
-//   const cookie = parse(req.headers.get('Cookie') || '');
+export const getServerSideProps = async (context:GetServerSidePropsContext) => {
  
-//   const accessToken  = cookie['my-access-token']
-// const  refreshToken = cookie['my-refresh-token']
+  const data = await getUserByCookie(context)
 
-// if (refreshToken && accessToken) {
-  
-//   console.log('fdfdf')
-  
-//  const {data: { session }} =  await supabase.auth.setSession({
-//     access_token: accessToken,
-//     refresh_token: refreshToken,
-   
-//   }) 
-//   const user = await sa  `upabase.auth.getSession()
-//   console.log(user)
+  if(data == null){
+    return{
+      redirect:{
+        permanent:false,
+        destination:'/signin'
+      },
+      props:{}
+    }
+  }
 
 //@ts-ignore
 const stripe = initStripe(process.env.STRIPE_SECRET_KEY)
@@ -78,5 +72,9 @@ const {data:prices} = await stripe.prices.list()
     props:{plans}
   }
 }
+
+
+
+
 
 export default SubscriptionPage;

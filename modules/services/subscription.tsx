@@ -10,7 +10,7 @@ export const subscriptionService = async (planId:string) =>  {
         const {data} = await axios.get(`/api/subscription/${planId}`)
         return {
             data,
-            error:false
+            error:null
         }
     }
     catch(er){

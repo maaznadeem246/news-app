@@ -38,7 +38,8 @@ const theme = createTheme({
                     marginTop:'1rem',
                     marginBottom:'1rem',
                     borderRadius:'10px',
-                    height:'80px',
+                    height:'auto',
+                    minHeight:'80px',
                     // paddigTop:'1rem',
                     // paddigBottom:'1rem',
                     

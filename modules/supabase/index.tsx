@@ -8,6 +8,12 @@ const env2:string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
 
 const supabase = createClient<Database>(env1, env2);
 
+
+const env3:string = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
+const env4:string = process.env.SUPABASE_SERVICE_KEY|| ""
+
+
+
 export {
     createBrowserSupabaseClient,
     createServerSupabaseClient,

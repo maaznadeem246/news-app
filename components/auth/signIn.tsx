@@ -124,7 +124,7 @@ const SignIn = memo(({handleToggle}:SignInTypes) => {
                         sx={{
                             margin:'auto',
                             marginTop:'20px !important',
-
+                            width:'100%',
                             maxWidth:['100%','300px']
                         }}
                         type="submit"

@@ -1,3 +1,4 @@
+import theme from "@/styles/theme/theme";
 import styled from "@emotion/styled";
 import { Button, ButtonProps } from "@mui/material";
 import {  ReactNode } from "react";
@@ -23,7 +24,9 @@ const CustomButton  = ({children,sx, ...props}:customButtonType) => {
 
           marginTop:'10px',
           marginBottom:'10px',
-          minWidth:'100px',
+          width:'auto !important',
+          minWidth:'auto !important',
+          border:`1px solid ${theme.palette.primary.main}`,
           // aspectRatio:'1/0.13',
           minHeight:'35px',
           maxHeight:'45px',

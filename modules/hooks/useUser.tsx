@@ -39,6 +39,8 @@ export const useUser  = ()  => {
     loading:true,
   })
 
+    
+
   const setUserData = async(ev:string) => {
     setData(() => ({
       loading:true,

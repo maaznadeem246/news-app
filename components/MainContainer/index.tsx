@@ -13,7 +13,7 @@ const MainContainer : FC<MainContainerType>= ({children}) => {
         return (
             <Container maxWidth="lg"
                 sx={{
-                    width:['80%','80%','80%', '100%'],
+                    width:['100%','80%','80%', '100%'],
                     // border:'1px solid',
                     marginTop:'3rem',
                 }}

@@ -33,12 +33,12 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
                                                 .eq("id",data.user?.id)
                                                 .single();
   
-             console.log('qData?.data?.stripe_customer')
+             console.log('qData?.data?.stripe_customer 1')
  
              console.log(qData?.data?.stripe_customer)
      
           if(qData?.data?.stripe_customer){
-            
+            console.log('qData?.data?.stripe_customer 2')
             //@ts-ignore
             const stripe  = await initStripe(process.env.STRIPE_SECRET_KEY) 
   
@@ -48,14 +48,14 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
               price:priceId,
               quantity:1,
             }]
-    
+            console.log('qData?.data?.stripe_customer 4')
             const stripSession = await stripe.checkout.sessions.create({
               customer: qData?.data?.stripe_customer ,
               mode:'subscription',
-              payment_method_types:['cards'],
+              payment_method_types:['card'],
               line_items:lineItems,
-              success_url:'http://localhost:3000/payment/success',
-              cancel_url: 'http://localhost:3000/payment/canceled'
+              success_url:`${process.env.CLIENT_URL}/payment/success`,
+              cancel_url: `${process.env.CLIENT_URL}payment/cancelled`
             })
             console.log('stripSession')
             console.log(stripSession)
@@ -72,6 +72,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
          
 
         }catch(er){
+          console.log(er)
           res.status(400).send("User not Authorized")
         }
 
