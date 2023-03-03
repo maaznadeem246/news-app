@@ -10,6 +10,7 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 
 import { keyable } from '@/types'
 import getUserByCookie from '@/utils/getUserByCookie'
+import NewsPage from '@/components/news'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,7 +26,7 @@ const Home = (props:NextPage) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-          Main Page
+          <NewsPage />
       </main>
     </>
   )

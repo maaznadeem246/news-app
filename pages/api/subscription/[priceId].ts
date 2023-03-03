@@ -54,8 +54,8 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
               mode:'subscription',
               payment_method_types:['card'],
               line_items:lineItems,
-              success_url:`${process.env.CLIENT_URL}/payment/success`,
-              cancel_url: `${process.env.CLIENT_URL}payment/cancelled`
+              success_url:`${process.env.CLIENT_S_URL}/payment/success`,
+              cancel_url: `${process.env.CLIENT_S_URL}payment/cancelled`
             })
             console.log('stripSession')
             console.log(stripSession)
