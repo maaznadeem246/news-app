@@ -23,7 +23,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
           })
 
           if(error?.status || data.session == null){
-            res.status(error?.status || 400).send("User not Authorized")
+           return  res.status(error?.status || 400).send("User not Authorized")
           }
           console.log(data)
   
@@ -59,12 +59,12 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
             })
             console.log('stripSession')
             console.log(stripSession)
-            res.send({ 
+           return res.send({ 
               id:stripSession.id
             })
             
           }else{
-            res.status(400).send("User not Authorized")
+            return res.status(400).send("User not Authorized")
           }
  
 
@@ -73,7 +73,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
 
         }catch(er){
           console.log(er)
-          res.status(400).send("User not Authorized")
+         return  res.status(400).send("User not Authorized")
         }
 
       
