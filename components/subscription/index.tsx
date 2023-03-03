@@ -20,16 +20,16 @@ const Subscription = ({plans}:SubscriptionType) => {
 
     const {user} = useUser()
     const [planeState] = useState(plans || [])
-    const subscribeHandle = useSubscribe()
+   
     console.log(planeState)
     console.log(user)
 
     const handleSubscrbie = async(pId:string) => {
-            const {data, error} = await  subscriptionService(pId)
+            const {data:{id}, error} = await  subscriptionService(pId)
             console.log(pId)
-            if(process.env.NEXT_PUBLIC_STRIPE_KEY != undefined && data && data?.id && error == null){
+            if(process.env.NEXT_PUBLIC_STRIPE_KEY != undefined && id && error == null){
                 const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
-                await stripe?.redirectToCheckout({sessionId:data.id})
+                await stripe?.redirectToCheckout({sessionId:id})
             }
 
     }
@@ -76,7 +76,7 @@ const Subscription = ({plans}:SubscriptionType) => {
                                         onClick={()=> handleSubscrbie(planV.id)}
                                         disabled={showSubscribedButon}
                                     >
-                                        {showSubscribedButon ? 'Subscribe' : 'Subscribed'}
+                                        {showSubscribedButon ? 'Subscribed' : 'Subscribe'}
                                     </CustomButton>
                                 </CardComp>
                             

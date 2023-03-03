@@ -5,7 +5,7 @@ import axios from "axios"
 
 
 
-export const subscriptionService = async(planId:string) => {
+export const subscriptionService = async (planId:string) =>  {
     try{
         const {data} = await axios.get(`/api/subscription/${planId}`)
         return {
@@ -14,6 +14,7 @@ export const subscriptionService = async(planId:string) => {
         }
     }
     catch(er){
+        console.log(er)
         return {
             error:'Error',
             data:{id:null},

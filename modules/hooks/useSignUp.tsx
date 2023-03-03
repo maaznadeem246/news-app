@@ -14,8 +14,10 @@ import { useRouter } from 'next/router';
 
 
 
+
 export default function useSignup() {
- 
+  const router = useRouter()
+  const { redirectedFrom } = router.query
 
   return useMutation<keyable, Error, signUpServiceType, unknown>((user: signUpServiceType) => signUpService(user), {
     retry:0,
@@ -24,7 +26,11 @@ export default function useSignup() {
    
       // const insertData = await createUser({data,variables});
 
-    
+      if(redirectedFrom && typeof redirectedFrom == 'string'){
+
+        router.push(redirectedFrom)        
+      }
+
 
       return data
     }

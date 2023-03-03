@@ -1,4 +1,3 @@
-import { useRouter } from "next/router"
 import { useEffect, useRef, useState } from "react"
 import { supabase } from "../supabase"
 
@@ -33,8 +32,7 @@ export const useUser  = ()  => {
 
   const statusRef = useRef<string|null>(null)
   // const signInMutaion = useSignIn() 
-  const router = useRouter()
-  const { redirectedFrom } = router.query
+
   const [data, setData] = useState<ContextType>({
     user:null,
     session:null,

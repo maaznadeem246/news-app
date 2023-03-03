@@ -55,5 +55,5 @@ if (access_token && refresh_token) {
 }
 
 export const config = {
-  matcher: ['/'] // '/subscription'
+  matcher: ['/','/subscription'] // '/subscription'
 };
