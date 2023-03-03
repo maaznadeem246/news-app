@@ -12,7 +12,7 @@ export async function middleware(req:NextRequest,res:NextResponse) {
   // Create authenticated Supabase Client
     // console.log(req)
   const cookie = parse(req.headers.get('Cookie') || '');
- 
+  console.log(cookie)
   const accessToken  = cookie['my-access-token']
 const  refreshToken = cookie['my-refresh-token']
 
@@ -39,6 +39,10 @@ if (refreshToken && accessToken) {
   }
 
 }
+// else {
+//   // make sure you handle this case!
+//   throw new Error('User is not authenticated.')
+// }
 
  console.log('fdfdf1')
 

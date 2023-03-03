@@ -24,6 +24,8 @@ export default function useSignIn() {
       console.log(data)
       if(redirectedFrom && typeof redirectedFrom == 'string'){
         router.push(redirectedFrom)        
+      }else{
+        router.push('/')
       }
      
 

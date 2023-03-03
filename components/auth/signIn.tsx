@@ -128,6 +128,7 @@ const SignIn = memo(({handleToggle}:SignInTypes) => {
                             maxWidth:['100%','300px']
                         }}
                         type="submit"
+                        disabled={signInMutaion.isLoading}
 
                 >
                     Sign In

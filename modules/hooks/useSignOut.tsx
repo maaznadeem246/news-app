@@ -20,10 +20,10 @@ export default function useSignOut() {
 
   return useMutation(() => signOutService(), {
       retry:0,
-    onSuccess: async(data:boolean) => {
+  onSuccess: async(data:boolean) => {
       console.log(data)
     
-        router.push('/signIn')        
+        router.push('/signin')        
      
 
       return true

@@ -4,10 +4,14 @@ import theme from "@/styles/theme/theme"
 import { Box } from "@mui/system"
 import { useRouter } from "next/router"
 import Logout from "../auth/logout"
+import { useUser } from "@/modules/hooks/useUser"
+
 
 
 const Nav = () => {
     const router = useRouter()
+    const userData = useUser()
+    // console.log(userData)
     return (
         <AppBar component='nav'>
             <Toolbar
@@ -36,9 +40,11 @@ const Nav = () => {
                 </Heading>
                 </Box>
                 <Box>
-                    <Box>
-                        <Logout />
-                    </Box>
+                    {userData?.user &&
+                        <Box>
+                            <Logout />
+                        </Box>
+                    }
                 </Box>
             </Toolbar>
         </AppBar>
