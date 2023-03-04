@@ -12,7 +12,8 @@ import { createBrowserSupabaseClient, SessionContextProvider, supabase } from '.
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import AuthProvider from '@/components/context/UserProvider';
+import {UserProvider} from '@/components/context/UserProvider';
+import { Database } from '@/modules/supabase/types/supabase';
 
 
 
@@ -25,13 +26,13 @@ const queryClient = new QueryClient()
 
 
 export default function App({ Component, pageProps,  emotionCache = clientSideEmotionCache, }: MyAppProps) {
-  // const [supabase] = useState(() => createBrowserSupabaseClient())
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient<Database>())
 
   return(
-    <AuthProvider > 
+
     <CacheProvider value={emotionCache}>
-    <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
- 
+    <SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
+    <UserProvider > 
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
           <CssBaseline />
@@ -45,9 +46,9 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-
+      </UserProvider>
      </SessionContextProvider>
      </CacheProvider>
-     </AuthProvider>
+
      )
 }

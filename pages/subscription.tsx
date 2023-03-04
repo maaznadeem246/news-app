@@ -3,9 +3,6 @@ import Image from 'next/image'
 import { Inter } from '@next/font/google'
 import styles from '@/styles/home.module.css'
 import "@fontsource/nunito"
-import { useUser } from '@/modules/hooks/useUser'
-import { createServerSupabaseClient, supabase } from '@/modules/supabase'
-import { NextRequest } from 'next/server'
 import { GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'next'
 import initStripe from "stripe";
 import { keyable } from '@/types'

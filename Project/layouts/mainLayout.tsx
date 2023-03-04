@@ -1,7 +1,6 @@
 
 import { Nav } from '@/components/header'
 import MainContainer from '@/components/MainContainer'
-import { useUser } from '@/modules/hooks/useUser'
 import { Box, Toolbar } from '@mui/material'
 
 import {ReactElement, ReactNode} from 'react'

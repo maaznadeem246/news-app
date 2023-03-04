@@ -1,6 +1,8 @@
-import { useUser } from "@/modules/hooks/useUser";
+
+
 import { Box, Container } from "@mui/material";
 import { FC, ReactNode } from "react";
+import { useUser } from "../context/UserProvider";
 
 
 interface MainContainerType{
@@ -8,7 +10,7 @@ interface MainContainerType{
 }
 
 const MainContainer : FC<MainContainerType>= ({children}) => {
-    const {loading} = useUser()  
+    const { isLoading } = useUser()  
   
         return (
             <Container maxWidth="lg"
@@ -19,12 +21,12 @@ const MainContainer : FC<MainContainerType>= ({children}) => {
                 }}
             >
                 {
-                 loading ?
+                 isLoading ?
                     <Box>Loading</Box>
                  :
                     children
                 }
-
+                    {/* {children} */}
             </Container>
         )
 }

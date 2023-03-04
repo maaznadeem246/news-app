@@ -6,7 +6,7 @@ import initStripe from 'stripe'
 
 export default async (req:NextApiRequest, res:NextApiResponse) => {
 
-       // console.log(req)
+       // // console.log(req)
        // const access_token = parse(req.headers.get('cookie') || '')['my-access-token'];
        // const refresh_token = parse(req.headers.get('cookie') || '')['my-refresh-token'];
       
@@ -16,8 +16,8 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
        //               refresh_token: refresh_token,
                     
        //             })
-       //             console.log('data wq')
-       //             console.log(data)
+       //             // console.log('data wq')
+       //             // console.log(data)
 
 
        //        // return res.status(401).send('User Is not Authenticated')
@@ -26,7 +26,7 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
               // Process a POST request
 
 
-              // console.log(req.body)
+              // // console.log(req.body)
               if(req.query.API_ROUTE_SECRET !== process.env.API_ROUTE_SECRET){
                      return res.status(401).send('You are not authorized to call this api')
               }
@@ -38,8 +38,8 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
                             email:req.body?.record?.email || '',
                             
                      })
-                     // console.log('customer')
-                     // console.log(customer)
+                     // // console.log('customer')
+                     // // console.log(customer)
                      if(customer?.id && req.body?.record?.id){
                            
                             try{                      
@@ -49,11 +49,11 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
                                    stripe_customer:customer.id
                             })
                             .eq("id",req.body.record.id).single()    
-                     //        console.log('dff')
-                     //      console.log(dff)
+                     //        // console.log('dff')
+                     //      // console.log(dff)
                             }catch(er){
 
-                                   console.log(er)     
+                                   // console.log(er)     
                                    return res.status(400).send('Not Authorized')     
                             }
 

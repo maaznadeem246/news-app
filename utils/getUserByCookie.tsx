@@ -4,7 +4,7 @@ import { supabase } from "@/modules/supabase";
 
 
 const getUserByCookie = async (ctx:GetServerSidePropsContext) => {
-    // console.log(ctx.req)
+    // // console.log(ctx.req)
     let cookie = parse(ctx?.req?.headers?.cookie || ''); ;
     
     const accessToken  = cookie['my-access-token']
@@ -13,14 +13,14 @@ const getUserByCookie = async (ctx:GetServerSidePropsContext) => {
 
   if (refreshToken && accessToken) {
   
-    console.log('fdfdf')
+    // console.log('fdfdf')
     
    const {data} =  await supabase.auth.setSession({
       access_token: accessToken,
       refresh_token: refreshToken,
      
     })
-    console.log(data)
+    // console.log(data)
 
     if(data?.session != null){
       return data;

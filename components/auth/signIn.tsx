@@ -52,13 +52,13 @@ const SignIn = memo(({handleToggle}:SignInTypes) => {
             email:data.email,
             password:data.password,
           })  
-        //   console.log('response')
-        //   console.log(response)
+        //   // console.log('response')
+        //   // console.log(response)
     }
     
 
 
-    // console.log(formData.errors)
+    // // console.log(formData.errors)
 
     return (
         <Stack

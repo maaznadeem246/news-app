@@ -14,7 +14,7 @@ export const subscriptionService = async (planId:string) =>  {
         }
     }
     catch(er){
-        console.log(er)
+        // console.log(er)
         return {
             error:'Error',
             data:{id:null},

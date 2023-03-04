@@ -12,6 +12,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   //   res,
   // })
   const data = await supabase.auth.getSession()
-  console.log(data)
+  // console.log(data)
   res.status(200).json({ name: data ?? '' })
 }

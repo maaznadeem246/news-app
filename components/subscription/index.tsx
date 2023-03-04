@@ -6,7 +6,7 @@ import CardComp from "../cards";
 import Heading from "../headings";
 import CustomButton from "../inputs/customButton";
 import theme from "@/styles/theme/theme";
-import { useUser } from "@/modules/hooks/useUser";
+import useUser from "@/modules/hooks/useUser";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { keyable } from "@/types";
@@ -21,12 +21,12 @@ const Subscription = ({plans}:SubscriptionType) => {
     const {user} = useUser()
     const [planeState] = useState(plans || [])
    
-    console.log(planeState)
-    console.log(user)
+    // console.log(planeState)
+    // console.log(user)
 
     const handleSubscrbie = async(pId:string) => {
             const {data:{id}, error} = await  subscriptionService(pId)
-            console.log(id)
+            // console.log(id)
             if(process.env.NEXT_PUBLIC_STRIPE_KEY != undefined && id && error == null){
                 const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
                 await stripe?.redirectToCheckout({sessionId:id})

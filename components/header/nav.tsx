@@ -4,16 +4,17 @@ import theme from "@/styles/theme/theme"
 import { Box } from "@mui/system"
 import { useRouter } from "next/router"
 import Logout from "../auth/logout"
-import { useUser } from "@/modules/hooks/useUser"
 import Link from "next/link"
 import CustomButton from "../inputs/customButton"
+import { useUser } from "../context/UserProvider"
+
 
 
 
 const Nav = () => {
     const router = useRouter()
     const userData = useUser()
-    // console.log(userData)
+    console.log(userData)
     return (
         <AppBar component='nav'>
             <Toolbar

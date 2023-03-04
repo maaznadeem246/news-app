@@ -8,8 +8,8 @@ import { parse } from 'cookie';
 export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & NextResponse) => {
 
 
-      console.log('price')
-      console.log(req.headers.cookie)
+      // console.log('price')
+      // console.log(req.headers.cookie)
 
       const access_token = parse(req.headers.cookie || '')['my-access-token'];
       const refresh_token = parse(req.headers.cookie || '')['my-refresh-token'];
@@ -25,7 +25,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
           if(error?.status || data.session == null){
            return  res.status(error?.status || 400).send("User not Authorized")
           }
-          console.log(data)
+          // console.log(data)
   
           const qData = await supabase.
                                                 from("users_profile")
@@ -33,12 +33,12 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
                                                 .eq("id",data.user?.id)
                                                 .single();
   
-             console.log('qData?.data?.stripe_customer 1')
+             // console.log('qData?.data?.stripe_customer 1')
  
-             console.log(qData?.data?.stripe_customer)
+             // console.log(qData?.data?.stripe_customer)
      
           if(qData?.data?.stripe_customer){
-            console.log('qData?.data?.stripe_customer 2')
+            // console.log('qData?.data?.stripe_customer 2')
             //@ts-ignore
             const stripe  = await initStripe(process.env.STRIPE_SECRET_KEY) 
   
@@ -48,7 +48,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
               price:priceId,
               quantity:1,
             }]
-            console.log('qData?.data?.stripe_customer 4')
+            // console.log('qData?.data?.stripe_customer 4')
             const stripSession = await stripe.checkout.sessions.create({
               customer: qData?.data?.stripe_customer ,
               mode:'subscription',
@@ -57,8 +57,8 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
               success_url:`${process.env.CLIENT_S_URL}/payment/success`,
               cancel_url: `${process.env.CLIENT_S_URL}payment/cancelled`
             })
-            console.log('stripSession')
-            console.log(stripSession)
+            // console.log('stripSession')
+            // console.log(stripSession)
            return res.send({ 
               id:stripSession.id
             })
@@ -72,7 +72,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
          
 
         }catch(er){
-          console.log(er)
+          // console.log(er)
          return  res.status(400).send("User not Authorized")
         }
 
