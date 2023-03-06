@@ -30,6 +30,7 @@ const Heading : FC<HeadingType  >  = memo(({children,headingStyle=false,...props
    const customHeadStyle = {
     position:'relative',
     width:'fit-content',
+    textDecorationStyle: 'wavy',
     ':after':{
         content:"''",
         position:'absolute',

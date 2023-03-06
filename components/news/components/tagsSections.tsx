@@ -11,16 +11,14 @@ import { useGlobalState } from "@/modules/hooks/useGlobal"
 
 
 interface TagsSectionType {
-    selectedTag?:string,
-    tagsList?: string[],
-    handleTag ?: (t:string) => void
+   
 }
 
-const TagsSection = memo(({selectedTag="all"}:TagsSectionType) =>{
+const TagsSection = memo((props:TagsSectionType) =>{
     const newQuery = useNews()
-    const tagsList = newQuery.data.map((newObj:newsType) => newObj.source.name)
-    const _tagsList = ['Latest News'].concat(tagsList)
-    const {handleTagOption} = useGlobalState()
+    const tagsList:(string)[] = newQuery?.data?.length > 0 ? [...new Set<string>(newQuery.data?.map((newObj:newsType) => newObj.source.name))]  : []
+    const _tagsList = tagsList?.length > 0 ? ['Latest News'].concat(tagsList) : []
+    const {handleTagOption,activeTag} = useGlobalState()
     const handleTag = (k:string) => {
         handleTagOption(k)
     }
@@ -61,7 +59,7 @@ const TagsSection = memo(({selectedTag="all"}:TagsSectionType) =>{
                     onClick={() => handleTag(vl)}
                     sx={{
                         background:theme.palette.primary.light,
-                        border:`${selectedTag.toLowerCase() == vl.toLowerCase() ? '5' : '2'}px solid ${theme.palette.primary.main}`,                        
+                        border:`3px solid ${activeTag.toLowerCase() == vl.toLowerCase() ? theme.palette.primary.main : 'transparent'}`,                        
                         padding:'7px',
                         borderRadius:'10px',
                         whiteSpace:'nowrap',

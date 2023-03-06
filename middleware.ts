@@ -16,12 +16,12 @@ export async function middleware(req: NextRequest) {
   const {
     data: { session },
   } = await supabase.auth.getSession()
-  console.log('session.user.email')
-  console.log(session?.user.email)
+  // console.log('session.user.email')
+  // console.log(session?.user.email)
   
   if (req.nextUrl.pathname ==  '/' && session?.user.email ) {
     const {data:users} = await supabase.from("users_profile").select("*").eq('id',session?.user.id).single()
-    console.log(users)
+    // console.log(users)
     if (session?.user.email && users?.is_subscribed ) {
       // Authentication successful, forward request to protected route.
   
@@ -41,5 +41,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/','/subscription'] // '/subscription'
+  matcher: ['/','/news','/subscription'] // '/subscription'
 };
