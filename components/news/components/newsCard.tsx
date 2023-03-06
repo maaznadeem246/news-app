@@ -1,4 +1,5 @@
 import CardComp from "@/components/cards"
+import theme from "@/styles/theme/theme"
 import { Box } from "@mui/material"
 import Image from "next/image"
 import { memo } from "react"
@@ -30,10 +31,11 @@ const NewsCard = memo((props:newsType) => {
         <CardComp
             sx={{
                 margin:'8px',
-                padding:'8px',
+                padding:'3px',
                 // margin:'auto !important',
                 // marginBottom:'10px !important',
                 position:'relative',
+                // border:`4px solid ${theme.palette.primary.light}`
             }}
         >           
 
@@ -47,7 +49,7 @@ const NewsCard = memo((props:newsType) => {
                     objectFit:'contain',
                     top:0,
                     left:0,
-                    filter: 'blur(70px)',
+                    filter: 'blur(3px) contrast(0.9)',
                 }}
             >
                 <img src={urlToImage || ''} width='100%' height="100%" />
@@ -57,11 +59,26 @@ const NewsCard = memo((props:newsType) => {
  
         <Box 
             sx={{
-                isolation:'isolate',
-                // backdropFilter: 'blur(40px)',
+            
+                backdropFilter: 'blur(40px) contrast(0.5)',
+                 borderRadius:'10px',  
+                 padding:'5px',
+                 border:`2px solid ${theme.palette.primary.light}`
             }}
         >
+            <Box
+                sx={{
+                    
+                    // isolation:'isolate',
+                    color:theme.palette.primary.light,
+                    display: '-webkit-box',   
+                    '-webkit-line-clamp': '2',   
+                    '-webkit-box-orient': 'vertical',     
+                    overflow: 'hidden',
+                }}
+            >
             {title}
+            </Box>
         </Box>
         </CardComp>
     )

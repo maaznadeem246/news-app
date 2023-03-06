@@ -2,8 +2,6 @@ import { UserDetails} from "@/types";
 import { Router, useRouter } from "next/router";
 import { FC, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { createContext } from "react";
-//@ts-ignore
-import cookieCutter from  "cookie-cutter"
 
 import {
     User,
