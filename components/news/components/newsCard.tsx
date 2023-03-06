@@ -26,15 +26,16 @@ urlToImage:string|null,
 
 
 const NewsCard = memo((props:newsType) => {
-    const {title,url,urlToImage} = props
+    const {title,url,urlToImage,author} = props
     return (
         <CardComp
             sx={{
                 margin:'8px',
-                padding:'3px',
+                padding:'2px',
                 // margin:'auto !important',
                 // marginBottom:'10px !important',
                 position:'relative',
+                boxShadow:theme.shadows[13]
                 // border:`4px solid ${theme.palette.primary.light}`
             }}
         >           
@@ -60,10 +61,10 @@ const NewsCard = memo((props:newsType) => {
         <Box 
             sx={{
             
-                backdropFilter: 'blur(40px) contrast(0.5)',
-                 borderRadius:'10px',  
+                backdropFilter: 'blur(10px) contrast(0.5)',
+                 borderRadius:'8px',  
                  padding:'5px',
-                 border:`2px solid ${theme.palette.primary.light}`
+                //  border:`2px solid ${theme.palette.primary.light}`
             }}
         >
             <Box
@@ -72,14 +73,49 @@ const NewsCard = memo((props:newsType) => {
                     // isolation:'isolate',
                     color:theme.palette.primary.light,
                     display: '-webkit-box',   
-                    '-webkit-line-clamp': '2',   
-                    '-webkit-box-orient': 'vertical',     
+                    'WebkitLineClamp': '2',   
+                    'WebkitBoxOrient': 'vertical',     
                     overflow: 'hidden',
+                    fontSize:['1.1rem'],
                 }}
             >
             {title}
             </Box>
+          
         </Box>
+            <Box
+                sx={{                    
+                    backdropFilter: 'blur(10px) contrast(0.5)',
+                    borderRadius:'8px',  
+                    padding:'5px',
+                    display:'flex',
+                    width:'fit-content',
+                    justifyContent:'flex-start',
+                    alignItems:'flex-start',
+                    gap:'5px',
+                    height:'auto',
+                    marginTop:'5px',
+                    '&>*':{
+                        fontSize:['0.9rem'],
+                    }
+                }}
+            >
+                <Box
+                    sx={{
+                        color:theme.palette.primary.light,
+                        whiteSpace:'nowrap',
+                    }}
+                >
+                    Author :
+                </Box>
+                <Box
+                    sx={{
+                         color:theme.palette.primary.light,
+                    }}
+                >
+                    {author}
+                </Box>
+            </Box>
         </CardComp>
     )
 })

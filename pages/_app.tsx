@@ -15,6 +15,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {UserProvider} from '@/components/context/UserProvider';
 import { Database } from '@/modules/supabase/types/supabase';
 import { NextPage } from 'next';
+import { GlobalProvider } from '@/components/context/useGlobalProvider';
 
 
 
@@ -41,21 +42,23 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
     <CacheProvider value={emotionCache}>
     <SessionContextProvider supabaseClient={supabaseClientState} initialSession={pageProps.initialSession}>
     <UserProvider > 
-    <QueryClientProvider client={queryClient}>
-    <Hydrate state={pageProps.dehydratedState}>
-      <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <MainLayout >
-            {/* <AuthLayout> */}
+      <GlobalProvider>
+      <QueryClientProvider client={queryClient}>
+      <Hydrate state={pageProps.dehydratedState}>
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <MainLayout >
+              {/* <AuthLayout> */}
 
-               { getLayout(<Component {...pageProps} />)}
+                { getLayout(<Component {...pageProps} />)}
 
-            {/* </AuthLayout> */}
-          </MainLayout>
-      </ThemeProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
-      </Hydrate>
-      </QueryClientProvider>
+              {/* </AuthLayout> */}
+            </MainLayout>
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+        </Hydrate>
+        </QueryClientProvider>
+        </GlobalProvider>
       </UserProvider>
      </SessionContextProvider>
      </CacheProvider>

@@ -4,6 +4,7 @@ import { Box } from "@mui/material"
 import { memo } from "react"
 import { newsType } from "./newsCard"
 import zIndex from "@mui/material/styles/zIndex"
+import { useGlobalState } from "@/modules/hooks/useGlobal"
 
 
 
@@ -18,9 +19,10 @@ interface TagsSectionType {
 const TagsSection = memo(({selectedTag="all"}:TagsSectionType) =>{
     const newQuery = useNews()
     const tagsList = newQuery.data.map((newObj:newsType) => newObj.source.name)
-    const _tagsList = ['All'].concat(tagsList)
+    const _tagsList = ['Latest News'].concat(tagsList)
+    const {handleTagOption} = useGlobalState()
     const handleTag = (k:string) => {
-
+        handleTagOption(k)
     }
     return (
         <>
@@ -28,11 +30,13 @@ const TagsSection = memo(({selectedTag="all"}:TagsSectionType) =>{
             sx={{
                 borderRadius:'10px',
                 display:'flex',
-                width:'80%',
-                left:'10%',
+                width:['90%','80%','80%'],
+                left:['5%','10%','10%'],
                 margin:'auto',
                 overflow:'auto',
                 gap:'10px',
+                padding:'5px',
+               
                 paddingBottom:'10px',
                 scrollPadding:'10px',
                 position:'fixed',

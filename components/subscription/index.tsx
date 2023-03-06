@@ -50,10 +50,13 @@ const Subscription = ({plans}:SubscriptionType) => {
         <>
         <Box>
             <Box 
-            sx={{
-                display:'flex',
-                justifyContent:'center',
-            }}>
+                sx={{
+                    display:'flex',
+                    justifyContent:'center',
+                    marginTop:'3rem',
+                    marginBottom:'3rem',
+                }}
+            >
                 <Heading
                     variant="h3"
                     headingStyle={true}

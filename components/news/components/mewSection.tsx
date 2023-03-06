@@ -1,6 +1,8 @@
 import { Box, Grid } from "@mui/material";
 import NewsCard, { newsType } from "./newsCard";
 import useNews from "@/modules/hooks/useNews";
+import Heading from "@/components/headings";
+import { useGlobalState } from "@/modules/hooks/useGlobal";
 
 
 interface NewsSectionType{
@@ -9,12 +11,32 @@ interface NewsSectionType{
 
 const NewsSection = (props:NewsSectionType) => {
     const newQuery = useNews()
-    const newsList :  Array<newsType>  = newQuery?.data || []
-//     const handleTag = (t:string) => {
-//     setSelectedTag(t)
-// }
+    const {activeTag,handleTagOption} = useGlobalState()
+    const newsList :  Array<newsType>  = (activeTag).toLowerCase()== 'latest news' ? newQuery?.data  : newQuery?.data.filter((dv:newsType)=> (dv.source.name)?.toLowerCase()== (activeTag)?.toLowerCase()) || []
+
+   
+
     return (
-        <Grid container spacing={1} padding={['20px','0px','0px',]} justifyContent={'center'}>
+        <>
+        <Box 
+                sx={{
+                    display:'flex',
+                    justifyContent:'center',
+                    marginTop:'3rem',
+                    marginBottom:'3rem',
+                }}
+            >
+                <Heading
+                    variant="h3"
+                    headingStyle={true}
+                    sx={{
+                        textTransform:'capitalize'
+                    }}
+                >
+                  {activeTag}
+                </Heading>
+            </Box>
+        <Grid container spacing={1} padding={['20px','0px','0px',]} marginBottom={'20px'} justifyContent={'center'}>
             {
                 newsList.map((val:newsType) => {
                     return (
@@ -26,6 +48,7 @@ const NewsSection = (props:NewsSectionType) => {
             }
 
         </Grid>
+        </>
     )
 }
 
