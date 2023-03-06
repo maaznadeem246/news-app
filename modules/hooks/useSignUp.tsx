@@ -22,7 +22,7 @@ export default function useSignup() {
   return useMutation<keyable, Error, signUpServiceType, unknown>((user: signUpServiceType) => signUpService(user), {
     retry:0,
     onSuccess: async(data:keyable,variables) => {
-      // console.log(data)
+      // //console.log(data)
    
       // const insertData = await createUser({data,variables});
 

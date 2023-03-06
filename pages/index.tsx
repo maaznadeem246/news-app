@@ -4,18 +4,19 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import "@fontsource/nunito"
 
-import { createServerSupabaseClient } from '@/modules/supabase'
-import { NextRequest } from 'next/server'
 import { GetServerSidePropsContext, NextPage } from 'next'
 
-import { keyable } from '@/types'
-import getUserByCookie from '@/utils/getUserByCookie'
+
 import NewsPage from '@/components/news'
+import { QueryClient, dehydrate } from '@tanstack/react-query'
+import { newsService } from '@/modules/services/news'
+import SubNavLayout from '@/Project/layouts/subNavLayout'
+import { ReactNode } from 'react'
 
 const inter = Inter({ subsets: ['latin'] })
 
 const Home = (props:NextPage) => {
-  // console.log(props)
+  // //console.log(props)
  
   return (
     <>
@@ -32,29 +33,51 @@ const Home = (props:NextPage) => {
   )
 }
 
-
-
-export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
-
-
-  const supabase = createServerSupabaseClient(ctx);
-  const {
-    data: { session }
-  } = await supabase.auth.getSession();
-  // console.log(session)
-  if (!session)
-    return {
-      redirect: {
-        destination: '/signin',
-        permanent: false
-      }
-    };
-
-
+export async function getStaticProps() {
+  const queryClient = new QueryClient()
+  await queryClient.prefetchQuery({
+    queryKey:['news'],
+    queryFn: newsService,
+  })
 
   return {
-    props:{}
+    props:{
+      dehydratedState: dehydrate(queryClient),
+    }
   }
+
 }
+
+
+Home.getLayout = function getLayout(page:ReactNode) {
+  return (
+    <SubNavLayout>
+      {page}
+    </SubNavLayout>
+  )
+}
+
+// export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
+
+
+//   // const supabase = createServerSupabaseClient(ctx);
+//   // const {
+//   //   data: { session }
+//   // } = await supabase.auth.getSession();
+//   // // //console.log(session)
+//   // if (!session)
+//   //   return {
+//   //     redirect: {
+//   //       destination: '/signin',
+//   //       permanent: false
+//   //     }
+//   //   };
+
+
+
+//   return {
+//     props:{}
+//   }
+// }
 
 export default Home;

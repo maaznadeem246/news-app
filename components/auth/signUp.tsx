@@ -59,8 +59,8 @@ const SignUp = memo(({
             email:data.email,
             password:data.password,
           })  
-        //   // console.log('response')
-        //   // console.log(response)
+        //   // //console.log('response')
+        //   // //console.log(response)
     }
 
 

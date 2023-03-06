@@ -19,17 +19,17 @@ axiosInstance.interceptors.response.use(
    (res) => {
       // Add configurations here
         if (res.status === 201) {
-            console.log('Posted Successfully');
+            //console.log('Posted Successfully');
         }
         if (res.status === 400) {
-            console.log('error 1');
+            //console.log('error 1');
         }
       return res;
    },
    (err:AxiosError) => {
-    console.log('error 2 out');
+    //console.log('error 2 out');
     if (err.status === 400) {
-        console.log('error 2');
+        //console.log('error 2');
     }
       return Promise.reject(err);
    }

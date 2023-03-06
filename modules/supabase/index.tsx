@@ -8,7 +8,12 @@ const env2:string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
 
 const supabase = createClient<Database>(env1, env2);
 
-const supabaseClient = createBrowserSupabaseClient<Database>();
+const supabaseClient = createBrowserSupabaseClient<Database>({
+    cookieOptions:{maxAge:3600,sameSite:'lax',},
+    supabaseKey:process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    supabaseUrl:process.env.NEXT_PUBLIC_SUPABASE_URL,
+    
+  })
 
 const env3:string = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
 const env4:string = process.env.SUPABASE_SERVICE_KEY|| ""

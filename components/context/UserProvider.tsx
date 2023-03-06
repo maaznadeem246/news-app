@@ -1,9 +1,9 @@
-import { UserDetails, keyable } from "@/types";
+import { UserDetails} from "@/types";
 import { Router, useRouter } from "next/router";
-import { FC, Provider, ProviderProps, ReactNode, useContext, useEffect, useRef, useState } from "react";
+import { FC, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { createContext } from "react";
-import { Subscription } from "react-hook-form/dist/utils/createSubject";
-
+//@ts-ignore
+import cookieCutter from  "cookie-cutter"
 
 import {
     User,
@@ -46,14 +46,18 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
       user:null,
       userProfile:null,
       isLoading:true,
-      isRouteLoading:true
+      isRouteLoading:false
     });
     // const data = useUserProvider()
 
 
     const router = useRouter()
-
+    const {redirectedFrom} = router.query
+    useEffect(()=>{
+      supabaseClient.auth.stopAutoRefresh()
+    },[])
     useEffect(() => {
+
       setState((props)=>({
         ...props,
         isLoading:true,
@@ -76,7 +80,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
       }
 
      }).catch((er)=>{
-      console.log(er)
+      //console.log(er)
       setState((props)=>({  
         ...props,
         accessToken:null,
@@ -94,9 +98,15 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
         const { data: authListener } =  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
            if(_event != statusRef.current){
-            console.log(_event)
-            console.log(session)
+            //console.log(_event)
+            //console.log(session)
               if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED') { 
+
+                const expires = new Date(0).toUTCString()
+                // cookieCutter.set('my-access-token', '',{expires:expires})
+                // cookieCutter.set('my-access-token', '',{expires:expires})
+                document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
+                document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
 
                 setState((props)=>({  
                   ...props,
@@ -114,6 +124,14 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                 //   ...props,
                 //   isLoading:true,
                 // }))
+
+
+                const maxAge = 60 * 60 * 1000
+                // cookieCutter.set('my-access-token', session.access_token,{expires:maxAge})
+                // cookieCutter.set('my-access-token', session.access_token,{expires:maxAge})
+                document.cookie = `my-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
+                document.cookie = `my-refresh-token=${session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
+
                 const userDetails = await getUserProfileData(session?.user.id);
                 setState((props)=>({  
                     ...props,
@@ -123,10 +141,14 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                     userProfile: userDetails ?? null,
                     isLoading:false,
                   }))
-                  router.push('/')
+
               }
-    
-     
+              //console.log(redirectedFrom)
+              if(redirectedFrom && typeof redirectedFrom == 'string'){
+                router.push(redirectedFrom)                  
+              }else{
+                router.push('/') 
+              }
     
               statusRef.current = _event
              
@@ -141,25 +163,46 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
   },[])
 
 
+  const handleRouteChangeStart = () => {
+    console.log('route is changing')
+    setState((props)=>({  
+      ...props,
+      isRouteLoading:true,
+    }))
+  }
 
-  // useEffect(()=>{
-  //   Router.events.on("routeChangeStart", (url)=>{
-  //     console.log('route is changing')
-  //     }) 
-  //     Router.events.on("routeChangeComplete", (url)=>{
-  //       console.log('route is complete')
-  //       if(state.isRouteLoading){
-  //         setState((props)=>({  
-  //           ...props,
-  //           isRouteLoading:false,
-  //         }))
-  //       }     
+  
+  const handleRouteChangeComplete = () => {
+    console.log('route is complete')
+      
+          setState((props)=>({  
+            ...props,
+            isRouteLoading:false,
+          }))
+            
+  }
 
-  //     });
-  //     Router.events.on("routeChangeError", (err) =>{
-  //       console.log('route is error')
-  //     });
-  // },[])
+  
+  const handleRouteChangeError = () => {
+    console.log('route is error')
+   
+      setState((props)=>({  
+        ...props,
+        isRouteLoading:false,
+      }))
+      
+  }
+  useEffect(()=>{
+    Router.events.on("routeChangeStart", handleRouteChangeStart) 
+      Router.events.on("routeChangeComplete", handleRouteChangeComplete);
+      Router.events.on("routeChangeError", handleRouteChangeError);
+
+      return () => {
+        Router.events.off("routeChangeStart", handleRouteChangeStart) 
+        Router.events.off("routeChangeComplete", handleRouteChangeComplete);
+        Router.events.off("routeChangeError", handleRouteChangeError);
+      }
+  },[])
 
     
       const data = {

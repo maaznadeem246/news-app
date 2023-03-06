@@ -35,18 +35,18 @@ const SubscriptionPage = (props:SubscriptionType) => {
 
 export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
  
-  const supabase = createServerSupabaseClient(ctx);
-  const {
-    data: { session }
-  } = await supabase.auth.getSession();
-  console.log(session)
-  if (!session)
-    return {
-      redirect: {
-        destination: '/signin',
-        permanent: false
-      }
-    };
+  // const supabase = createServerSupabaseClient(ctx);
+  // const {
+  //   data: { session }
+  // } = await supabase.auth.getSession();
+  // //console.log(session)
+  // if (!session)
+  //   return {
+  //     redirect: {
+  //       destination: '/signin',
+  //       permanent: false
+  //     }
+  //   };
 
 //@ts-ignore
 const stripe = initStripe(process.env.STRIPE_SECRET_KEY)

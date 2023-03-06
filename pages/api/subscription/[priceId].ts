@@ -8,29 +8,20 @@ import { parse } from 'cookie';
 export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & NextResponse) => {
 
 
-      // console.log('price')
-      // console.log(req.headers.cookie)
+      // //console.log('price')
+      // //console.log(req.headers.cookie)
       const supabaseServer = createServerSupabaseClient({ req, res });
       const {
         data:{session}
       } = await supabaseServer.auth.getSession();
-      console.log('subscribe api')
-      console.log(session)
+      //console.log('subscribe api')
+      //console.log(session)
       const access_token = session?.access_token;
       const refresh_token =session?.refresh_token;
       
       if (access_token && refresh_token) {
         try{
-          // const {data,error} =  await supabase.auth.setSession({
-          //   access_token: access_token,
-          //   refresh_token: refresh_token,
-           
-          // })
-
-          // if(error?.status || data.session == null){
-          //  return  res.status(error?.status || 400).send("User not Authorized")
-          // }
-          // console.log(data)
+     
   
 
           const qData = await supabaseServer.
@@ -39,12 +30,12 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
                                                 .eq("id",session.user?.id)
                                                 .single();
   
-             console.log('qData?.data?.stripe_customer 1')
+             //console.log('qData?.data?.stripe_customer 1')
  
-             console.log(qData?.data?.stripe_customer)
+             //console.log(qData?.data?.stripe_customer)
      
           if(qData?.data?.stripe_customer){
-            // console.log('qData?.data?.stripe_customer 2')
+            // //console.log('qData?.data?.stripe_customer 2')
             //@ts-ignore
             const stripe  = await initStripe(process.env.STRIPE_SECRET_KEY) 
   
@@ -54,7 +45,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
               price:priceId,
               quantity:1,
             }]
-            console.log('qData?.data?.stripe_customer 4')
+            //console.log('qData?.data?.stripe_customer 4')
             const stripSession = await stripe.checkout.sessions.create({
               customer: qData?.data?.stripe_customer ,
               mode:'subscription',
@@ -63,8 +54,8 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
               success_url:`${process.env.CLIENT_S_URL}/payment/success`,
               cancel_url: `${process.env.CLIENT_S_URL}payment/cancelled`
             })
-            // console.log('stripSession')
-            // console.log(stripSession)
+            // //console.log('stripSession')
+            // //console.log(stripSession)
            return res.send({ 
               id:stripSession.id
             })
@@ -78,7 +69,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
          
 
         }catch(er){
-          console.log(er)
+          //console.log(er)
          return  res.status(401).send("User not Authorized.")
         }
 

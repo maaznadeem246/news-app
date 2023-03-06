@@ -15,7 +15,7 @@ export const subscriptionService = async (planId:string) =>  {
         }
     }
     catch(error){
-        console.log(error)
+        //console.log(error)
         let message : string|undefined = 'Unknown Error'
         let status : number|undefined = undefined
 

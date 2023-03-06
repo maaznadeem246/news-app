@@ -12,7 +12,7 @@ export default function AuthLayout({ children  }: { children: ReactElement | Rea
   const router = useRouter()  
 
      const {isLoading} = useUser();
-    // console.log(session)
+    // //console.log(session)
   
     if(isLoading )  {return ( <Box>Loading</Box>)}
     

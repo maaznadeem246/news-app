@@ -14,8 +14,8 @@ export const signUpService = async (user: signUpServiceType) => {
     
     },)
     
-    // console.log(data)
-    // console.log(signUpError)
+    // //console.log(data)
+    // //console.log(signUpError)
     if(signUpError) {
       throw signUpError
     }
@@ -32,8 +32,8 @@ export const signUpService = async (user: signUpServiceType) => {
       password: user.password,
     })
     
-    // console.log(data)
-    // console.log(signUpError)
+    // //console.log(data)
+    // //console.log(signUpError)
     if(signUpError) {
       throw signUpError
     }

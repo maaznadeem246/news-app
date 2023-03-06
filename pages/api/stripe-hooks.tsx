@@ -7,13 +7,13 @@ import { createServerSupabaseClient,  } from "@/modules/supabase";
 
 
 const handler = async (req:NextApiRequest,res:NextApiResponse) => {
-    // console.log('stripe-hook1')
+    // //console.log('stripe-hook1')
     //@ts-ignore
     const stripe = initStripe(process.env.STRIPE_SECRET_KEY)
     const signature = req.headers['stripe-signature']
     const signingSecret = process.env.STRIPE_SIGNING_SECRET
     const reqBuffer = await buffer(req)
-    // console.log('stripe-hook2')
+    // //console.log('stripe-hook2')
 
     const supabase = createServerSupabaseClient({ req, res }, { 
         supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -24,12 +24,12 @@ const handler = async (req:NextApiRequest,res:NextApiResponse) => {
     let event ;
     try{    
        
-        // console.log('stripe-hook3')
+        // //console.log('stripe-hook3')
         event = await stripe.webhooks.constructEvent(reqBuffer, signature, signingSecret)
-        // console.log('in ev')
+        // //console.log('in ev')
     }catch(error){
-        // console.log('in er')
-        // console.log(error)
+        // //console.log('in er')
+        // //console.log(error)
         let message = 'Unknown Error'
         if (error instanceof Error) message = error.message
 
@@ -48,8 +48,8 @@ const handler = async (req:NextApiRequest,res:NextApiResponse) => {
                     }).eq('stripe_customer',event.data.object.customer)
     }
 
-    // console.log("{event}")
-    // console.log(event)
+    // //console.log("{event}")
+    // //console.log(event)
     res.send({received:true})
 }
 

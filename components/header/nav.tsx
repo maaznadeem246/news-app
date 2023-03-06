@@ -7,6 +7,7 @@ import Logout from "../auth/logout"
 import Link from "next/link"
 import CustomButton from "../inputs/customButton"
 import { useUser } from "../context/UserProvider"
+import TagsSection from "../news/components/tagsSections"
 
 
 
@@ -14,7 +15,7 @@ import { useUser } from "../context/UserProvider"
 const Nav = () => {
     const router = useRouter()
     const userData = useUser()
-    // console.log(userData)
+    // //console.log(userData)
     return (
         <AppBar component='nav'>
             <Toolbar
@@ -76,8 +77,22 @@ const Nav = () => {
                        
                         </>
                     }
+                    {!userData?.user && 
+                            <Link href="/signin">
+                                <CustomButton
+                                  sx={{
+                                     borderRadius:'10px',
+                                     background:'transparent',
+                                     border:'1px solid',
+                                     minWidth:'fit-content !important',
+                                 }}
+                                 >
+                                    Signin
+                                </CustomButton>
+                            </Link>}
                 </Box>
             </Toolbar>
+           
         </AppBar>
     )
 }

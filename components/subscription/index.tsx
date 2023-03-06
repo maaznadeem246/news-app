@@ -24,13 +24,13 @@ const Subscription = ({plans}:SubscriptionType) => {
     const {userProfile} = useUser()
     const [planeState] = useState(plans || [])
    
-    // console.log(planeState)
-    // console.log(user)
+    // //console.log(planeState)
+    // //console.log(user)
     const logoutMuation = useSignOut()
     
     const handleSubscrbie = async(pId:string) => {
             const {data:{id}, error} = await  subscriptionService(pId)
-            console.log(error)
+            //console.log(error)
             if(process.env.NEXT_PUBLIC_STRIPE_KEY != undefined && id && error == null){
                 const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
                 await stripe?.redirectToCheckout({sessionId:id})
