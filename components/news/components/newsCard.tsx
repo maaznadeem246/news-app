@@ -2,6 +2,7 @@ import CardComp from "@/components/cards"
 import theme from "@/styles/theme/theme"
 import { Box } from "@mui/material"
 import Image from "next/image"
+import { useRouter } from "next/router"
 import { memo } from "react"
 
 
@@ -26,17 +27,32 @@ urlToImage:string|null,
 
 
 const NewsCard = memo((props:newsType) => {
-    const {title,url,urlToImage,author} = props
+    const {title,url,urlToImage,author,uid} = props
+
+    const router = useRouter()
+
+    const hadleRoute = () => {
+        router.push(`/news/${uid}`)
+    } 
+
     return (
         <CardComp
+            onClick={hadleRoute}
             sx={{
                 margin:'8px',
                 padding:'2px',
+                cursor:'pointer',
                 // margin:'auto !important',
                 // marginBottom:'10px !important',
                 position:'relative',
-                boxShadow:theme.shadows[13]
+                boxShadow:theme.shadows[13],
+                // transition:'top  3s ease',
                 // border:`4px solid ${theme.palette.primary.light}`
+                // ':hover':{
+                //     boxShadow:theme.shadows[23],
+                //     top:'-10px'
+
+                // }
             }}
         >           
 

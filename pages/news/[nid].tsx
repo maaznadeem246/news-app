@@ -1,4 +1,5 @@
 import Heading from "@/components/headings";
+import useSingleNews from "@/modules/hooks/useSingleNews";
 import SubNavLayout from "@/Project/layouts/subNavLayout";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
@@ -7,11 +8,10 @@ import { ReactNode } from "react";
 
 
 
-const SingleNews = () => {
+const SingleNewsPage = () => {
 
-    const router = useRouter()
-    const {nid} = router.query
-    console.log(nid)
+  const data = useSingleNews()
+
     return (
       <Box 
       sx={{
@@ -28,14 +28,14 @@ const SingleNews = () => {
               textTransform:'capitalize'
           }}
       >
-          Single News {nid}
+          Single News {data.author}
       </Heading>
   </Box>
     )
 }
 
 
-// SingleNews.getLayout = function getLayout(page:ReactNode) {
+// SingleNewsPage.getLayout = function getLayout(page:ReactNode) {
 //     return (
 //       <SubNavLayout>
 //         {page}
@@ -46,4 +46,4 @@ const SingleNews = () => {
 
 
 
-export default SingleNews;
+export default SingleNewsPage;
