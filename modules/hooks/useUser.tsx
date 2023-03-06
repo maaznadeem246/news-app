@@ -9,7 +9,7 @@
 // import { keyable } from "@/types"
 // import { initialData } from "@/components/context/UserProvider"
 // import { UserResponse } from "@supabase/supabase-js"
-// import { getUserData } from "../services/user"
+// import { getUserProfileData } from "../services/user"
 // import useSignIn from "./useSignIn"
 // import { __String } from "typescript"
 // import { useRouter } from "next/router";

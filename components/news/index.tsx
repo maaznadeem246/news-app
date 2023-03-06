@@ -6,9 +6,9 @@ import { Box } from "@mui/system"
 
 
     const NewsPage = () => {
-        const newQuery = useNews()
-        console.log('newQuery')
-        console.log(newQuery)
+        // const newQuery = useNews()
+        // console.log('newQuery')
+        // console.log(newQuery)
         return (
             <Box>
                 News

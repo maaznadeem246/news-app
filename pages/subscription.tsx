@@ -1,14 +1,11 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import styles from '@/styles/home.module.css'
 import "@fontsource/nunito"
-import { GetServerSidePropsContext, GetServerSidePropsResult, NextPage } from 'next'
+import { GetServerSidePropsContext,} from 'next'
 import initStripe from "stripe";
 import { keyable } from '@/types'
-import { promise } from 'zod'
 import Subscription from '@/components/subscription'
-import getUserByCookie from '@/utils/getUserByCookie'
+import { createServerSupabaseClient } from '@/modules/supabase'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -36,19 +33,20 @@ const SubscriptionPage = (props:SubscriptionType) => {
 }
 
 
-export const getServerSideProps = async (context:GetServerSidePropsContext) => {
+export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
  
-  const data = await getUserByCookie(context)
-
-  if(data == null){
-    return{
-      redirect:{
-        permanent:false,
-        destination:'/signin'
-      },
-      props:{}
-    }
-  }
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+  console.log(session)
+  if (!session)
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false
+      }
+    };
 
 //@ts-ignore
 const stripe = initStripe(process.env.STRIPE_SECRET_KEY)

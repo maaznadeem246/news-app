@@ -1,6 +1,6 @@
 import { signInForType } from "@/components/auth/signIn";
 import { signUpForType } from "@/components/auth/signUp";
-import { supabase, supabaseClient } from "../supabase";
+import {  supabaseClient } from "../supabase";
 
 
 export type signUpServiceType = Omit<signUpForType,'confirmPassword'>
@@ -44,7 +44,7 @@ export const signUpService = async (user: signUpServiceType) => {
 
   export const signOutService = async () => {
    
-    const { error } = await supabase.auth.signOut()
+    const { error } = await supabaseClient.auth.signOut()
     
 
     if(error) {
@@ -52,3 +52,4 @@ export const signUpService = async (user: signUpServiceType) => {
     }
     return true
   }
+  

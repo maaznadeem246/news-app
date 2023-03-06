@@ -1,4 +1,4 @@
-import { createMiddlewareSupabaseClient, supabase } from '@/modules/supabase'
+import { createMiddlewareSupabaseClient, createServerSupabaseClient, supabase } from '@/modules/supabase'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { NextRequest, NextResponse } from 'next/server'
 import initStripe from 'stripe'
@@ -10,32 +10,38 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
 
       // console.log('price')
       // console.log(req.headers.cookie)
-
-      const access_token = parse(req.headers.cookie || '')['my-access-token'];
-      const refresh_token = parse(req.headers.cookie || '')['my-refresh-token'];
+      const supabaseServer = createServerSupabaseClient({ req, res });
+      const {
+        data:{session}
+      } = await supabaseServer.auth.getSession();
+      console.log('subscribe api')
+    
+      const access_token = session?.access_token;
+      const refresh_token =session?.refresh_token;
     
       if (access_token && refresh_token) {
         try{
-          const {data,error} =  await supabase.auth.setSession({
-            access_token: access_token,
-            refresh_token: refresh_token,
+          // const {data,error} =  await supabase.auth.setSession({
+          //   access_token: access_token,
+          //   refresh_token: refresh_token,
            
-          })
+          // })
 
-          if(error?.status || data.session == null){
-           return  res.status(error?.status || 400).send("User not Authorized")
-          }
+          // if(error?.status || data.session == null){
+          //  return  res.status(error?.status || 400).send("User not Authorized")
+          // }
           // console.log(data)
   
-          const qData = await supabase.
+
+          const qData = await supabaseServer.
                                                 from("users_profile")
                                                 .select("stripe_customer")
-                                                .eq("id",data.user?.id)
+                                                .eq("id",session.user?.id)
                                                 .single();
   
              // console.log('qData?.data?.stripe_customer 1')
  
-             // console.log(qData?.data?.stripe_customer)
+             console.log(qData?.data?.stripe_customer)
      
           if(qData?.data?.stripe_customer){
             // console.log('qData?.data?.stripe_customer 2')
@@ -64,7 +70,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
             })
             
           }else{
-            return res.status(400).send("User not Authorized")
+            return res.status(401).send("User not Authorized")
           }
  
 
@@ -73,7 +79,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
 
         }catch(er){
           // console.log(er)
-         return  res.status(400).send("User not Authorized")
+         return  res.status(401).send("User not Authorized")
         }
 
       

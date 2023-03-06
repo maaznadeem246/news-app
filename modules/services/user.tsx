@@ -1,6 +1,6 @@
 import { keyable } from "@/types"
 import { UserResponse } from "@supabase/supabase-js"
-import { supabase } from "../supabase"
+import { supabaseClient } from "../supabase"
 import { signUpServiceType } from "./auth"
 
 interface createUser {
@@ -29,33 +29,32 @@ interface createUser {
 
 
 
-export const getUserData = async() => {
+export const getUserProfileData = async(id?:string) => {
       
   try{
-    // const userSession= await  supabase.auth.getSession();
-    const userData:UserResponse= await  supabase.auth.getUser();
+    // const userSession= await  supabaseClient.auth.getSession();
     // console.log(userSession)
+    // if(userSession){
+    let eqId : string | undefined | null = id
+    if(!eqId){
+      const userData:UserResponse= await  supabaseClient.auth.getUser();
+        eqId = userData?.data?.user?.id ?? null
+    }  
 
-    if(userData && userData?.data?.user){
 
-    const {data:users} = await supabase.from("users_profile").select("*").eq('id',userData.data.user.id).single()
-    // console.log(users)
-      return {
-        // session:userSession.data.session
-        user:{...userData.data,userData:users}
+      if(eqId){
+  
+      const {data:users} = await supabaseClient.from("users_profile").select("*").eq('id',eqId).single()
+      // console.log(users)
+        return users
+     
       }
-   
-    }
-    return {
-      // session:null,
-       user:null
-     }
+      return null
+    // }
+
     }catch(er){
       // // console.log(er)
-      return {
-        session:null,
-         user:null
-       }
+      return null
     }
 
     }

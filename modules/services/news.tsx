@@ -1,4 +1,5 @@
 import { keyable } from "@/types"
+import { axiosInstance } from "@/utils/axios"
 import { QueryFunctionContext } from "@tanstack/react-query"
 import axios from "axios"
 
@@ -15,7 +16,7 @@ export const newsService = async ({queries=''}:newsServiceType & QueryFunctionCo
             page:'1',
             lang: 'en'
         }//'topic=news&'+ queries
-        const data = await axios.request({
+        const data = await axiosInstance.request({
             method:'GET',
             url:`${process.env.NEXT_PUBLIC_NEWS_API_URL}/v2/search`,
             params:{...params},

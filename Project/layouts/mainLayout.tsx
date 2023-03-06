@@ -1,4 +1,3 @@
-
 import { Nav } from '@/components/header'
 import MainContainer from '@/components/MainContainer'
 import { Box, Toolbar } from '@mui/material'

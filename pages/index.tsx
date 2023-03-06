@@ -4,7 +4,7 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import "@fontsource/nunito"
 
-import { createServerSupabaseClient, supabase } from '@/modules/supabase'
+import { createServerSupabaseClient } from '@/modules/supabase'
 import { NextRequest } from 'next/server'
 import { GetServerSidePropsContext, NextPage } from 'next'
 
@@ -34,22 +34,21 @@ const Home = (props:NextPage) => {
 
 
 
-export const getServerSideProps = async (context:GetServerSidePropsContext) => {
-  // console.log('test')
-  // // console.log(context.req.headers)
-  
-  // const data = await getUserByCookie(context)
+export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
 
-  // if(data == null){
-  //   return{
-  //     redirect:{
-  //       permanent:false,
-  //       destination:'/signin'
-  //     },
-      
-  //     props:{}
-  //   }
-  // }
+
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+  // console.log(session)
+  if (!session)
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false
+      }
+    };
 
 
 

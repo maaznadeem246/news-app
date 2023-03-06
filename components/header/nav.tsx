@@ -14,7 +14,7 @@ import { useUser } from "../context/UserProvider"
 const Nav = () => {
     const router = useRouter()
     const userData = useUser()
-    console.log(userData)
+    // console.log(userData)
     return (
         <AppBar component='nav'>
             <Toolbar

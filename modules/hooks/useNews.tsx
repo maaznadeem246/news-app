@@ -12,6 +12,8 @@ const useNews = () => {
         queryKey:['news'],
         queryFn: (props) => newsService(props),
         staleTime:1100,
+        retry:2,
+        
     })
 }
 

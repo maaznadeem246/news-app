@@ -1,20 +1,16 @@
-
-
-
-
 import { UserDetails, keyable } from "@/types";
-
-import { useRouter } from "next/router";
-import { FC, Provider, ProviderProps, ReactNode, useContext, useEffect, useState } from "react";
+import { Router, useRouter } from "next/router";
+import { FC, Provider, ProviderProps, ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { createContext } from "react";
 import { Subscription } from "react-hook-form/dist/utils/createSubject";
-import { nullable } from "zod";
+
 
 import {
-    useUser as useSupaUser,
-    useSessionContext,
-    User
+    User,
+    Session
   } from '@supabase/auth-helpers-react';
+import { getUserProfileData } from "@/modules/services/user";
+import { supabaseClient } from "@/modules/supabase";
 
   
 interface ProviderType {
@@ -26,10 +22,12 @@ export const initialData ={
 }
 
 export interface ContextType  {
+    session:Session | null;
     accessToken: string | null;
     user: User | null;
-    userDetails: UserDetails | null;
+    userProfile: UserDetails | null;
     isLoading: boolean;
+    isRouteLoading?:boolean;
   }
   
   
@@ -41,178 +39,137 @@ export interface Props {
   }
 
 export const UserProvider : FC<ProviderType>  = (props: Props) => {
-
+      const statusRef = useRef<string|null>(null)
+    const [state,setState] = useState<ContextType>({
+      session:null,
+      accessToken:null,
+      user:null,
+      userProfile:null,
+      isLoading:true,
+      isRouteLoading:true
+    });
     // const data = useUserProvider()
 
-    // // console.log(data)
-    const {
-        session,
-        isLoading: isLoadingUser,
-        supabaseClient: supabase
-      } = useSessionContext();
+
+    const router = useRouter()
+
+    useEffect(() => {
+      setState((props)=>({
+        ...props,
+        isLoading:true,
+      }))
+     supabaseClient.auth.getSession().then(async({data})=>{
+   
+      if(data.session){
+        statusRef.current = 'SIGNED_IN'
+        const userDetails = await getUserProfileData(data.session?.user.id);
+        setState((props)=>({  
+            ...props,
+            accessToken:data?.session?.access_token ?? null,
+            session:data.session, 
+            user: data?.session?.user ?? null ,
+            userProfile: userDetails ?? null,
+            isLoading:false,
+          }))
+      }else{
+        throw Error("Session Expired")
+      }
+
+     }).catch((er)=>{
+      console.log(er)
+      setState((props)=>({  
+        ...props,
+        accessToken:null,
+        session:null, 
+        user: null ,
+        userProfile: null,
+        isLoading:false,
+      }))
+     })
+
+  }, [])  
+
+
+  useEffect(()=>{
+
+        const { data: authListener } =  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+           if(_event != statusRef.current){
+            console.log(_event)
+            console.log(session)
+              if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED') { 
+
+                setState((props)=>({  
+                  ...props,
+                  accessToken:null,
+                  session:null, 
+                  user: null ,
+                  userProfile: null,
+                  isLoading:false,
+                }))
+
+
+
+              } else if ((_event === 'SIGNED_IN' || _event === 'TOKEN_REFRESHED') && session) {
+                // setState((props)=>({  
+                //   ...props,
+                //   isLoading:true,
+                // }))
+                const userDetails = await getUserProfileData(session?.user.id);
+                setState((props)=>({  
+                    ...props,
+                    accessToken:session?.access_token ?? null,
+                    session:session, 
+                    user: session?.user ?? null ,
+                    userProfile: userDetails ?? null,
+                    isLoading:false,
+                  }))
+                  router.push('/')
+              }
     
-      const user = useSupaUser();
-      const accessToken = session?.access_token ?? null;
-      const [isLoadingData, setIsloadingData] = useState(false);
-      const [_user, setUser] = useState<UserDetails | null>(null);
-      const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
-      const [subscription, setSubscription] = useState<Subscription | null>(null);
+     
     
-    
-      const getUserDetails = () => supabase.from('users').select('*').single();
-    
-    
-      useEffect(() => {
-        console.log(user)
-        if (user && !isLoadingData && !userDetails && !subscription) {
-          setIsloadingData(true);
-         
-          Promise.allSettled([getUserDetails()]).then(
-            (results) => {
-              const userDetailsPromise = results[0];
-              // const subscriptionPromise = results[1];
-    
-              if (userDetailsPromise.status === 'fulfilled')
-                setUserDetails(userDetailsPromise.value.data as UserDetails);
-                setUser(_user)
-    
-              setIsloadingData(false);
-            }
-          );
-        } else if (!user && !isLoadingUser && !isLoadingData) {
-          setUserDetails(null);
-          // setSubscription(null);
-        }
-        
-      }, [user, isLoadingUser]);
+              statusRef.current = _event
+             
+          }
+      
+      
+        })
+
+        return () => {
+          authListener?.subscription.unsubscribe();
+        };
+  },[])
+
+
+
+  // useEffect(()=>{
+  //   Router.events.on("routeChangeStart", (url)=>{
+  //     console.log('route is changing')
+  //     }) 
+  //     Router.events.on("routeChangeComplete", (url)=>{
+  //       console.log('route is complete')
+  //       if(state.isRouteLoading){
+  //         setState((props)=>({  
+  //           ...props,
+  //           isRouteLoading:false,
+  //         }))
+  //       }     
+
+  //     });
+  //     Router.events.on("routeChangeError", (err) =>{
+  //       console.log('route is error')
+  //     });
+  // },[])
+
     
       const data = {
-        accessToken,
-        user:_user,
-        userDetails,
-        isLoading:  isLoadingData,
-        subscription
+        // accessToken,
+        // user:_user,
+        // userDetails,
+        // isLoading:  isLoadingData,
+        // subscription.
+        ...state
       };
-    
-    
-      // const statusRef = useRef<string|null>(null)
-      // // const signInMutaion = useSignIn() 
-      // const router = useRouter();
-      // const {redirectedFrom} = router.query 
-      // const [data, setData] = useState<ContextType>({
-      //   user:null,
-      //   session:null,
-      //   loading:true,
-      // })
-    
-        
-    
-      // const setUserData = async(session:keyable) => {
-      //   setData((props) => ({
-      //     ...props,
-      //     loading:true,
-      //   }))
-      //   const userD = await getUserData()
-      //   // console.log('userD1')
-      //   // console.log(userD)
-      //   if(userD != null){
-      //     // console.log('userD2')
-      //     setData((props) => ({
-      //       ...props,
-      //       session:session,
-      //       ...userD,
-      //       loading:false,
-      //     }))
-      //   }
-      // }
-    
-      // useEffect(()=>{
-      //   // setUserData('init')
-      //   // if(statusRef.current){
-      //   supabase.auth.getSession().then(({data:{session}})=>{
-      //     setUserData({session})
-      //     if(session){
-      //       const maxAge = 100 * 365 * 24 * 60 * 60 // 100 years, never expires
-      //       document.cookie = `my-access-token=${session?.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
-      //       document.cookie = `my-refresh-token=${session?.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
-      //     }
-    
-      //   });
-    
-      //   // }
-    
-    
-      // },[statusRef])
-    
-    //   useEffect(() => {
-    
-       
-    
-       
-    
-    //     const { data: authListener } =  supabase.auth.onAuthStateChange(async (_event, session) => {
-        
-    //       // // console.log('mounter 1')
-    //       // // console.log(_event != UserStatus)
-    //       // if(_event != statusRef.current){
-    //         // // console.log('mounter 2')
-    //         // // console.log(_event)
-    //         // // console.log(session)
-    
-             
-    //       console.log(_event)
-    //           if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED') {
-    //             // delete cookies on sign out
-    //             const expires = new Date(0).toUTCString()
-    //             document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
-    //             document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
-    //           } else if ((_event === 'SIGNED_IN' || _event === 'TOKEN_REFRESHED') && session) {
-    //             const maxAge = 100 * 365 * 24 * 60 * 60 // 100 years, never expires
-    //             document.cookie = `my-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
-    //             document.cookie = `my-refresh-token=${session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
-                
-    //             // if(redirectedFrom && typeof redirectedFrom == 'string'){
-    
-    //             //   router.push(redirectedFrom)        
-    //             //     }else{
-    //             //       router.push('/')     
-    //             //     }
-    //           }
-    
-    //           // setUserData({session})
-    
-    
-    
-    //           // statusRef.current = _event
-    //          //  await setUserStatus(_event)
-            
-    //       // }
-      
-      
-    //     })
-    
-    //     return () => {
-    //       authListener?.subscription.unsubscribe();
-    //     };
-    
-    //   }, [])
-    
-    
-      
-      // useEffect(()=>{
-      //   // console.log(signInMutaion.isLoading)
-      // },[signInMutaion.isLoading])
-    
-        
-    
-      // useEffect(()=>{
-      //   // setUserData('init')
-      //   // if(statusRef.current){
-      //     setUserData(statusRef.current)
-      //   // }
-    
-    
-      // },[statusRef])
     
     
     
