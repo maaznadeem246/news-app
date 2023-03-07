@@ -19,6 +19,10 @@ import theme from '@/styles/theme/theme';
 import { Box, Grid } from '@mui/material';
 import TransparentTextBack from '@/components/TransparentTextBack';
 import DetailsText from './detailsText';
+import { StyledDataHead, StyledDataText } from '@/components/styledComp';
+import ReactMarkdown from 'react-markdown'
+import DOMpurify from 'dompurify';
+import rehypeRaw from "rehype-raw";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -39,7 +43,7 @@ interface singleNewsModalType{
 export default function SingleNewsModal({open=false,handleClose,news}:singleNewsModalType) {
   
 
-
+const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} / ${new Date(news?.publishedAt).getMonth()} / ${new Date(news?.publishedAt).getFullYear()}` :  ''
   return (
     <div>
       <Dialog
@@ -148,29 +152,87 @@ export default function SingleNewsModal({open=false,handleClose,news}:singleNews
       <MainContainer
           sx={{
             marginTop:'6rem',
-            // width:'95% !important',
+            width:['95% !important'],
           }}
       >
 
-          <Grid container spacing={2}>
-              <Grid item>
+          <Grid container >
+              <Grid item xs={12} sm={4} >
                   <DetailsText
-                      dataHead="Source :"
+                      dataHead="Source : "
                       dataValue={news?.source?.name || ''}
                   />
               </Grid>
-              <Grid item>
+              <Grid item  xs={12} sm={8}>
                 <DetailsText
                       dataHead="Published At :"
-                      dataValue={news?.publishedAt || ''}
+                      dataValue={dateValue}
                   />
               </Grid>
-              {/* <Grid item>
-              <DetailsText
-                      dataHead="Source"
-                      dataValue={news?.source?.name || ''}
-                  />
-              </Grid> */}
+
+              <Grid item xs={12} sx={{ marginTop:'1.5rem'}} >
+                  <StyledDataHead
+                      sx={{
+                        width:'fit-content'
+                      }}
+                    >
+                    Link :
+                  </StyledDataHead>
+                  <StyledDataText
+                    sx={{
+                      marginTop:'1rem',
+                      textDecoration:'underline'
+                    }}
+                  >
+                    <a href={news?.url || ''} >{news?.url}</a>
+                  </StyledDataText>
+
+              </Grid>
+              <Grid item xs={12} sx={{ marginTop:'1.5rem'}} >
+                  <StyledDataHead
+                      sx={{
+                        width:'fit-content'
+                      }}
+                    >
+                    Description :
+                  </StyledDataHead>
+                  <StyledDataText
+                    sx={{
+                      marginTop:'1rem',
+                    }}
+                  >
+                     {news?.description  && 
+                     <ReactMarkdown 
+                          rehypePlugins={[rehypeRaw]}
+                      >
+                          { news?.description  ? DOMpurify.sanitize(news.description) : ''}
+                      </ReactMarkdown>}
+                  </StyledDataText>
+
+                
+
+              </Grid>
+              <Grid item xs={12} sx={{ marginTop:'1.5rem'}} >
+                  <StyledDataHead
+                      sx={{
+                        width:'fit-content'
+                      }}
+                    >
+                    Content :
+                  </StyledDataHead>
+                  <StyledDataText
+                    sx={{
+                      marginTop:'1rem',
+                    }}
+                  >
+                     {news?.description  && 
+                     <ReactMarkdown 
+                          rehypePlugins={[rehypeRaw]}
+                      >
+                          { news?.content  ? DOMpurify.sanitize(news.content) : ''}
+                      </ReactMarkdown>}
+                  </StyledDataText>
+                </Grid>
           </Grid>
 
       </MainContainer>

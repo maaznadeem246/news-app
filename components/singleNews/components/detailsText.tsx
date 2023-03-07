@@ -1,4 +1,7 @@
+import { StyledDataHead, StyledDataValue } from "@/components/styledComp";
+import theme from "@/styles/theme/theme";
 import styled from "@emotion/styled";
+import { SxProps } from "@mui/material";
 import { Box } from "@mui/system";
 
 
@@ -9,25 +12,20 @@ import { Box } from "@mui/system";
 interface DetailsText {
     dataHead:string,
     dataValue:string,
+    sx?:SxProps
 }
 
 
-const StyledDataHead = styled(Box)(()=>({
-    fontSize:'clamp(0.8rem,2.3vh, 2rem)',
 
-}))
-const StyledDataValue = styled(Box)(()=>({
-    fontSize:'clamp(0.8rem,2.3vh,2rem)',
 
-}))
-
-const DetailsText = ({dataHead,dataValue}:DetailsText) => {
+const DetailsText = ({dataHead,dataValue,sx={}}:DetailsText) => {
     return (
         <>
         <Box
                 sx={{
                     display:'flex',
                     gap:2,
+                    ...sx
                 }}
               >
                   <StyledDataHead>
