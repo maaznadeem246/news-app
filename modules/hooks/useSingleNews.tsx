@@ -1,11 +1,17 @@
 import { newsType } from "@/components/news/components/newsCard"
-import { useRouter } from "next/router"
+import { useRouter } from "next/dist/client/router"
+
 import { useEffect, useState } from "react"
+import { useGlobalState } from "./useGlobal"
 import useNews from "./useNews"
 
 
 
-type  useSingleNewsType = newsType
+type  useSingleNewsType = { 
+    news:newsType, 
+    open:boolean,
+    handleClose:()=>void
+}
 
 
 
@@ -14,12 +20,12 @@ const useSingleNews = ():useSingleNewsType=>{
     const router = useRouter()
     const {nid} = router.query
     console.log(nid)
-    
+    const {newsModal,handleNewsModalClose} = useGlobalState()
 
     const newsData = useNews()
 
 
-    const [state,setState] = useState<newsType>({
+    const [newState,setNewsState] = useState<newsType>({
         author: null,
         content: null,
         description: null,
@@ -34,29 +40,53 @@ const useSingleNews = ():useSingleNewsType=>{
         urlToImage:null,
     })
 
+    
+    
+   
+
+ 
 
     useEffect(()=>{
-            console.log(newsData.data)
-        if(newsData.data?.length > 0){
+            console.log(newsModal)
+        if(newsData.data?.length > 0 && typeof newsModal == 'string'){
             
-            const singleNewsData : newsType = newsData.data.find((nv:newsType) =>{  nv.uid == nid})
+            const singleNewsData : newsType = newsData.data.find((nv:newsType) =>{ 
+                    console.log(nv.uid == newsModal)
+                return nv.uid == newsModal})
             console.log(singleNewsData)
             if(singleNewsData){
-                setState((props)=>({
+                setNewsState((props)=>({
                     ...props,
                     ...singleNewsData,
                 }))
-            }else{
-                router.push('/')
             }
 
+        }else{
+            setNewsState((props)=>({
+                ...props,
+                author: null,
+                content: null,
+                description: null,
+                publishedAt:null,
+                source:{
+                    id:null,
+                    name:null,    
+                } ,
+                title:null,
+                uid:null,
+                url:null,  
+                urlToImage:null,
+            }))
         }
-    },[newsData.data?.length])
+    },[newsModal])
 
     
 
+
     const dataToSent ={
-        ...state
+        news:newState,
+        open:Boolean(newsModal),
+        handleClose:handleNewsModalClose,
     }
 
     return dataToSent

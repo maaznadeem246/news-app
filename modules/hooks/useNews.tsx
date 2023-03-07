@@ -17,8 +17,7 @@ const useNews = () => {
         retryDelay:100000000,
         retry:2,
         select:(data) => {
-            const listwithid = data.articles.map((vl:newsType) => ({...vl, uid:window.crypto.randomUUID() }))
-            const filterList = listwithid.filter(((vl:newsType) => vl?.content != null)) 
+            const filterList = data.filter(((vl:newsType) => vl?.content != null)) 
             return filterList
         } 
     })

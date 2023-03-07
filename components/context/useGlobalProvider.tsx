@@ -10,36 +10,45 @@ interface ProviderType {
     children:ReactNode
 }
 
+
+export interface GlobalContextType1  {
+  activeTag:string,
+  newsModal:boolean|string,
+}
+export interface GlobalContextType2  {
+
+  handleTagOption:(opt:string) => void,
+  handleNewsModalOpen : (id?:string) => void,
+  handleNewsModalClose : () => void,
+}
+
+export type GlobalContextTypeForState = GlobalContextType1
+
+
 export const initialData = {
   activeTag:'Latest News',
+  newsModal:false,
+  handleNewsModalOpen : () => {},
+  handleNewsModalClose : () => {},
   handleTagOption: (opt:string) => {} ,
 }
 
-export interface GlobalContextType  {
-    activeTag:string,
-    handleTagOption:(opt:string) => void
-  }
-  
-export type GlobalContextTypeForState = Omit<GlobalContextType,'handleTagOption'>  
 
-export const GlobalContext = createContext<GlobalContextType| undefined>(initialData);
-
-
-
-export interface Props {
-    [propName: string]: any;
-  }
+export const GlobalContext = createContext<(GlobalContextType1 &GlobalContextType2) | undefined>(initialData);
 
 
 
 
-export const GlobalProvider : FC<ProviderType>  = (props: Props) => {
+
+
+
+export const GlobalProvider : FC<ProviderType>  = (props) => {
    
     const [state,setState] = useState<GlobalContextTypeForState>({
         ...initialData
     });
     // const data = useGlobalStateProvider()
-
+    const [newsModal, setNewsModal] = useState<boolean|string>(false)
 
     const handleTagOption = (opt:string) => {
       if(state.activeTag != opt){
@@ -51,6 +60,22 @@ export const GlobalProvider : FC<ProviderType>  = (props: Props) => {
     }
 
 
+    const handleNewsModalOpen = (id?:string) => {
+      if(id){
+        setNewsModal(id)
+      }else{
+        setNewsModal(true)
+      }
+      
+  }
+  const handleNewsModalClose = () => {
+    setNewsModal(false)
+  }
+  const handleToggle = () => {
+    setNewsModal((props)=> !props)
+  }
+
+
     
       const data = {
         // accessToken,
@@ -59,6 +84,9 @@ export const GlobalProvider : FC<ProviderType>  = (props: Props) => {
         // isLoading:  isLoadingData,
         // subscription.
         ...state,
+        newsModal,
+        handleNewsModalOpen,
+        handleNewsModalClose,
         handleTagOption:handleTagOption
       };
     

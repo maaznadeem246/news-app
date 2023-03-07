@@ -1,16 +1,17 @@
 
 
-import { Box, Container } from "@mui/material";
+import { Box, Container, SxProps } from "@mui/material";
 import { FC, ReactNode } from "react";
 import { useUser } from "../context/UserProvider";
 import Heading from "../headings";
 
 
 interface MainContainerType{
-    children:ReactNode
+    children:ReactNode,
+    sx?:SxProps
 }
 
-const MainContainer : FC<MainContainerType>= ({children}) => {
+const MainContainer : FC<MainContainerType>= ({children,sx={}}) => {
     const { isLoading,isRouteLoading } = useUser()  
   
         return (
@@ -21,6 +22,8 @@ const MainContainer : FC<MainContainerType>= ({children}) => {
                     marginTop:['2rem','2rem','1rem','1rem'],
                     paddingRight:'0 !important',
                     paddingLeft:'0 !important',
+                    ...sx,
+                   
                 }}
             >
                 {

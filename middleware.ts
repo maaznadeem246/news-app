@@ -1,8 +1,7 @@
 import {createMiddlewareSupabaseClient, supabase} from "./modules/supabase"
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { parse } from 'cookie';
-import { IncomingMessage, ServerResponse } from "http";
+
 
 
 
@@ -41,5 +40,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/','/news','/subscription'] //
+  matcher: ['/','/subscription'] //
 };

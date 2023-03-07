@@ -5,6 +5,7 @@ import TagsSection from "./components/tagsSections";
 import { useState } from "react";
 import NewsSection from "./components/mewSection";
 import { newsType } from "./components/newsCard";
+import SingleNews from "../singleNews";
 
 
 
@@ -23,6 +24,7 @@ import { newsType } from "./components/newsCard";
             <Box>
 
                 <NewsSection />
+                <SingleNews />
             </Box>
         )
     }

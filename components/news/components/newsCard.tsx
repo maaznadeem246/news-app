@@ -1,9 +1,11 @@
 import CardComp from "@/components/cards"
+import TransparentTextBack from "@/components/TransparentTextBack"
+import { useGlobalState } from "@/modules/hooks/useGlobal"
 import theme from "@/styles/theme/theme"
-import { Box } from "@mui/material"
-import Image from "next/image"
-import { useRouter } from "next/router"
-import { memo } from "react"
+import { Box, SxProps } from "@mui/material"
+
+
+import { memo,ReactNode } from "react"
 
 
 
@@ -26,22 +28,31 @@ urlToImage:string|null,
 
 
 
+
+
+
 const NewsCard = memo((props:newsType) => {
-    const {title,url,urlToImage,author,uid} = props
+    const {title,url,urlToImage,author,uid,source} = props
 
-    const router = useRouter()
+    const {handleNewsModalOpen} = useGlobalState()
 
-    const hadleRoute = () => {
-        router.push(`/news/${uid}`)
-    } 
+    const handleHit = () => {
+        if(uid){
+            handleNewsModalOpen(uid)
+        }else{
+            handleNewsModalOpen()
+        }
+
+    }
 
     return (
         <CardComp
-            onClick={hadleRoute}
+            onClick={handleHit}
             sx={{
                 margin:'8px',
                 padding:'2px',
                 cursor:'pointer',
+                minHeight:'230px',
                 // margin:'auto !important',
                 // marginBottom:'10px !important',
                 position:'relative',
@@ -74,13 +85,10 @@ const NewsCard = memo((props:newsType) => {
                 
 
  
-        <Box 
+        <TransparentTextBack 
             sx={{
             
-                backdropFilter: 'blur(10px) contrast(0.5)',
-                 borderRadius:'8px',  
-                 padding:'5px',
-                //  border:`2px solid ${theme.palette.primary.light}`
+              
             }}
         >
             <Box
@@ -98,24 +106,39 @@ const NewsCard = memo((props:newsType) => {
             {title}
             </Box>
           
-        </Box>
-            <Box
-                sx={{                    
-                    backdropFilter: 'blur(10px) contrast(0.5)',
-                    borderRadius:'8px',  
-                    padding:'5px',
-                    display:'flex',
-                    width:'fit-content',
-                    justifyContent:'flex-start',
-                    alignItems:'flex-start',
-                    gap:'5px',
-                    height:'auto',
-                    marginTop:'5px',
-                    '&>*':{
-                        fontSize:['0.9rem'],
-                    }
-                }}
+        </TransparentTextBack>
+        <TransparentTextBack
+         sx={{
+            '&>*':{
+                fontSize:['0.9rem'],
+            }
+        }}
             >
+                <Box
+                    sx={{
+                        color:theme.palette.primary.light,
+                        whiteSpace:'nowrap',
+                    }}
+                >
+                    Source :
+                </Box>
+                <Box
+                    sx={{
+                         color:theme.palette.primary.light,
+                    }}
+                >
+                    {source.name}
+                </Box>
+            </TransparentTextBack>
+
+                <TransparentTextBack
+                
+                    sx={{
+                        '&>*':{
+                            fontSize:['0.9rem'],
+                        }
+                    }}
+                >
                 <Box
                     sx={{
                         color:theme.palette.primary.light,
@@ -131,7 +154,7 @@ const NewsCard = memo((props:newsType) => {
                 >
                     {author}
                 </Box>
-            </Box>
+                </TransparentTextBack>
         </CardComp>
     )
 })
