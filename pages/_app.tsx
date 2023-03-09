@@ -16,6 +16,7 @@ import {UserProvider} from '@/components/context/UserProvider';
 import { Database } from '@/modules/supabase/types/supabase';
 import { GlobalProvider } from '@/components/context/useGlobalProvider';
 import { NextPage } from 'next/types';
+import { Analytics } from '@vercel/analytics/react';
 
 
 
@@ -38,7 +39,7 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
   const getLayout = Component.getLayout || ((page) => page)
   
   return(
-
+    <>
     <CacheProvider value={emotionCache}>
     <SessionContextProvider supabaseClient={supabaseClientState} initialSession={pageProps.initialSession}>
     <UserProvider > 
@@ -62,6 +63,7 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
       </UserProvider>
      </SessionContextProvider>
      </CacheProvider>
-
+     <Analytics />
+     </>
      )
 }
