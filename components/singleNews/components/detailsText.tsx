@@ -25,6 +25,7 @@ const DetailsText = ({dataHead,dataValue,sx={}}:DetailsText) => {
                 sx={{
                     display:'flex',
                     gap:2,
+                    flexWrap:['wrap','nowrap'],
                     ...sx
                 }}
               >

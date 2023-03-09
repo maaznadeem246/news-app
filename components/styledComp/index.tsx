@@ -7,11 +7,13 @@ import { Box } from "@mui/material"
 
 
 export const StyledDataHead = styled(Box)(()=>({
-    fontSize:'clamp(0.8rem,2.5vh, 2rem)',
+    fontSize:'clamp(0.8rem,2.3vh, 2rem)',
     padding:'2px',
     // paddingLeft:"7px",
     // paddingRight:"7px",
     position:'relative',
+    whiteSpace:'nowrap',
+    height:'fit-content',
     '&:after':{
         content:'""',
         background:theme.palette.primary.main,
@@ -27,7 +29,7 @@ export const StyledDataHead = styled(Box)(()=>({
 
 
 export const StyledDataValue = styled(Box)(()=>({
-    fontSize:'clamp(0.8rem,2.5vh,2rem)',
+    fontSize:'clamp(0.8rem,2.3vh,2rem)',
     background:theme.palette.primary.light,
     borderRadius:'7px',
     padding:'2px',

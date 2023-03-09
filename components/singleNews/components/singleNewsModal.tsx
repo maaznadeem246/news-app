@@ -43,7 +43,7 @@ interface singleNewsModalType{
 export default function SingleNewsModal({open=false,handleClose,news}:singleNewsModalType) {
   
 
-const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} / ${new Date(news?.publishedAt).getMonth()} / ${new Date(news?.publishedAt).getFullYear()}` :  ''
+const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} / ${new Date(news?.publishedAt).getMonth()} / ${new Date(news?.publishedAt).getFullYear()}` :  null
   return (
     <div>
       <Dialog
@@ -115,7 +115,7 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
                     sx={{
                         fontWeight:'600',
                         textAlign:'left',
-                        fontSize:['1rem','1.5rem','2rem']
+                        fontSize:['1.3rem','1.5rem','2rem']
                         
 
                         }}
@@ -151,32 +151,43 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
 
       <MainContainer
           sx={{
-            marginTop:'6rem',
+            marginTop:['4rem','6rem','6rem'],
+            marginBottom:['4rem','6rem','6rem'],
             width:['95% !important'],
           }}
       >
 
-          <Grid container >
-              <Grid item xs={12} sm={4} >
+          <Grid container spacing={3}>
+              {news?.author && 
+                <Grid item xs={12} sm={12} >
+                  <DetailsText
+                      dataHead="Author : "
+                      dataValue={news?.author}
+                     
+                  />
+              </Grid>}
+              {news?.source?.name && 
+                <Grid item xs={12} sm={'auto'} >
                   <DetailsText
                       dataHead="Source : "
-                      dataValue={news?.source?.name || ''}
+                      dataValue={news?.source?.name}
                   />
-              </Grid>
-              <Grid item  xs={12} sm={8}>
-                <DetailsText
+              </Grid>}
+              { dateValue && 
+                <Grid item  xs={12} sm={'auto'}>
+                  <DetailsText
                       dataHead="Published At :"
                       dataValue={dateValue}
                   />
-              </Grid>
+              </Grid>}
 
-              <Grid item xs={12} sx={{ marginTop:'1.5rem'}} >
+              <Grid item xs={12} sx={{ marginTop:['0.8rem','1.2rem','1.3rem']}} >
                   <StyledDataHead
                       sx={{
                         width:'fit-content'
                       }}
                     >
-                    Link :
+                    Original Link :
                   </StyledDataHead>
                   <StyledDataText
                     sx={{
@@ -184,11 +195,11 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
                       textDecoration:'underline'
                     }}
                   >
-                    <a href={news?.url || ''} >{news?.url}</a>
+                    <a href={news?.url || ''} style={{lineBreak:'anywhere'}} >{news?.url}</a>
                   </StyledDataText>
 
               </Grid>
-              <Grid item xs={12} sx={{ marginTop:'1.5rem'}} >
+              <Grid item xs={12} sx={{ marginTop:['0.8rem','1.2rem','1.3rem']}} >
                   <StyledDataHead
                       sx={{
                         width:'fit-content'
@@ -212,7 +223,7 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
                 
 
               </Grid>
-              <Grid item xs={12} sx={{ marginTop:'1.5rem'}} >
+              <Grid item xs={12} sx={{marginTop:['0.8rem','1.2rem','1.3rem']}} >
                   <StyledDataHead
                       sx={{
                         width:'fit-content'
