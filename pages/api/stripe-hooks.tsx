@@ -38,7 +38,6 @@ const handler = async (req:NextApiRequest,res:NextApiResponse) => {
 
 
   
-    console.log(event.type)
     switch (event.type){
         case "customer.subscription.updated":
             await supabase.from("users_profile")

@@ -159,15 +159,15 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
       const profileSubs =  supabaseClient
                             .channel('changes')
                             .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'users_profile',filter:`id=in.(${state.user.id})` }, payload => {
-                              console.log('Change received!', payload)
-                              console.log(state.userProfile)
+                              // console.log('Change received!', payload)
+                              // console.log(state.userProfile)
                               let  userProfile = state.userProfile
                               if(userProfile){
                                 userProfile = {
                                   ...userProfile,
                                   ...payload.new
                                 }
-                                console.log(userProfile)
+                                // console.log(userProfile)
                                 setState((props)=>({  
                                   ...props,
                                   userProfile
@@ -184,7 +184,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
 
   const handleRouteChangeStart = () => {
-    console.log('route is changing')
+    // console.log('route is changing')
     setState((props)=>({  
       ...props,
       isRouteLoading:true,
@@ -193,7 +193,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
   
   const handleRouteChangeComplete = () => {
-    console.log('route is complete')
+    // console.log('route is complete')
       
           setState((props)=>({  
             ...props,
@@ -204,7 +204,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
   
   const handleRouteChangeError = () => {
-    console.log('route is error')
+    // console.log('route is error')
    
       setState((props)=>({  
         ...props,
