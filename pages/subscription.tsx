@@ -10,8 +10,16 @@ import { createServerSupabaseClient } from '@/modules/supabase'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export interface priceType { 
+  id:string,
+  name:string,
+  price:number,
+  interval:string,
+  currency:string
+}
+
 export interface SubscriptionType {
-  plans: Array<keyable>
+  plans:Array<priceType>
 }
 
 const SubscriptionPage = (props:SubscriptionType) => {
@@ -54,11 +62,13 @@ const stripe = initStripe(process.env.STRIPE_SECRET_KEY)
 const {data:prices} = await stripe.prices.list()
 
  const plans =  await Promise.all(prices.map(async(price:keyable) => {
+    // console.log(price)
     const product = await stripe.products.retrieve(price.product)
     return {
       id:price.id,
       name:product.name,
       price:price.unit_amount,
+      interval:price.recurring.interval,
       currency:price.currency
     }
   }))

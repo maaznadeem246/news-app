@@ -6,12 +6,16 @@ const theme = createTheme({
 
     typography: {
         fontFamily:' "Nunito", sans-serif',
+        
         allVariants:{
             color:'#2A2A2A',
             fontWeight:'600',
         },
         h1:{
             //  fontSize:'3rem' 
+        },
+        h3:{
+            fontSize:'clamp(2.5rem,3vw, 5rem)'
         }
     },
     palette: {

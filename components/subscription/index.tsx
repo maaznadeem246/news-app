@@ -1,7 +1,7 @@
-import { SubscriptionType } from "@/pages/subscription";
+import { priceType, SubscriptionType } from "@/pages/subscription";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { memo, useState } from "react";
 import CardComp from "../cards";
 import Heading from "../headings";
 import CustomButton from "../inputs/customButton";
@@ -9,26 +9,109 @@ import theme from "@/styles/theme/theme";
 
 import { loadStripe } from "@stripe/stripe-js";
 
-import { keyable } from "@/types";
-import { subscriptionService } from "@/modules/services/subscription";
+import { keyable, Price, UserDetails } from "@/types";
+import { changeSubscriptionService, subscriptionService } from "@/modules/services/subscription";
 import { useUser } from "../context/UserProvider";
 import Logout from "../auth/logout";
 import useSignOut from "@/modules/hooks/useSignOut";
+import { useRouter } from "next/router";
+
+
+type subscriptionPricesTypes =  {
+    handleSubscribe:(key:string)=>void,
+    showSubscribedButon:boolean
+} & SubscriptionType 
+
+const SubscriptionPrices = memo(({plans=[],handleSubscribe,showSubscribedButon}:subscriptionPricesTypes) => {
+    return (
+        <Grid container spacing={2} justifyContent="center">
+                {plans.map((planV,indx)=>{
+                    return (
+                        <Grid key={`subBox-${indx}`} item xs={12} md={6} > 
+                            
+                                <CardComp>
+                                    <Heading variant="h5" sx={{ textAlign:'left'}}>
+                                        {planV.name}
+                                    </Heading>
+                                    <Heading variant="h3" sx={{textTransform:'capitalize',  textAlign:'left'}}>
+                                        {(planV.price).toString().substring(0,(planV.price).toString().length-2)} 
+                                        <Box sx={{display:'inline-block', fontSize:'clamp(1.8rem, 1vw, 2.8rem)', marginLeft:'0.5rem'}}>{(planV.currency).toUpperCase()} / {planV.interval}</Box>
+                                    </Heading>
+                                    {!showSubscribedButon && <CustomButton
+                                        sx={{
+                                            width:'fit-content',
+                                            backgroundColor:theme.palette.primary.main,
+                                            color:theme.typography.body1.color
+                                        }}
+                                        onClick={()=> handleSubscribe(planV.id)}
+                                        disabled={showSubscribedButon}
+                                    >
+                                        {'Subscribe'}
+                                    </CustomButton>}
+                                </CardComp>
+                            
+                        </Grid>
+
+                    )
+                })}
+          </Grid>
+    )
+})
 
 
 
+const SubscriptionDetails = ({priceDetails,userProfile}:{priceDetails:priceType,userProfile:UserDetails}) => {
+
+    const router = useRouter()
+
+    const handleUpdateSubscription = async() => {
+       const {data} =  await changeSubscriptionService()
+        console.log(data)
+        if(data){
+            router.push(data)
+        }
+
+    }
+
+    return (
+        <Grid container spacing={2} justifyContent="center" >
+            <Grid item xs={12} >
+                <Heading variant="h6" sx={{textTransform:'capitalize',}} >
+                You are Subscribed to our  <Box sx={{display:'inline', fontWeight:'900', fontSize:'1.6rem'}}>{priceDetails.name} </Box> plan
+                </Heading>
+            </Grid>   
+            <Grid item xs={12}>
+                <Heading variant="h2" sx={{textTransform:'capitalize'}}>
+                        {(priceDetails.price).toString().substring(0,(priceDetails.price).toString().length-2)} 
+                        <Box sx={{display:'inline-block', fontSize:'clamp(1.8rem, 1vw, 2.8rem)', marginLeft:'0.5rem'}}>
+                            {(priceDetails.currency).toUpperCase()} / {priceDetails.interval}
+                        </Box>
+                </Heading>
+            </Grid>   
+            <Grid item xs={12} mt={3}>
+                <CustomButton 
+                    sx={{width:'fit-content', margin:'auto'}} 
+                    onClick={handleUpdateSubscription}
+                >
+                    Manage Subscription
+                </CustomButton>
+            </Grid>
+        </Grid>
+    )
+}
 
 
-const Subscription = ({plans}:SubscriptionType) => {
+
+const Subscription = ({plans=[]}:SubscriptionType) => {
 
     const {userProfile} = useUser()
-    const [planeState] = useState(plans || [])
+    // const [planeState] = useState(plans || [])
    
-    // //console.log(planeState)
-    // //console.log(user)
+    // console.log(plans)
+    // console.log(userProfile)
     const logoutMuation = useSignOut()
     
-    const handleSubscrbie = async(pId:string) => {
+    const handleSubscribe = async(pId:string) => {
             const {data:{id}, error} = await  subscriptionService(pId)
             //console.log(error)
             if(process.env.NEXT_PUBLIC_STRIPE_KEY != undefined && id && error == null){
@@ -44,7 +127,8 @@ const Subscription = ({plans}:SubscriptionType) => {
 
 
     const showSubscribedButon = !!userProfile?.is_subscribed;
-    
+    const priceDetails = plans.find((vl) => vl.interval == userProfile?.interval )
+    const subscriptionPricesList = showSubscribedButon ? plans.filter((vl) => vl.interval != userProfile?.interval ) :  plans
 
     return (
         <>
@@ -60,42 +144,34 @@ const Subscription = ({plans}:SubscriptionType) => {
                 <Heading
                     variant="h3"
                     headingStyle={true}
-                   
+                    
                 >
                    Subscription 
                 </Heading>
             </Box>
-          {/* <pre>{JSON.stringify(planeState,null,2)}</pre> */}
-          <Grid container spacing={2}>
-                {planeState.map((planV,indx)=>{
-                    return (
-                        <Grid key={`subBox-${indx}`} item xs={12} md={6}>
-                            
-                                <CardComp>
-                                    <Heading variant="h5">
-                                        {planV.name}
-                                    </Heading>
-                                    <Heading variant="h3">
-                                        {planV.price}
-                                    </Heading>
-                                    <CustomButton
-                                        sx={{
-                                            width:'fit-content',
-                                            backgroundColor:theme.palette.primary.main,
-                                            color:theme.typography.body1.color
-                                        }}
-                                        onClick={()=> handleSubscrbie(planV.id)}
-                                        disabled={showSubscribedButon}
-                                    >
-                                        {showSubscribedButon ? 'Subscribed' : 'Subscribe'}
-                                    </CustomButton>
-                                </CardComp>
-                            
-                        </Grid>
+            {/* <pre>{JSON.stringify(planeState,null,2)}</pre> */}
+            {showSubscribedButon && priceDetails &&  <SubscriptionDetails priceDetails={ priceDetails } userProfile={userProfile}/>}
 
-                    )
-                })}
-          </Grid>
+            { showSubscribedButon && 
+                <Box 
+                sx={{
+                    display:'flex',
+                    justifyContent:'center',
+                    marginTop:'5rem',
+                    marginBottom:'2rem',
+                }}
+            >
+                <Heading
+                    variant="h3"
+                    headingStyle={true}
+                    textTransform="capitalize"
+                >
+                    Our other Planes 
+                </Heading>
+            </Box> 
+            }
+
+          <SubscriptionPrices plans={subscriptionPricesList} handleSubscribe={handleSubscribe}  showSubscribedButon={showSubscribedButon}/>
         </Box>
         </>
     )

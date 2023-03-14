@@ -19,15 +19,15 @@ interface HeadingType extends TypographyProps{
 } 
 
 
-const StyledTypography = styled(Typography)<{customHeadStyle:SxProps}>(props => ({
-    ...props.customHeadStyle,
-
+const StyledTypography = styled(Typography)<{customheadstyle:SxProps}>(props => ({
+    ...props.customheadstyle,
+    
 }))
 
 
 const Heading : FC<HeadingType  >  = memo(({children,headingStyle=false,...props})=>{
 
-   const customHeadStyle = {
+   const customheadstyle = {
     position:'relative',
     width:'fit-content',
     textDecorationStyle: 'wavy',
@@ -35,8 +35,9 @@ const Heading : FC<HeadingType  >  = memo(({children,headingStyle=false,...props
         content:"''",
         position:'absolute',
         width:'100%',
-        height:'40%',
-        scale:'1.1',
+        margin:'auto',
+        height:'45%',
+        transform: 'scaleX(1.1)',
         top:'0',
         left:'0',
         backgroundColor:theme.palette.primary.light,
@@ -46,9 +47,15 @@ const Heading : FC<HeadingType  >  = memo(({children,headingStyle=false,...props
     }
 }
 
+const defaultStyle = {
+    textAlign:'center',
+    marginLeft:'1.5rem',
+    marginRight:'1.5rem'
+}
+
     return (
         <StyledTypography 
-            customHeadStyle={headingStyle ? customHeadStyle : {}}
+            customheadstyle={headingStyle ?{...defaultStyle,...customheadstyle }: {...defaultStyle}}
             
             {...props}
         >

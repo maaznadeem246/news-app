@@ -18,7 +18,9 @@ export interface keyable {
     interval: string | null;
     is_subscribed: boolean | null;
     stripe_customer: string | null;
+    created_at?:string | null,
   }
+
   export interface Product {
     id: string /* primary key */;
     active?: boolean;

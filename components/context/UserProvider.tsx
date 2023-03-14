@@ -96,13 +96,11 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
         const { data: authListener } =  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
            if(_event != statusRef.current){
-            //console.log(_event)
-            //console.log(session)
+        
               if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED') { 
 
                 const expires = new Date(0).toUTCString()
-                // cookieCutter.set('my-access-token', '',{expires:expires})
-                // cookieCutter.set('my-access-token', '',{expires:expires})
+             
                 document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
                 document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
 
@@ -118,15 +116,9 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
 
               } else if ((_event === 'SIGNED_IN' || _event === 'TOKEN_REFRESHED') && session) {
-                // setState((props)=>({  
-                //   ...props,
-                //   isLoading:true,
-                // }))
-
-
+           
                 const maxAge = 60 * 60 * 1000
-                // cookieCutter.set('my-access-token', session.access_token,{expires:maxAge})
-                // cookieCutter.set('my-access-token', session.access_token,{expires:maxAge})
+   
                 document.cookie = `my-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
                 document.cookie = `my-refresh-token=${session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
 
@@ -141,7 +133,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                   }))
 
               }
-              //console.log(redirectedFrom)
+
               if(redirectedFrom && typeof redirectedFrom == 'string'){
                 router.push(redirectedFrom)                  
               }else{
@@ -159,6 +151,36 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
           authListener?.subscription.unsubscribe();
         };
   },[])
+
+
+  useEffect(()=>{
+    
+    if(state.user){
+      const profileSubs =  supabaseClient
+                            .channel('changes')
+                            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'users_profile',filter:`id=in.(${state.user.id})` }, payload => {
+                              console.log('Change received!', payload)
+                              console.log(state.userProfile)
+                              let  userProfile = state.userProfile
+                              if(userProfile){
+                                userProfile = {
+                                  ...userProfile,
+                                  ...payload.new
+                                }
+                                console.log(userProfile)
+                                setState((props)=>({  
+                                  ...props,
+                                  userProfile
+                                }))
+                              }
+  
+                                  
+                            })
+                            .subscribe()
+      
+      return () =>{  supabaseClient.removeChannel(profileSubs) }
+    }               
+  },[state.user])
 
 
   const handleRouteChangeStart = () => {
