@@ -1,14 +1,9 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
+
 import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
@@ -16,13 +11,15 @@ import MainContainer from '@/components/MainContainer';
 import { newsType } from '@/components/news/components/newsCard';
 import Heading from '@/components/headings';
 import theme from '@/styles/theme/theme';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Skeleton } from '@mui/material';
 import TransparentTextBack from '@/components/TransparentTextBack';
 import DetailsText from './detailsText';
 import { StyledDataHead, StyledDataText } from '@/components/styledComp';
 import ReactMarkdown from 'react-markdown'
 import DOMpurify from 'dompurify';
 import rehypeRaw from "rehype-raw";
+import ArticalContent from './ArticalContent';
+
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -224,26 +221,10 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
 
               </Grid>
               <Grid item xs={12} sx={{marginTop:['0.8rem','1.2rem','1.3rem']}} >
-                  <StyledDataHead
-                      sx={{
-                        width:'fit-content'
-                      }}
-                    >
-                    Content :
-                  </StyledDataHead>
-                  <StyledDataText
-                    sx={{
-                      marginTop:'1rem',
-                    }}
-                  >
-                     {news?.description  && 
-                     <ReactMarkdown 
-                          rehypePlugins={[rehypeRaw]}
-                      >
-                          { news?.content  ? DOMpurify.sanitize(news.content) : ''}
-                      </ReactMarkdown>}
-                  </StyledDataText>
-                </Grid>
+                <>
+                  {news?.url && <ArticalContent news={news} />}
+                </>
+              </Grid>
           </Grid>
 
       </MainContainer>

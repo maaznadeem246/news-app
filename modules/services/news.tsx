@@ -1,4 +1,5 @@
 import { newsType } from "@/components/news/components/newsCard"
+import { articalContentDataSchema } from "@/pages/api/articalcontent"
 import { keyable } from "@/types"
 import { axiosInstance } from "@/utils/axios"
 import { QueryFunctionContext } from "@tanstack/react-query"
@@ -37,6 +38,29 @@ export const newsService = async ({queries=''}:newsServiceType & QueryFunctionCo
         return dataTob
     
 
+
+}
+
+
+export const newsContentService = async ({url}:{url:string}) => {
+
+    const validateData = articalContentDataSchema.safeParse({url});
+    // console.log(url)
+    // console.log(validateData)
+    if(!validateData.success){
+        throw new Error('Not Valid Url')
+    }
+
+    const repsonseJson = await  axiosInstance.request({
+        method:'POST',
+        url:`/api/articalcontent`,
+        data:{
+            "url":url
+        }
+    })
+    // console.log(repsonseJson)
+    return repsonseJson.data
+    
 
 }
 
