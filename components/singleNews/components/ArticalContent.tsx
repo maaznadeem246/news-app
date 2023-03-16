@@ -34,6 +34,9 @@ const ArticalContent  = ({news}:{news:newsType  }) => {
         <StyledDataText
         sx={{
             marginTop:'1rem',
+            '& > p,pre':{
+                whiteSpace: 'break-spaces',
+            }
         }}
         >
             {/* {news?.description  && 
