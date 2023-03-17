@@ -38,14 +38,14 @@ const Nav = () => {
                     }
                 }}
             >
-                <Box>
+                <Box    onClick={() => router.push('/')}>
                 <Heading
                     variant="h4"
                     headingStyle={true}
                     sx={{cursor:'pointer'}}
                    
                 >
-                    <Box   onClick={() => router.push('/')}>News</Box>
+                    <Box >News</Box>
                 </Heading>
                 </Box>
                 
