@@ -79,7 +79,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
      }).catch((er)=>{
       //console.log(er)
-      router.push('/signin')
+    
       setState((props)=>({  
         ...props,
         accessToken:null,
@@ -108,7 +108,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                 document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
                 document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
 
-                router.push('/signin')
+                router.reload()
 
                 setState((props)=>({  
                   ...props,
