@@ -38,7 +38,7 @@ const Nav = () => {
                     }
                 }}
             >
-                <Box    onClick={() => router.push('/')}>
+                <Link  href='/'>
                 <Heading
                     variant="h4"
                     headingStyle={true}
@@ -47,7 +47,7 @@ const Nav = () => {
                 >
                     <Box >News</Box>
                 </Heading>
-                </Box>
+                </Link>
                 
                 <Box 
                         sx={{display:'flex', gap:'7px'}}

@@ -18,6 +18,9 @@ export async function middleware(req: NextRequest) {
     data: { session },
   } = await supabase.auth.getSession()
 
+  console.log("req.nextUrl.pathname ==  '/' && session?.user.email")
+  console.log(req.nextUrl.pathname)
+  console.log(session?.user.email)
  
   if (req.nextUrl.pathname ==  '/' && session?.user.email ) {
     const {data:users} = await supabase.from("users_profile").select("*").eq('id',session?.user.id).single()
