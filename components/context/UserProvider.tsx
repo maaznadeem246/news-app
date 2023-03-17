@@ -51,9 +51,9 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
     const router = useRouter()
     const {redirectedFrom} = router.query
-    useEffect(()=>{
-      supabaseClient.auth.stopAutoRefresh()
-    },[])
+    // useEffect(()=>{
+    //   supabaseClient.auth.stopAutoRefresh()
+    // },[])
     useEffect(() => {
 
       setState((props)=>({
