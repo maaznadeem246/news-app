@@ -95,6 +95,8 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
   useEffect(()=>{
 
         const { data: authListener } =  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+          console.log('_event')
+          console.log(_event)
            if(_event != statusRef.current){
         
               if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED') { 
