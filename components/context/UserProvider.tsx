@@ -108,7 +108,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                 document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
                 document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
 
-                router.push('/signin')
+            
 
                 setState((props)=>({  
                   ...props,
@@ -119,7 +119,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                   isLoading:false,
                 }))
 
-               
+                router.push('/signin')
 
               } else if ((_event === 'SIGNED_IN' || _event === 'TOKEN_REFRESHED') && session) {
            
