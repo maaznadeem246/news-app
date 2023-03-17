@@ -79,6 +79,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
      }).catch((er)=>{
       //console.log(er)
+      router.push('/signin')
       setState((props)=>({  
         ...props,
         accessToken:null,
