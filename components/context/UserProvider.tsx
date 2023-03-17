@@ -95,6 +95,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
   useEffect(()=>{
 
         const { data: authListener } =  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+          console.log(statusRef.current)
           console.log('_event')
           console.log(_event)
            if(_event != statusRef.current){
@@ -106,6 +107,8 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                 document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
                 document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
 
+                router.push('/signin')
+
                 setState((props)=>({  
                   ...props,
                   accessToken:null,
@@ -115,7 +118,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                   isLoading:false,
                 }))
 
-
+               
 
               } else if ((_event === 'SIGNED_IN' || _event === 'TOKEN_REFRESHED') && session) {
            
@@ -134,13 +137,15 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                     isLoading:false,
                   }))
 
+                  if(redirectedFrom && typeof redirectedFrom == 'string'){
+                    router.push(redirectedFrom)                  
+                  }else{
+                    router.push('/') 
+                  }
+
               }
 
-              if(redirectedFrom && typeof redirectedFrom == 'string'){
-                router.push(redirectedFrom)                  
-              }else{
-                router.push('/') 
-              }
+             
     
               statusRef.current = _event
              

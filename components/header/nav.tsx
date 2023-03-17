@@ -42,6 +42,7 @@ const Nav = () => {
                 <Heading
                     variant="h4"
                     headingStyle={true}
+                    sx={{cursor:'pointer'}}
                    
                 >
                     <Box   onClick={() => router.push('/')}>News</Box>

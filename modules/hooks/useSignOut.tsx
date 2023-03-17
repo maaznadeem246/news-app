@@ -10,13 +10,13 @@ import { supabaseClient } from '../supabase';
 
 export default function useSignOut() {
 
-  const router = useRouter()
+
 
   return useMutation(() => signOutService(), {
       retry:0,
   onSuccess: async(data:boolean) => {
     
-    router.push('/signin')
+  
       return true
     }
   })
