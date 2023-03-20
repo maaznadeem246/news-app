@@ -41,12 +41,10 @@ export async function middleware(req: NextRequest) {
   }
 
 
-
   const redirectUrl = req.nextUrl.clone()
   redirectUrl.pathname =  pathTobe
   redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname)
-  console.log(redirectUrl)
-  return NextResponse.rewrite(redirectUrl)
+  return NextResponse.redirect(redirectUrl)
 }
 
 export const config = {
