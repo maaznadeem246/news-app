@@ -11,7 +11,7 @@ import MainContainer from '@/components/MainContainer';
 import { newsType } from '@/components/news/components/newsCard';
 import Heading from '@/components/headings';
 import theme from '@/styles/theme/theme';
-import { Box, Grid, Skeleton } from '@mui/material';
+import { Box, Grid, } from '@mui/material';
 import TransparentTextBack from '@/components/TransparentTextBack';
 import DetailsText from './detailsText';
 import { StyledDataHead, StyledDataText } from '@/components/styledComp';
@@ -231,11 +231,11 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
                 
 
               </Grid>
-              {/* <Grid item xs={12} sx={{marginTop:['0.8rem','1.2rem','1.3rem']}} >
+              <Grid item xs={12} sx={{marginTop:['0.8rem','1.2rem','1.3rem']}} >
                 <>
                   {news?.url && <ArticalContent news={news} />}
                 </>
-              </Grid> */}
+              </Grid>
           </Grid>
 
       </MainContainer>
