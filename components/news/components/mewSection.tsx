@@ -38,9 +38,9 @@ const NewsSection = (props:NewsSectionType) => {
             </Box>
         <Grid container spacing={1} padding={['20px','0px','0px',]} marginBottom={'20px'} justifyContent={'center'}>
             {
-                newsList.map((val:newsType) => {
+                newsList.map((val:newsType,ind) => {
                     return (
-                        <Grid key={val.uid} item xs={12} sm={12} md={6} lg={4} alignContent={'center'} >
+                        <Grid key={`newskye-${ind}-${val.uid}`} item xs={12} sm={12} md={6} lg={4} alignContent={'center'}   >
                                 <NewsCard {...val}/>
                         </Grid>
                     )

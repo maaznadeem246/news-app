@@ -108,7 +108,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                 document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
                 document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
 
-                router.reload()
+                // router.reload()
 
                 setState((props)=>({  
                   ...props,
@@ -224,7 +224,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
     Router.events.on("routeChangeStart", handleRouteChangeStart) 
       Router.events.on("routeChangeComplete", handleRouteChangeComplete);
       Router.events.on("routeChangeError", handleRouteChangeError);
-
+      
       return () => {
         Router.events.off("routeChangeStart", handleRouteChangeStart) 
         Router.events.off("routeChangeComplete", handleRouteChangeComplete);

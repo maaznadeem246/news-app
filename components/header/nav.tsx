@@ -49,49 +49,51 @@ const Nav = () => {
                 </Heading>
                 </Link>
                 
-                <Box 
-                        sx={{display:'flex', gap:'7px'}}
-                >
-                    {userData?.user &&
-                    <>
-                        <Box
-                          
-                          >
-                              <Link href={'/subscription'}>
-                                 <CustomButton
-                                  sx={{
-                                     borderRadius:'10px',
-                                     background:'transparent',
-                                     border:'1px solid',
-                                     minWidth:'fit-content !important',
-                                 }}
-                                 >
-                                     Subscription
-                                 </CustomButton>
-                             </Link>
-                         </Box>
-                        <Box
+                {!userData.isLoading && 
+                    <Box 
+                            sx={{display:'flex', gap:'7px'}}
+                    >
+                        { userData?.user &&
+                        <>
+                            <Box
+                            
+                            >
+                                <Link href={'/subscription'}>
+                                    <CustomButton
+                                    sx={{
+                                        borderRadius:'10px',
+                                        background:'transparent',
+                                        border:'1px solid',
+                                        minWidth:'fit-content !important',
+                                    }}
+                                    >
+                                        Subscription
+                                    </CustomButton>
+                                </Link>
+                            </Box>
+                            <Box
+                            
+                            >
+                                <Logout />
+                            </Box>
                         
-                        >
-                            <Logout />
-                        </Box>
-                       
-                        </>
-                    }
-                    {!userData?.user && 
-                            <Link href="/signin">
-                                <CustomButton
-                                  sx={{
-                                     borderRadius:'10px',
-                                     background:'transparent',
-                                     border:'1px solid',
-                                     minWidth:'fit-content !important',
-                                 }}
-                                 >
-                                    Signin
-                                </CustomButton>
-                            </Link>}
-                </Box>
+                            </>
+                        }
+                        {!userData?.user && 
+                                <Link href="/signin">
+                                    <CustomButton
+                                    sx={{
+                                        borderRadius:'10px',
+                                        background:'transparent',
+                                        border:'1px solid',
+                                        minWidth:'fit-content !important',
+                                    }}
+                                    >
+                                        Signin
+                                    </CustomButton>
+                                </Link>}
+                    </Box>
+                }
             </Toolbar>
            
         </AppBar>

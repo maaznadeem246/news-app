@@ -1,9 +1,9 @@
 
 
-import { Box, Container, SxProps } from "@mui/material";
+import {  Container, SxProps } from "@mui/material";
 import { FC, ReactNode } from "react";
-import { useUser } from "../context/UserProvider";
-import Heading from "../headings";
+// import { useUser } from "../context/UserProvider";
+// import Heading from "../headings";
 
 
 interface MainContainerType{
@@ -12,7 +12,7 @@ interface MainContainerType{
 }
 
 const MainContainer : FC<MainContainerType>= ({children,sx={}}) => {
-    const { isLoading,isRouteLoading } = useUser()  
+    // const { isLoading,isRouteLoading } = useUser()  
   
         return (
             <Container maxWidth="lg"
@@ -26,7 +26,7 @@ const MainContainer : FC<MainContainerType>= ({children,sx={}}) => {
                    
                 }}
             >
-                {
+                {/* {
                  isLoading || isRouteLoading ?
                     <Box
                         sx={{
@@ -50,8 +50,8 @@ const MainContainer : FC<MainContainerType>= ({children,sx={}}) => {
                     </Box>
                  :
                     children
-                }
-                    {/* {children} */}
+                } */}
+                    {children}
             </Container>
         )
 }

@@ -49,11 +49,11 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <MainLayout >
-              {/* <AuthLayout> */}
+              <AuthLayout>
 
                 { getLayout(<Component {...pageProps} />)}
 
-              {/* </AuthLayout> */}
+              </AuthLayout>
             </MainLayout>
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} />
