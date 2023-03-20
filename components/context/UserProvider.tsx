@@ -103,10 +103,10 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
         
               if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED') { 
 
-                const expires = new Date(0).toUTCString()
+                // const expires = new Date(0).toUTCString()
              
-                document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
-                document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
+                // document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
+                // document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
 
                 router.push('/signin')
 
@@ -123,10 +123,10 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
               } else if ((_event === 'SIGNED_IN' || _event === 'TOKEN_REFRESHED') && session) {
            
-                const maxAge = 60 * 60 * 1000
+                // const maxAge = 60 * 60 * 1000
    
-                document.cookie = `my-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
-                document.cookie = `my-refresh-token=${session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
+                // document.cookie = `my-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
+                // document.cookie = `my-refresh-token=${session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
 
                 const userDetails = await getUserProfileData(session?.user.id);
                 setState((props)=>({  
