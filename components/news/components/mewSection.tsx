@@ -9,11 +9,12 @@ import { useGlobalState } from "@/modules/hooks/useGlobal";
 
 const NewsSection = () => {
     const newQuery = useNews()
+    console.log(newQuery.data)
     const {activeTag} = useGlobalState()
     const newsList :  Array<newsType>  = (activeTag).toLowerCase()== 'latest news' ? newQuery?.data  : newQuery?.data.filter((dv:newsType)=> (dv.source.name)?.toLowerCase()== (activeTag)?.toLowerCase()) || []
 
    
-
+    console.log(newsList)
     return (
         <>
         <Box 

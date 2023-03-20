@@ -24,6 +24,8 @@ const TagsSection = memo((props:TagsSectionType) =>{
     }
     return (
         <>
+        {newQuery?.data?.length > 0 &&
+        <>
         <Box 
             sx={{
                 borderRadius:'10px',
@@ -80,6 +82,8 @@ const TagsSection = memo((props:TagsSectionType) =>{
                 background:'transparent',
             }}
         />
+        </>
+        }
         </>
     )
 })

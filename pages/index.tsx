@@ -33,20 +33,20 @@ const Home = (props:NextPage) => {
   )
 }
 
-export async function getStaticProps() {
-  const queryClient = new QueryClient()
-  await queryClient.prefetchQuery({
-    queryKey:['news'],
-    queryFn: newsService,
-  })
+// export async function getServerSideProps() {
+//   const queryClient = new QueryClient()
+//   await queryClient.prefetchQuery({
+//     queryKey:['news'],
+//     queryFn: newsService,
+//   })
 
-  return {
-    props:{
-      dehydratedState: dehydrate(queryClient),
-    }
-  }
+//   return {
+//     props:{
+//       dehydratedState: dehydrate(queryClient),
+//     }
+//   }
 
-}
+// }
 
 
 Home.getLayout = function getLayout(page:ReactNode) {

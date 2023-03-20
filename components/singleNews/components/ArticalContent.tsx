@@ -7,9 +7,9 @@ import rehypeRaw from "rehype-raw";
 import DOMPurify from "dompurify";
 
 
-type RequiredNotNull<T> = {
-    [P in keyof T]: NonNullable<T[P]>
-  }
+// type RequiredNotNull<T> = {
+//     [P in keyof T]: NonNullable<T[P]>
+//   }
 
 
 
@@ -39,12 +39,7 @@ const ArticalContent  = ({news}:{news:newsType  }) => {
             }
         }}
         >
-            {/* {news?.description  && 
-            <ReactMarkdown 
-                rehypePlugins={[rehypeRaw]}
-            >
-                { news?.content  ? DOMpurify.sanitize(news.content) : ''}
-            </ReactMarkdown>} */}
+  
             {contentQuery.isLoading ? 
             <Skeleton variant="rounded"  sx={{width:'100%',height:['150px','250px','350px']}} />
             :
@@ -52,7 +47,7 @@ const ArticalContent  = ({news}:{news:newsType  }) => {
             <ReactMarkdown 
                 rehypePlugins={[rehypeRaw]}
             >
-                { news?.content  ? DOMPurify.sanitize(contentQuery.data) : ''}
+                { news?.content  ? DOMPurify.sanitize(contentQuery.data) : news?.content || ''}
             </ReactMarkdown>
         }
             

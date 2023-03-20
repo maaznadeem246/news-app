@@ -12,6 +12,7 @@ import { newsType } from "@/components/news/components/newsCard"
 const useNews = () => {
     return useQuery({
         queryKey:['news'],
+        initialData:[],
         queryFn: (props) => newsService(props),
         staleTime:1000000000,
         retryDelay:100000000,

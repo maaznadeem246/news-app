@@ -18,8 +18,9 @@ export const newsService = async ({queries=''}:newsServiceType & QueryFunctionCo
         //     page:'2',
         //     lang: 'en'
         // }//'topic=news&'+ queries
-        
-        const qq = `&pageSize=50` //&
+
+        const defaultQueries =  `&pageSize=30`
+        const qq = defaultQueries + queries
         const data = await axiosInstance.request({
             method:'GET',
             // url:`${process.env.NEXT_PUBLIC_NEWS_API_URL}/article-date/01-04-2021`,
@@ -33,7 +34,7 @@ export const newsService = async ({queries=''}:newsServiceType & QueryFunctionCo
             //   }
         })
         //console.log(data)
-        const  dataTob = data?.data?.articles.map((vl:newsType) => ({...vl, uid:  crypto.randomUUID() })) || []
+        const  dataTob = data?.data?.articles.map((vl:newsType) => ({...vl, uid:  window.crypto.randomUUID() })) || []
         // console.log(dataTob)
         return dataTob
     
