@@ -61,6 +61,7 @@ export const GlobalProvider : FC<ProviderType>  = (props) => {
 
 
     const handleNewsModalOpen = (id?:string) => {
+      document.documentElement.style.overflow = 'hidden ';
       if(id){
         setNewsModal(id)
       }else{
@@ -69,6 +70,7 @@ export const GlobalProvider : FC<ProviderType>  = (props) => {
       
   }
   const handleNewsModalClose = () => {
+    document.documentElement.style.overflow  = 'unset';
     setNewsModal(false)
   }
   const handleToggle = () => {

@@ -16,10 +16,10 @@ const useNews = () => {
         staleTime:1000000000,
         retryDelay:100000000,
         retry:2,
-        select:(data) => {
-            const filterList = data.filter(((vl:newsType) => vl?.content != null)) 
-            return filterList
-        } 
+        // select:(data) => {
+        //     const filterList = data.filter(((vl:newsType) => vl?.content != null)) 
+        //     return filterList
+        // } 
     })
 }
 
