@@ -24,7 +24,7 @@ export async function middleware(req: NextRequest) {
  
   if (req.nextUrl.pathname ==  '/' && session?.user.email ) {
     const {data:users} = await supabase.from("users_profile").select("*").eq('id',session?.user.id).single()
-    console.log(users)
+    // console.log(users)
     if (session?.user.email && users?.is_subscribed ) {
       // Authentication successful, forward request to protected route.
   
@@ -42,11 +42,11 @@ export async function middleware(req: NextRequest) {
 
 
 
-  const redirectUrl = new URL('/dashboard/user',  req.url)
+  const redirectUrl = req.nextUrl.clone()
   redirectUrl.pathname =  pathTobe
   redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname)
   console.log(redirectUrl)
-  return NextResponse.redirect(redirectUrl)
+  return NextResponse.rewrite(redirectUrl)
 }
 
 export const config = {
