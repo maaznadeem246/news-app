@@ -5,13 +5,11 @@ import Heading from "@/components/headings";
 import { useGlobalState } from "@/modules/hooks/useGlobal";
 
 
-interface NewsSectionType{
-    newsList?: Array<newsType>
-}
 
-const NewsSection = (props:NewsSectionType) => {
+
+const NewsSection = () => {
     const newQuery = useNews()
-    const {activeTag,handleTagOption} = useGlobalState()
+    const {activeTag} = useGlobalState()
     const newsList :  Array<newsType>  = (activeTag).toLowerCase()== 'latest news' ? newQuery?.data  : newQuery?.data.filter((dv:newsType)=> (dv.source.name)?.toLowerCase()== (activeTag)?.toLowerCase()) || []
 
    

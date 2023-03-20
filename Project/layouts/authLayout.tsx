@@ -36,13 +36,14 @@ export default function AuthLayout({ children  }: { children: ReactElement | Rea
                     }}
                     headingStyle={true}
                 >
-                Loading
+                  Loading
                 </Heading>
             </Box>
     )}
     
       if(!(isLoading || isRouteLoading) && !session) {
             if(router.pathname.startsWith('/signup') || router.pathname.startsWith('/signin')){
+            
               return   <>{ children }</>
             }else{
               return <SingInPage  />

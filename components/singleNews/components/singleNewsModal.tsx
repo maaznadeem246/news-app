@@ -21,6 +21,7 @@ import rehypeRaw from "rehype-raw";
 import ArticalContent from './ArticalContent';
 
 
+
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement;
@@ -56,31 +57,39 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
               aligItems: 'baseline',
               position:'relative',
               marginTop:0,
+              overflowY:'hidden',
+              borderTopLeftRadius:"0px",
+              borderTopRightRadius:"0px",
+
             }}
           >
            
               <MainContainer
-               
+                 sx={{
+                  marginTop:['0'],
+                 }}
                >  <Box
                sx={{
                  position:'absolute',
                  width:'100%',
+                 height:'100%',
                  objectFit:'contain',
-                 height:'140%',
+                //  height:['140%','170%','170%'],
                 
                 //  aspectRatio:['1/0.5','1/0.23','1/0.2'],
                  // maxHeight:['150px','200px','260px'],
                  top:0,
                  left:0,
-                 overflowX:'unset',
+                 overflowX:'hidden',
                  overflowY:'hidden',
+                 '&>img':{
+                  width:["100%"],
+                  // height:["100%","usnet","unset"],
+                 }
                }}
              >
                <img 
-                 src={news.urlToImage || ''}
-                 
-                 width="100%"
-                 
+                 src={news.urlToImage || ''}                 
                />
              </Box>
            
@@ -91,7 +100,9 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
                     justifyContent:"center",
                     alignItems:'center',
                     gap:'15px',
-                    marginTop:['0%','3%','5%'],
+                    marginTop:['2rem','2rem','4rem'],
+                    marginBottom:['2rem','2rem','4rem'],
+                    minHeight:['100px','170px','200px','250px'],
                     // border:'1px solid red'
                   }}
                 >
@@ -148,8 +159,8 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
 
       <MainContainer
           sx={{
-            marginTop:['4rem','6rem','6rem'],
-            marginBottom:['4rem','6rem','6rem'],
+            marginTop:['2rem','3rem','3rem'],
+            marginBottom:['2rem','6rem','6rem'],
             width:['95% !important'],
           }}
       >
@@ -220,11 +231,11 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
                 
 
               </Grid>
-              <Grid item xs={12} sx={{marginTop:['0.8rem','1.2rem','1.3rem']}} >
+              {/* <Grid item xs={12} sx={{marginTop:['0.8rem','1.2rem','1.3rem']}} >
                 <>
                   {news?.url && <ArticalContent news={news} />}
                 </>
-              </Grid>
+              </Grid> */}
           </Grid>
 
       </MainContainer>

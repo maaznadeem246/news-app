@@ -50,6 +50,13 @@ const theme = createTheme({
                 }
             }
         },
+        MuiDialog:{
+            styleOverrides:{
+                root:{
+                    backgroundColor:'var(--background-custom)'
+                }
+            }
+        },
         MuiTextField:{
             styleOverrides:{
                 root:{
