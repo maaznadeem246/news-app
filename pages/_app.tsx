@@ -7,13 +7,13 @@ import theme from '../styles/theme/theme';
 import createEmotionCache from '../styles/theme/createEmotionCache';
 import { AuthLayout, MainLayout } from '../Project/layouts';
 
-import { MouseEvent, ReactElement, ReactNode, useState } from 'react';
-import { createBrowserSupabaseClient, SessionContextProvider, supabase, supabaseClient } from '../modules/supabase';
+import {  ReactElement, ReactNode, useState } from 'react';
+import { SessionContextProvider,  supabaseClient } from '@/lib/supabase';
 import { Hydrate, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {UserProvider} from '@/components/context/UserProvider';
-import { Database } from '@/modules/supabase/types/supabase';
+
 import { GlobalProvider } from '@/components/context/useGlobalProvider';
 import { NextPage } from 'next/types';
 import { Analytics } from '@vercel/analytics/react';

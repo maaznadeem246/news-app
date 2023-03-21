@@ -1,10 +1,8 @@
 import { UserDetails } from "@/types";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestSingleResponse } from "@supabase/supabase-js";
-import { throws } from "assert";
 import { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
-import Error, { ErrorProps } from "next/error";
 import { NextRequest, NextResponse } from "next/server";
 
 
@@ -42,34 +40,7 @@ const ApiAuthCheck = async (req:NextApiRequest & NextRequest, res:NextApiRespons
 
      
 
-//       try{
-   
 
-
-//         const qData = await supabaseServer.from("users_profile")
-//                                               .select("stripe_customer")
-//                                               .eq("id",session.user?.id)
-//                                               .single();
-
-//            //console.log('qData?.data?.stripe_customer 1')
-
-//            //console.log(qData?.data?.stripe_customer)
-   
-      
-
-
-
-       
-
-//       }catch(er){
-//         //console.log(er)
-//        return  res.status(401).send("User not Authorized.")
-//       }
-
-    
-//     }
-
-//   return  res.status(401).send('Not Found') 
 }
 
 export default ApiAuthCheck;

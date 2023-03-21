@@ -8,7 +8,7 @@ import {
     Session
   } from '@supabase/auth-helpers-react';
 import { getUserProfileData } from "@/modules/services/user";
-import { supabaseClient } from "@/modules/supabase";
+import { supabaseClient } from "@/lib/supabase";
 
   
 interface ProviderType {

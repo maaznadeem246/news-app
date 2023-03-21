@@ -1,6 +1,7 @@
+import { supabaseClient } from "@/lib/supabase"
 import { keyable } from "@/types"
 import { UserResponse } from "@supabase/supabase-js"
-import { supabaseClient } from "../supabase"
+
 import { signUpServiceType } from "./auth"
 
 interface createUser {

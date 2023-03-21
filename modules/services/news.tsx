@@ -14,8 +14,8 @@ interface  newsServiceType {
 export const newsService = async (props:newsServiceType & QueryFunctionContext<string[], any>) =>  {
     
         const data = await newsServiceApi(props)
-    
-        return data
+        const  dataTob = data?.data?.articles.map((vl:newsType) => ({...vl, uid: typeof window !== "undefined" ? window.crypto.randomUUID() :   crypto.randomUUID()})) || []
+        return dataTob
 
 
 }
@@ -36,9 +36,9 @@ export const newsServiceApi= async (props?:newsServiceType)  => {
         //   }
     })
     //console.log(data)
-    const  dataTob = data?.data?.articles.map((vl:newsType) => ({...vl, uid: typeof window !== "undefined" ? window.crypto.randomUUID() :   crypto.randomUUID()})) || []
+  
     // console.log(dataTob)
-    return dataTob
+    return data?.data?.articles || []
 }
 
 

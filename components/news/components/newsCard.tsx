@@ -21,7 +21,7 @@ source:{
     name:string |null,    
 } ,
 title:string |null,
-uid:string |null,
+uid?:string |null,
 url:string |null,  
 urlToImage:string|null,
 }
