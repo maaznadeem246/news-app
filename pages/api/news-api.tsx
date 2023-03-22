@@ -16,6 +16,8 @@ type RequiredNotNull<T> = {
     [P in keyof T]: NonNullable<T[P]>
   }
 
+const defaultResNewsCount = 25
+
 // export const newsQuerySchema = z.object({
 //     country:z.string().optional(),
 //     category:z.string().optional(),
@@ -43,30 +45,33 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
         // }
         
         
-        const datalist = []
+      
 
-        const cachedData =await  getCachedData()
+        const cachedData = await  getCachedData()
         
+        const datalist = new Map([...cachedData])
 
-         datalist.push(...cachedData)
+         console.log('Got cached')
+         console.log(datalist.size)
 
-         console.log('outside')
-         console.log(datalist)
 
-         if(datalist.length <= 0){
+         // TODO --- add new data response to the cached data and send to the client -----------
+
+        //  if(datalist.size < defaultResNewsCount){
       
-            console.log('getting new data')
-            const newsResponse = dummydata
+        //     console.log('getting new data')
+        //     const newsResponse = await newsServiceApi()
 
-            await setCachedData(newsResponse)
 
-            datalist.unshift(newsResponse)
+        //     await setCachedData(newsResponse)
 
-            console.log('inside end')
-        }
+        //     // const newList = new Map([])
+
+        //     console.log('got new and saved in cache')
+        // }
       
 
-        // console.log(newsRedisget)
+        console.log('sent Data')
 
        return res.status(200).send(datalist);
 

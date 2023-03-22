@@ -14,13 +14,13 @@ interface  newsServiceType {
 export const newsService = async (props:newsServiceType & QueryFunctionContext<string[], any>) =>  {
     
         const data = await newsServiceApi(props)
-        const  dataTob = data?.data?.articles.map((vl:newsType) => ({...vl, uid: typeof window !== "undefined" ? window.crypto.randomUUID() :   crypto.randomUUID()})) || []
+        const  dataTob = data?.map((vl:newsType) => ({...vl, uid: typeof window !== "undefined" ? window.crypto.randomUUID() :   crypto.randomUUID()})) || []
         return dataTob
 
 
 }
 
-export const newsServiceApi= async (props?:newsServiceType)  => {
+export const newsServiceApi= async (props?:newsServiceType) :Promise<newsType[]> => {
     const defaultQueries =  `&pageSize=30`
     const qq = defaultQueries + props?.queries || ''
     const data = await axiosInstance.request({

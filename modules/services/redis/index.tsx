@@ -1,35 +1,83 @@
 import { newsType } from "@/components/news/components/newsCard";
 import { redis } from "@/lib/redis";
+import { keyable } from "@/types";
 
 import { format, toDate } from 'date-fns'
+import { object, z } from "zod";
 
-interface getCachedDataType {
-    start?:number,
-    end?:number,
-}
+
+
+const getCachedDataSchema = z.object({
+    start:z.number().optional(),
+    end:z.number().optional(),
+    date:z.date().optional(),
+})
+
+type getCachedDataType  = z.infer<typeof getCachedDataSchema>
 
 
 const formatedDate = (d:string|Date) => format(( toDate( new Date(d) )),'MM-dd-yyyy').toString()
 
+
 export const getCachedData = async (props?:getCachedDataType) => {
 
 
-    const redisData :  Array<Record<string, string>> = []
 
-        // const startIndex = props?.start;
-        // const endIndex = props?.end 
-     
-        const newsRedisgetall=  await redis.hgetall(`newslist-${formatedDate(new Date())}`);
 
-        Object.keys(newsRedisgetall).forEach(key => redisData.push({
-        ...JSON.parse(newsRedisgetall[key])
-        }));   
+
+    
+
+        const  validate = getCachedDataSchema.safeParse(props)
+
+        const datetobeused =( props && props?.date && validate.success ) ? formatedDate(props.date) : formatedDate(new Date())
+        // console.log(datetobeused)
+  
+
+        const hashkeys = await redis.keys(`news-*`)
+        // console.log('hashkeys')
+        // console.log(hashkeys)
+        const getAllList = hashkeys.map((hv => ['hgetall',hv]))
+        const newsRedisgetall = await redis.pipeline(getAllList).exec();
+        console.log(newsRedisgetall)
+        let dataValuse = new Map()
+        let inc = 0
+        newsRedisgetall?.forEach((vl:[error: Error | null, result: unknown| ReturnType<typeof Object>])=>{
+            // dataValuse = { [hashkeys[inc]]: vl[1] }
+            // inc++;
+          
+            if(typeof vl[1] == 'object' && vl[1] && Object.keys(vl[1]).length  > 0){
+                dataValuse.set(hashkeys[inc],vl[1])
+            }
+      
+        })
+        // console.log("dataValuse")
+        // console.log(dataValuse)
+   
+        // const newsRedisgetall = await redis.hgetall(`news-${datetobeused}`);
+        // const redisScan = await redis.scanStream({
+        //     match:'news-*',
+        //     type:'hash',
+        // }); 
+
+        //     redisScan.on("data", (resultKeys) => {
+        //     // Pause the stream from scanning more keys until we've migrated the current keys.
+            
+            
+        //     return resultKeys
+            
+        //   });
+          
+        //   redisScan.on("end", () => {
+        //     console.log("Stream End");
+        //   });
+
+        // Object.keys(newsRedisgetall[1]).forEach(key => redisData.push({
+        // ...JSON.parse(newsRedisgetall[key])
+        // }));   
         
-        // if( startIndex && endIndex &&  startIndex<endIndex ){
-        //     return redisData.slice(startIndex , endIndex );
-        // }
+       
 
-        return redisData
+        return dataValuse
 
   
 }
@@ -54,24 +102,17 @@ export const setCachedData = async (data:newsType[]) => {
         }
     );   
 
- 
-
     const newsObject = Object.fromEntries(dataWithDates)
-    // console.log(newsResponseobjects)
-    // console.log(newsObject)
-    const promisesList:Promise<"OK">[] = []
+  
 
-    Object.keys(newsObject).forEach(key => {
-        promisesList.push(  redis.hmset(`newslist-${key}`,newsObject[key]) )
-    });   
- 
-    // console.log(promisesList)
+    const listtoExc:Array<Array<string>> = [];
+     Object.keys(newsObject).forEach(key => {
+        listtoExc.push(['hmset',`news-${key}`,newsObject[key]] )
+    });
+     
+    const saveresponse =  await redis.pipeline(listtoExc).exec()
 
-    const dataPromises =  await Promise.all(promisesList)
-
-    console.log(dataPromises)
-
-    if(dataPromises.every((v)=> v=='OK')){
-        console.error("Redis adding Error")
-    }
+    console.log(saveresponse)
+   
+  
 }
