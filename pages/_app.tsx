@@ -65,7 +65,7 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
       </UserProvider>
      </SessionContextProvider>
      </CacheProvider>
-     <Analytics mode='production' />
+     <Analytics  />
      </>
      )
 }
