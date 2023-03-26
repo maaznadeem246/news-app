@@ -49,9 +49,9 @@ export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
     data: { session }
   } = await supabase.auth.getSession();
   //console.log(session)
-  const {data:users} = await supabase.from("users_profile").select("*").eq('id',session?.user.id).single()
+
   // console.log(users)
-  if (!session || !users?.is_subscribed )
+  if (!session)
     return {
       redirect: {
         destination: '/signin',
