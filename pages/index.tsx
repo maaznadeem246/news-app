@@ -71,7 +71,7 @@ export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
   if (!session  || !users?.is_subscribed )
     return {
       redirect: {
-        destination: '/signin',
+        destination: !users?.is_subscribed ?  '/subscription'  :'/signin',
         permanent: false
       }
     };
