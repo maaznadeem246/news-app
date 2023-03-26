@@ -160,17 +160,20 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
           }
 
           } else if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED' || ( _event == 'INITIAL_SESSION' && session == null)) { 
-                setState((props)=>({  
-                  ...props,
-                  session:null, 
-                  user:  null ,
-                  userProfile: null,
-                  isLoading:false,
-                }))
-                
-                if( _event != 'INITIAL_SESSION'){
-                  router.push('/signin')
-                }
+            if( _event != 'INITIAL_SESSION'){
+              router.reload()
+            }else{
+              setState((props)=>({  
+                ...props,
+                session:null, 
+                user:  null ,
+                userProfile: null,
+                isLoading:false,
+              }))
+              
+
+            }
+
 
               
 
