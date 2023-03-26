@@ -43,7 +43,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
       session:null,
       user:null,
       userProfile:null,
-      isLoading:true,
+      isLoading:false,
       isRouteLoading:false
     });
     const supabaseClient = useSupabaseClient()
