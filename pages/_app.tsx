@@ -44,9 +44,10 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
     <>
     <CacheProvider value={emotionCache}>
     <SessionContextProvider supabaseClient={supabaseClientState} initialSession={pageProps.initialSession}>
+    <QueryClientProvider client={queryClient}>
     <UserProvider > 
       <GlobalProvider >
-      <QueryClientProvider client={queryClient}>
+
       <Hydrate state={pageProps.dehydratedState}>
         <ThemeProvider theme={theme}>
             <CssBaseline />
@@ -60,9 +61,10 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} />
         </Hydrate>
-        </QueryClientProvider>
+
         </GlobalProvider>
       </UserProvider>
+      </QueryClientProvider>
      </SessionContextProvider>
      </CacheProvider>
      <Analytics  />

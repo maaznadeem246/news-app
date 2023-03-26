@@ -48,140 +48,109 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
     });
     const supabaseClient = useSupabaseClient()
     // const data = useUserProvider()
-    // const session = useSession();
-    // console.log(session)
+
+
+
+
 
     const router = useRouter()
     
       
-    // useEffect(()=>{
-    //   supabaseClient.auth.stopAutoRefresh()
-    // },[])
-
-    // useEffect(()=>{
-    //   if(session != null){
-    //       setState((props)=>({
-    //         ...props,
-    //         isLoading:true,
-    //       }))
-    //       getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
-    //           console.log(data)
-    //           setState((props)=>({  
-    //             ...props,
-    //             session:session, 
-    //             user: session?.user ?? null ,
-    //             userProfile: data ?? null,
-    //             isLoading:false,
-    //           }))
-      
-    //         })).finally(()=>{
-    //           setState((props)=>({
-    //             ...props,
-    //             isLoading:false,
-    //           })) 
-    //         });
-    //   }
-    // },[session])
-
-
-  //   useEffect(() => {
-      
-  //      supabaseClient.auth.getSession().then(({data:{ session }}) => {
-
-  //       if(session != null ){
-  //         setState((props)=>({
-  //           ...props,
-  //           isLoading:true,
-  //         }))
-       
-  
-  //           statusRef.current = 'SIGNED_IN'
-  //           getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
-  //             console.log(data)
-  //             setState((props)=>({  
-  //               ...props,
-  //               session:session, 
-  //               user: session?.user ?? null ,
-  //               userProfile: data ?? null,
-  //               isLoading:false,
-  //             }))
-      
-  //           }));
-    
-  
-  //       }
-  
-  //     }).catch((errr) => {
-
-  //       setState((props)=>({  
-  //         ...props,
-  //         session:null, 
-  //         user:  null ,
-  //         userProfile:  null,
-  //         isLoading:false,
-  //       }))
-  //     })
-
-
-  // }, [])  
 
 
   useEffect(()=>{
 
         const { data: authListener } =  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
-          console.log(statusRef.current)
-          console.log('_event')
-          console.log(_event)
-          console.log(session)
-          const {redirectedFrom} = router.query       
-
-
-           if(_event != statusRef.current){
-            if ((_event === 'SIGNED_IN' || _event == 'INITIAL_SESSION') && session) {
+          // console.log(statusRef.current)
+          // console.log('_event')
+          // console.log(_event)
+          // console.log(session)
+          // console.log(state)
+          const {redirectedFrom} = router.query
+          console.log(redirectedFrom)       
+          if(state.session?.access_token != session?.access_token){
+            if( _event == 'INITIAL_SESSION' || _event === 'SIGNED_IN'){
+              console.log('in ---- INITIAL_SESSION')
+            
               await getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
-              console.log(data)
-              setState((props)=>({  
-                ...props,
-                session:session, 
-                user: session?.user ?? null ,
-                userProfile: data ?? null,
-                isLoading:false,
-              }))
+                      console.log(data)
+                      setState((props)=>({  
+                        ...props,
+                        session:session, 
+                        user: session?.user ?? null ,
+                        userProfile: data ?? null,
+                        isLoading:false,
+                      }))
+                    })).catch((er)=>{
+                      console.log(er)
+                      router.reload()
+                    })
+                  if(_event === 'SIGNED_IN'){
+                    if(redirectedFrom && typeof redirectedFrom == 'string'){
+                      router.push(redirectedFrom)                  
+                    }else{
+                      router.push('/') 
+                    }      
+                  }
+            }
+
+         }else{
+          if(state.isLoading){
+            setState((prev) => ({
+              ...prev,
+              isLoading:false
+            }))
+          }
+         }
+         if (_event === 'SIGNED_OUT'){
+          router.reload()
+        }
+        //    if(_event != statusRef.current){
+        //     if ((_event === 'SIGNED_IN' || _event == 'INITIAL_SESSION') && session) {
+        //       await getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
+        //       console.log(data)
+        //       setState((props)=>({  
+        //         ...props,
+        //         session:session, 
+        //         user: session?.user ?? null ,
+        //         userProfile: data ?? null,
+        //         isLoading:false,
+        //       }))
   
-        }));
-          console.log('redirectedFrom')
-          console.log(redirectedFrom)
-          if(_event === 'SIGNED_IN' ){
-            if(redirectedFrom && typeof redirectedFrom == 'string'){
-              router.push(redirectedFrom)                  
-            }else{
-              router.push('/') 
-            }
-          }
+        // }));
+        //   console.log('redirectedFrom')
+        //   console.log(redirectedFrom)
+        //   if(_event === 'SIGNED_IN' ){
+        //     if(redirectedFrom && typeof redirectedFrom == 'string'){
+        //       router.push(redirectedFrom)                  
+        //     }else{
+        //       router.push('/') 
+        //     }
+        //   }
 
-          } else if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED' || ( _event == 'INITIAL_SESSION' && session == null)) { 
-            if( _event != 'INITIAL_SESSION'){
-              router.reload()
-            }else{
-              setState((props)=>({  
-                ...props,
-                session:null, 
-                user:  null ,
-                userProfile: null,
-                isLoading:false,
-              }))
+        //   } else if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED' || ( _event == 'INITIAL_SESSION' && session == null)) { 
+        //     if( _event != 'INITIAL_SESSION'){
+        //       router.reload()
+        //     }else{
+        //       setState((props)=>({  
+        //         ...props,
+        //         session:null, 
+        //         user:  null ,
+        //         userProfile: null,
+        //         isLoading:false,
+        //       }))
               
 
-            }
+        //     }
 
 
               
 
-              }   
+        //       }   
     
-              statusRef.current = _event
+        //       statusRef.current = _event
              
-          }
+        //   }
       
       
         })
@@ -190,7 +159,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
           authListener?.subscription.unsubscribe();
         };
   },[])
-
+  
 
   useEffect(()=>{
     
@@ -297,3 +266,83 @@ export const useUser = () => {
     }
     return context;
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // useEffect(()=>{
+
+  //       const { data: authListener } =  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+  //         console.log(statusRef.current)
+  //         console.log('_event')
+  //         console.log(_event)
+  //         console.log(session)
+  //         const {redirectedFrom} = router.query       
+
+
+  //          if(_event != statusRef.current){
+  //           if ((_event === 'SIGNED_IN' || _event == 'INITIAL_SESSION') && session) {
+  //             await getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
+  //             console.log(data)
+  //             setState((props)=>({  
+  //               ...props,
+  //               session:session, 
+  //               user: session?.user ?? null ,
+  //               userProfile: data ?? null,
+  //               isLoading:false,
+  //             }))
+  
+  //       }));
+  //         console.log('redirectedFrom')
+  //         console.log(redirectedFrom)
+  //         if(_event === 'SIGNED_IN' ){
+  //           if(redirectedFrom && typeof redirectedFrom == 'string'){
+  //             router.push(redirectedFrom)                  
+  //           }else{
+  //             router.push('/') 
+  //           }
+  //         }
+
+  //         } else if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED' || ( _event == 'INITIAL_SESSION' && session == null)) { 
+  //           if( _event != 'INITIAL_SESSION'){
+  //             router.reload()
+  //           }else{
+  //             setState((props)=>({  
+  //               ...props,
+  //               session:null, 
+  //               user:  null ,
+  //               userProfile: null,
+  //               isLoading:false,
+  //             }))
+              
+
+  //           }
+
+
+              
+
+  //             }   
+    
+  //             statusRef.current = _event
+             
+  //         }
+      
+      
+  //       })
+
+  //       return () => {
+  //         authListener?.subscription.unsubscribe();
+  //       };
+  // },[])
