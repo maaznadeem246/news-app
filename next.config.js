@@ -1,16 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  async rewrites() {
-    return [
-      {
-        source: '/news',
-        destination: '/',
-      },
-    ]
-  },
-
-  webpack: (config, { isServer }) => {
+   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve = {
         ...config.resolve,
