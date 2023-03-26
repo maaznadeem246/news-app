@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import { signOutService } from '../services/auth';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 
 
@@ -10,9 +11,9 @@ import { signOutService } from '../services/auth';
 
 export default function useSignOut() {
 
+  const supabaseClient = useSupabaseClient()
 
-
-  return useMutation(() => signOutService(), {
+  return useMutation(() => signOutService(supabaseClient), {
       retry:0,
   onSuccess: async(data:boolean) => {
     

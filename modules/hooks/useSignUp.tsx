@@ -5,9 +5,10 @@ import { QueryErrorResetBoundaryProps, QueryErrorResetBoundaryValue } from '@tan
 import { extendShape, z } from 'zod';
 import { signUpService } from '../services';
 import { signUpServiceType } from '../services/auth';
-import { supabase } from "../supabase";
+
 
 import { useRouter } from 'next/router';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 
 
@@ -15,11 +16,13 @@ import { useRouter } from 'next/router';
 
 
 
-export default function useSignup() {
+export default function uzseSignup() {
   // const router = useRouter()
   // const { redirectedFrom } = router.query
 
-  return useMutation<keyable, Error, signUpServiceType, unknown>((user: signUpServiceType) => signUpService(user), {
+  const supabaseClient = useSupabaseClient();
+
+  return useMutation<keyable, Error, signUpServiceType, unknown>((user: signUpServiceType) => signUpService(user,supabaseClient), {
     retry:0,
     onSuccess: async(data:keyable,variables) => {
       // //console.log(data)

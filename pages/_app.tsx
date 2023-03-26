@@ -34,10 +34,12 @@ const queryClient = new QueryClient()
 
 
 export default function App({ Component, pageProps,  emotionCache = clientSideEmotionCache, }: MyAppProps) {
-  const [supabaseClientState] = useState(supabaseClient)
+  const [supabaseClientState] = useState(() => supabaseClient())
 
   const getLayout = Component.getLayout || ((page) => page)
   
+  // supabaseClientState.auth.stopAutoRefresh()
+
   return(
     <>
     <CacheProvider value={emotionCache}>

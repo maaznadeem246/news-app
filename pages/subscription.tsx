@@ -5,7 +5,7 @@ import { GetServerSidePropsContext,} from 'next'
 import initStripe from "stripe";
 import { keyable } from '@/types'
 import Subscription from '@/components/subscription'
-import { createServerSupabaseClient } from '@/modules/supabase'
+
 
 
 const inter = Inter({ subsets: ['latin'] })

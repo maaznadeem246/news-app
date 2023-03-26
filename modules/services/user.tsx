@@ -1,8 +1,8 @@
-import { supabaseClient } from "@/lib/supabase"
-import { keyable } from "@/types"
-import { UserResponse } from "@supabase/supabase-js"
+import { UserDetails, keyable } from "@/types"
+import { SupabaseClient, User, UserResponse } from "@supabase/supabase-js"
 
 import { signUpServiceType } from "./auth"
+import { useSupabaseClient } from "@supabase/auth-helpers-react"
 
 interface createUser {
     data:keyable,
@@ -30,8 +30,9 @@ interface createUser {
 
 
 
-export const getUserProfileData = async(id?:string) => {
+export const getUserProfileData = async(supabaseClient:SupabaseClient,id?:string):Promise<UserDetails|null> => {
       
+
   try{
     // const userSession= await  supabaseClient.auth.getSession();
     // //console.log(userSession)
@@ -45,7 +46,7 @@ export const getUserProfileData = async(id?:string) => {
 
       if(eqId){
   
-      const {data:users} = await supabaseClient.from("users_profile").select("*").eq('id',eqId).single()
+      const {data:users}:{data:UserDetails|null} = await supabaseClient.from("users_profile").select("*").eq('id',eqId).single()
       // //console.log(users)
         return users
      

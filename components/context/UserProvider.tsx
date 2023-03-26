@@ -5,10 +5,12 @@ import { createContext } from "react";
 
 import {
     User,
-    Session
+    Session,
+    useSupabaseClient,
+    useSession
   } from '@supabase/auth-helpers-react';
 import { getUserProfileData } from "@/modules/services/user";
-import { supabaseClient } from "@/lib/supabase";
+
 
   
 interface ProviderType {
@@ -21,7 +23,6 @@ export const initialData ={
 
 export interface ContextType  {
     session:Session | null;
-    accessToken: string | null;
     user: User | null;
     userProfile: UserDetails | null;
     isLoading: boolean;
@@ -40,57 +41,88 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
       const statusRef = useRef<string|null>(null)
     const [state,setState] = useState<ContextType>({
       session:null,
-      accessToken:null,
       user:null,
       userProfile:null,
-      isLoading:true,
+      isLoading:false,
       isRouteLoading:false
     });
+    const supabaseClient = useSupabaseClient()
     // const data = useUserProvider()
-
+    // const session = useSession();
+    // console.log(session)
 
     const router = useRouter()
     const {redirectedFrom} = router.query
+    useEffect(()=>{
+      supabaseClient.auth.stopAutoRefresh()
+    },[])
+
     // useEffect(()=>{
-    //   supabaseClient.auth.stopAutoRefresh()
-    // },[])
-    useEffect(() => {
+    //   if(session != null){
+    //       setState((props)=>({
+    //         ...props,
+    //         isLoading:true,
+    //       }))
+    //       getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
+    //           console.log(data)
+    //           setState((props)=>({  
+    //             ...props,
+    //             session:session, 
+    //             user: session?.user ?? null ,
+    //             userProfile: data ?? null,
+    //             isLoading:false,
+    //           }))
+      
+    //         })).finally(()=>{
+    //           setState((props)=>({
+    //             ...props,
+    //             isLoading:false,
+    //           })) 
+    //         });
+    //   }
+    // },[session])
 
-      setState((props)=>({
-        ...props,
-        isLoading:true,
-      }))
-     supabaseClient.auth.getSession().then(async({data})=>{
-   
-      if(data.session){
-        statusRef.current = 'SIGNED_IN'
-        const userDetails = await getUserProfileData(data.session?.user.id);
-        setState((props)=>({  
-            ...props,
-            accessToken:data?.session?.access_token ?? null,
-            session:data.session, 
-            user: data?.session?.user ?? null ,
-            userProfile: userDetails ?? null,
-            isLoading:false,
-          }))
-      }else{
-        throw Error("Session Expired")
-      }
 
-     }).catch((er)=>{
-      //console.log(er)
+  //   useEffect(() => {
+      
+  //      supabaseClient.auth.getSession().then(({data:{ session }}) => {
+
+  //       if(session != null ){
+  //         setState((props)=>({
+  //           ...props,
+  //           isLoading:true,
+  //         }))
+       
+  
+  //           statusRef.current = 'SIGNED_IN'
+  //           getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
+  //             console.log(data)
+  //             setState((props)=>({  
+  //               ...props,
+  //               session:session, 
+  //               user: session?.user ?? null ,
+  //               userProfile: data ?? null,
+  //               isLoading:false,
+  //             }))
+      
+  //           }));
     
-      setState((props)=>({  
-        ...props,
-        accessToken:null,
-        session:null, 
-        user: null ,
-        userProfile: null,
-        isLoading:false,
-      }))
-     })
+  
+  //       }
+  
+  //     }).catch((errr) => {
 
-  }, [])  
+  //       setState((props)=>({  
+  //         ...props,
+  //         session:null, 
+  //         user:  null ,
+  //         userProfile:  null,
+  //         isLoading:false,
+  //       }))
+  //     })
+
+
+  // }, [])  
 
 
   useEffect(()=>{
@@ -99,54 +131,43 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
           console.log(statusRef.current)
           console.log('_event')
           console.log(_event)
+          console.log(session)
+       
+
+
            if(_event != statusRef.current){
-        
-              if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED') { 
-
-                // const expires = new Date(0).toUTCString()
-             
-                // document.cookie = `my-access-token=; path=/; expires=${expires}; SameSite=Lax; secure`
-                // document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`
-
-                router.push('/signin')
-
+            if ((_event === 'SIGNED_IN' || _event == 'INITIAL_SESSION') && session) {
+              await getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
+              console.log(data)
+              setState((props)=>({  
+                ...props,
+                session:session, 
+                user: session?.user ?? null ,
+                userProfile: data ?? null,
+                isLoading:false,
+              }))
+  
+        }));
+          console.log('redirectedFrom')
+          console.log(redirectedFrom)
+             if(redirectedFrom && typeof redirectedFrom == 'string'){
+                router.push(redirectedFrom)                  
+              }else{
+                router.push('/') 
+              }
+          } else if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED' || ( _event == 'INITIAL_SESSION' && session == null)) { 
                 setState((props)=>({  
                   ...props,
-                  accessToken:null,
                   session:null, 
-                  user: null ,
+                  user:  null ,
                   userProfile: null,
                   isLoading:false,
                 }))
+                
+                router.push('/signin')
+              
 
-               
-
-              } else if ((_event === 'SIGNED_IN' || _event === 'TOKEN_REFRESHED') && session) {
-           
-                // const maxAge = 60 * 60 * 1000
-   
-                // document.cookie = `my-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
-                // document.cookie = `my-refresh-token=${session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`
-
-                const userDetails = await getUserProfileData(session?.user.id);
-                setState((props)=>({  
-                    ...props,
-                    accessToken:session?.access_token ?? null,
-                    session:session, 
-                    user: session?.user ?? null ,
-                    userProfile: userDetails ?? null,
-                    isLoading:false,
-                  }))
-                  console.log({redirectedFrom})
-                  if(redirectedFrom && typeof redirectedFrom == 'string'){
-                    router.push(redirectedFrom)                  
-                  }else{
-                    router.push('/') 
-                  }
-
-              }
-
-             
+              }   
     
               statusRef.current = _event
              

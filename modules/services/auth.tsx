@@ -1,14 +1,15 @@
 import { signInForType } from "@/components/auth/signIn";
 import { signUpForType } from "@/components/auth/signUp";
 import {  supabaseClient } from "@/lib/supabase";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 
 export type signUpServiceType = Omit<signUpForType,'confirmPassword'>
 export type signInServiceType = signInForType
         
 
-export const signUpService = async (user: signUpServiceType) => {
- 
+export const signUpService = async (user: signUpServiceType,supabaseClient:SupabaseClient) => {
+    
     const { data, error: signUpError } = await supabaseClient.auth.signUp({
       ...user,
     
@@ -25,7 +26,7 @@ export const signUpService = async (user: signUpServiceType) => {
 
 
 
-  export const signInService = async (user: signInServiceType) => {
+  export const signInService = async (user: signInServiceType, supabaseClient:SupabaseClient) => {
    
     const { data, error:signUpError } = await supabaseClient.auth.signInWithPassword({
       email: user.email,
@@ -42,8 +43,8 @@ export const signUpService = async (user: signUpServiceType) => {
   }
 
 
-  export const signOutService = async () => {
-   
+  export const signOutService = async (supabaseClient:SupabaseClient) => {
+    
     const { error } = await supabaseClient.auth.signOut()
     
 

@@ -13,8 +13,7 @@ import TagsSection from "../news/components/tagsSections"
 
 
 const Nav = () => {
-    const router = useRouter()
-    const userData = useUser()
+    const {session,isLoading} = useUser()
     // //console.log(userData)
     return (
         <AppBar component='nav'>
@@ -49,11 +48,11 @@ const Nav = () => {
                 </Heading>
                 </Link>
                 
-                {!userData.isLoading && 
+                {!isLoading && 
                     <Box 
                             sx={{display:'flex', gap:'7px'}}
                     >
-                        { userData?.user &&
+                        { session&&
                         <>
                             <Box
                             
@@ -79,7 +78,7 @@ const Nav = () => {
                         
                             </>
                         }
-                        {!userData?.user && 
+                        {!session && 
                                 <Link href="/signin">
                                     <CustomButton
                                     sx={{
