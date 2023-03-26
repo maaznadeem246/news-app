@@ -1,4 +1,4 @@
-import { createServerSupabaseClient} from '@/modules/supabase'
+import { createServerSupabaseClient} from '@/lib/supabase'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { NextRequest, NextResponse } from 'next/server'
 import initStripe from 'stripe'

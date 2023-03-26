@@ -6,7 +6,7 @@ import { Database } from './types/supabase'
 const env1:string = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
 const env2:string = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
 
-// const supabase = createClient<Database>(env1, env2);
+const supabase = createClient<Database>(env1, env2);
 
 const supabaseClient = () => createBrowserSupabaseClient<Database>({
     cookieOptions:{maxAge:3600,sameSite:'lax',},
@@ -26,7 +26,7 @@ export {
     createServerSupabaseClient,
     SessionContextProvider,
     createMiddlewareSupabaseClient,
-    // supabase,
+    supabase,
     supabaseClient
 }
 

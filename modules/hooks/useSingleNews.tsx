@@ -50,9 +50,9 @@ const useSingleNews = ():useSingleNewsType=>{
             // console.log(newsModal)
         if(newsData.data?.length > 0 && typeof newsModal == 'string'){
             
-            const singleNewsData : newsType = newsData.data.find((nv:newsType) =>{ 
+            const singleNewsData : newsType | null = newsData?.data.find((nv:newsType)=>{ 
                     // console.log(nv.uid == newsModal)
-                return nv.uid == newsModal})
+                return nv?.uid == newsModal}) || null
             // console.log(singleNewsData)
             if(singleNewsData){
                 setNewsState((props)=>({

@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import initStripe from "stripe"
 import {buffer} from 'micro';
-import { createServerSupabaseClient,  } from "@/modules/supabase";
+import { createServerSupabaseClient,  } from "@/lib/supabase";
 
 
 

@@ -5,10 +5,6 @@ import  { AxiosError } from 'axios'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { NextRequest, NextResponse } from 'next/server'
 
-import {  newsServiceApi } from '@/modules/services/news';
-import { redis } from '@/lib/redis';
-import { newsType } from '@/components/news/components/newsCard';
-import { dummydata } from '@/utils/dummydata';
 import { getCachedData, setCachedData } from '@/modules/services/redis';
 
 
