@@ -41,8 +41,12 @@ export async function middleware(req: NextRequest) {
   //   return res
   // }
 
-  return res
+  if (session?.user.email) {
+      // Authentication successful, forward request to protected route.
   
+      return res
+    }
+
   const redirectUrl = req.nextUrl.clone()
   redirectUrl.pathname = pathTobe
   redirectUrl.searchParams.set(`redirectedFrom`, req.nextUrl.pathname)
