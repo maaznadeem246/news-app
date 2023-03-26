@@ -8,7 +8,9 @@ import { useGlobalState } from "@/modules/hooks/useGlobal"
 
 
 
-
+type RequiredNotNull<T> = {
+    [P in keyof T]: NonNullable<T[P]>
+  }
 
 interface TagsSectionType {
    
@@ -16,7 +18,9 @@ interface TagsSectionType {
 
 const TagsSection = memo((props:TagsSectionType) =>{
     const newQuery = useNews()
-    const tagsList:(string)[] = newQuery?.data?.length > 0 ? [...new Set<string>(newQuery.data?.map((newObj:newsType) => newObj.source.name))]  : []
+
+    const val = newQuery?.data?.map((newObj:newsType) => newObj?.source?.name ?  newObj.source.name : '').filter(vl => Boolean(vl))        
+    const tagsList:(string)[] = (val && newQuery?.data?.length > 0) ? [...new Set<string>(val)]  : []
     const _tagsList = tagsList?.length > 0 ? ['Latest News'].concat(tagsList) : []
     const {handleTagOption,activeTag} = useGlobalState()
     const handleTag = (k:string) => {

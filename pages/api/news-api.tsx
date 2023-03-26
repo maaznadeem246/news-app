@@ -12,9 +12,7 @@ import { dummydata } from '@/utils/dummydata';
 import { getCachedData, setCachedData } from '@/modules/services/redis';
 
 
-type RequiredNotNull<T> = {
-    [P in keyof T]: NonNullable<T[P]>
-  }
+
 
 const defaultResNewsCount = 25
 
