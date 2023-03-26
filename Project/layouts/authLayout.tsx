@@ -41,7 +41,7 @@ export default function AuthLayout({ children  }: { children: ReactElement | Rea
             </Box>
     )}
     
-      if(!(isLoading || isRouteLoading) && !session) {
+      if(!session) {
             if(router.pathname.startsWith('/signup') || router.pathname.startsWith('/signin')){
             
               return   <>{ children }</>

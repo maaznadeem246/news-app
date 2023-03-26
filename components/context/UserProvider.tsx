@@ -43,7 +43,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
       session:null,
       user:null,
       userProfile:null,
-      isLoading:false,
+      isLoading:true,
       isRouteLoading:false
     });
     const supabaseClient = useSupabaseClient()
@@ -52,10 +52,11 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
     // console.log(session)
 
     const router = useRouter()
-    const {redirectedFrom} = router.query
-    useEffect(()=>{
-      supabaseClient.auth.stopAutoRefresh()
-    },[])
+    
+      
+    // useEffect(()=>{
+    //   supabaseClient.auth.stopAutoRefresh()
+    // },[])
 
     // useEffect(()=>{
     //   if(session != null){
@@ -132,7 +133,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
           console.log('_event')
           console.log(_event)
           console.log(session)
-       
+          const {redirectedFrom} = router.query       
 
 
            if(_event != statusRef.current){
@@ -150,11 +151,14 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
         }));
           console.log('redirectedFrom')
           console.log(redirectedFrom)
-             if(redirectedFrom && typeof redirectedFrom == 'string'){
-                router.push(redirectedFrom)                  
-              }else{
-                router.push('/') 
-              }
+          if(_event === 'SIGNED_IN' ){
+            if(redirectedFrom && typeof redirectedFrom == 'string'){
+              router.push(redirectedFrom)                  
+            }else{
+              router.push('/') 
+            }
+          }
+
           } else if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED' || ( _event == 'INITIAL_SESSION' && session == null)) { 
                 setState((props)=>({  
                   ...props,
@@ -164,7 +168,10 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
                   isLoading:false,
                 }))
                 
-                router.push('/signin')
+                if( _event != 'INITIAL_SESSION'){
+                  router.push('/signin')
+                }
+
               
 
               }   
