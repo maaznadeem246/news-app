@@ -57,7 +57,7 @@ Home.getLayout = function getLayout(page:ReactNode) {
   )
 }
 
-export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
+// export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
 
 
 //   // const supabase = createServerSupabaseClient(ctx);
@@ -75,9 +75,9 @@ export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
 
 
 
-  return {
-    props:{}
-  }
-}
+//   return {
+//     props:{}
+//   }
+// }
 
 export default Home;
