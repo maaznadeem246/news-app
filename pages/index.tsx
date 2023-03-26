@@ -12,6 +12,7 @@ import { QueryClient, dehydrate } from '@tanstack/react-query'
 import { newsService } from '@/modules/services/news'
 import SubNavLayout from '@/Project/layouts/subNavLayout'
 import { ReactNode } from 'react'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -57,27 +58,27 @@ Home.getLayout = function getLayout(page:ReactNode) {
   )
 }
 
-// export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
+export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
 
 
-//   // const supabase = createServerSupabaseClient(ctx);
-//   // const {
-//   //   data: { session }
-//   // } = await supabase.auth.getSession();
-//   // // //console.log(session)
-//   // if (!session)
-//   //   return {
-//   //     redirect: {
-//   //       destination: '/signin',
-//   //       permanent: false
-//   //     }
-//   //   };
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+  // //console.log(session)
+  if (!session)
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false
+      }
+    };
 
 
 
-//   return {
-//     props:{}
-//   }
-// }
+  return {
+    props:{}
+  }
+}
 
 export default Home;

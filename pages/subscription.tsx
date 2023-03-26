@@ -5,6 +5,7 @@ import { GetServerSidePropsContext,} from 'next'
 import initStripe from "stripe";
 import { keyable } from '@/types'
 import Subscription from '@/components/subscription'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 
 
 
@@ -43,18 +44,21 @@ const SubscriptionPage = (props:SubscriptionType) => {
 
 export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
  
-  // const supabase = createServerSupabaseClient(ctx);
-  // const {
-  //   data: { session }
-  // } = await supabase.auth.getSession();
-  // //console.log(session)
-  // if (!session)
-  //   return {
-  //     redirect: {
-  //       destination: '/signin',
-  //       permanent: false
-  //     }
-  //   };
+  const supabase = createServerSupabaseClient(ctx);
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+  //console.log(session)
+  const {data:users} = await supabase.from("users_profile").select("*").eq('id',session?.user.id).single()
+  // console.log(users)
+  if (!session || !users?.is_subscribed )
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false
+      }
+    };
+
 
 //@ts-ignore
 const stripe = initStripe(process.env.STRIPE_SECRET_KEY)
