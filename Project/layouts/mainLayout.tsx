@@ -1,5 +1,7 @@
 import { Nav } from '@/components/header'
 import MainContainer from '@/components/MainContainer'
+import PageLoadingBar from '@/components/PageLoadingBar'
+
 
 import { Box, Toolbar } from '@mui/material'
 
@@ -10,6 +12,7 @@ export default function MainLayout({ children  }: { children: ReactElement | Rea
  
   return (
       <>
+        <PageLoadingBar />
         {/* <Navbar /> */}
         <Nav 
           
