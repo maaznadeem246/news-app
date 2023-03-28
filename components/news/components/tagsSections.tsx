@@ -65,7 +65,7 @@ const TagsSection = memo((props:TagsSectionType) =>{
                     onClick={() => handleTag(vl)}
                     sx={{
                         background:theme.palette.primary.light,
-                        border:`3px solid ${activeTag.toLowerCase() == vl.toLowerCase() ? theme.palette.primary.main : 'transparent'}`,                        
+                        border:`3px solid ${activeTag.toLowerCase() == vl.toLowerCase() ? theme.palette.primary.dark : 'transparent'}`,                        
                         padding:'7px',
                         borderRadius:'10px',
                         whiteSpace:'nowrap',
