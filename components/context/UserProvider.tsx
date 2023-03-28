@@ -100,7 +100,10 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
             if(redirectedFrom && typeof redirectedFrom == 'string'){
               router.push(redirectedFrom)                  
             }else{
-              router.push('/')
+              if(statusRef.current === 'SIGNED_IN' && (router.pathname.startsWith('/signup') || router.pathname.startsWith('/signin'))){
+                router.push('/')
+              }
+
             }                  
           }else{
             setState((props)=>({  
