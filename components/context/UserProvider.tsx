@@ -118,12 +118,12 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
     
     if (statusRef.current === 'SIGNED_OUT'){
       
-        router.replace('/signin')
-        setState((props)=>({  
-          ...props,
-          userProfile: null,
-          isLoading:false,
-        }))
+        router.reload()
+        // setState((props)=>({  
+        //   ...props,
+        //   userProfile: null,
+        //   isLoading:false,
+        // }))
       }
 
     
