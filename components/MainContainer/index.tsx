@@ -19,7 +19,7 @@ const MainContainer : FC<MainContainerType>= ({children,sx={}}) => {
                 sx={{
                     width:['100%','80%','80%', '80%'],
                     // border:'1px solid',
-                    marginTop:['2rem','2rem','1rem','1rem'],
+                    marginTop:'1rem',
                     paddingRight:'0 !important',
                     paddingLeft:'0 !important',
                     ...sx,

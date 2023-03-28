@@ -13,13 +13,11 @@ export default function MainLayout({ children  }: { children: ReactElement | Rea
   return (
       <>
         <PageLoadingBar />
-        {/* <Navbar /> */}
-        <Nav 
-          
-        />
+
+        <Nav />
         <Toolbar />
         <MainContainer>{children}</MainContainer>
-        {/* <Footer /> */}
+
       </>
     )
   }
