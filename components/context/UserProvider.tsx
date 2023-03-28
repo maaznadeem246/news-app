@@ -118,7 +118,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
     
     if (statusRef.current === 'SIGNED_OUT'){
       
-        router.push('/signin')
+        router.replace('/signin')
         setState((props)=>({  
           ...props,
           userProfile: null,
