@@ -200,7 +200,11 @@ const dateValue = news?.publishedAt ? new Intl.DateTimeFormat('en-US').format(ne
                   <StyledDataText
                     sx={{
                       marginTop:'1rem',
-                      textDecoration:'underline'
+                      textDecoration:'underline',
+                      display: '-webkit-box',   
+                      'WebkitLineClamp': '3',   
+                      'WebkitBoxOrient': 'vertical',     
+                      overflow: 'hidden',
                     }}
                   >
                     <a href={news?.url || ''} style={{lineBreak:'anywhere'}} >{news?.url}</a>

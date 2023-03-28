@@ -39,7 +39,7 @@ const AllNews = memo(({newsList}:{newsList:newsType[]})=>{
             {
                 newsList.map((val:newsType,ind:number) => {
                     return (
-                        <Grid key={`newskye-${ind}-${val.uid}`} item xs={12} sm={12} md={6} lg={4} alignContent={'center'}   >
+                        <Grid key={`newskye-${ind}-${val.uid}`} item xs={12} sm={6} md={6} lg={4} alignContent={'center'}   >
                                 <NewsCard {...val}/>
                         </Grid>
                     )

@@ -1,19 +1,18 @@
-import { AppBar, Toolbar } from "@mui/material"
+import { AppBar, Theme, Toolbar, useMediaQuery } from "@mui/material"
 import Heading from "../headings"
 import theme from "@/styles/theme/theme"
 import { Box } from "@mui/system"
-import { useRouter } from "next/router"
 import Logout from "../auth/logout"
 import Link from "next/link"
 import CustomButton from "../inputs/customButton"
 import { useUser } from "../context/UserProvider"
-import TagsSection from "../news/components/tagsSections"
-
-
+import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 
 const Nav = () => {
     const {session,isLoading} = useUser()
+    const smResp = useMediaQuery((theme:Theme) => theme.breakpoints.down('sm'));
     // // console.log(session)
     return (
         <AppBar component='nav'>
@@ -31,8 +30,8 @@ const Nav = () => {
                     // borderRadius:'10px',
                     [theme.breakpoints.down('sm')]:{
                         width:'90%',
-                        flexDirection:'column',
-                        justifyContent:'space-around',
+                        // flexDirection:'column',
+                        justifyContent:'space-between',
                         // gap:'10px'
                     }
                 }}
@@ -41,7 +40,7 @@ const Nav = () => {
                 <Heading
                     variant="h4"
                     headingStyle={true}
-                    sx={{cursor:'pointer'}}
+                    sx={{cursor:'pointer',marginLeft:0}}
                    
                 >
                     <Box >News</Box>
@@ -66,7 +65,11 @@ const Nav = () => {
                                         minWidth:'fit-content !important',
                                     }}
                                     >
-                                        Subscription
+                                         { smResp ? 
+
+                                            <PaymentsRoundedIcon />
+                                         
+                                         : 'Subscription' }
                                     </CustomButton>
                                 </Link>
                             </Box>
@@ -88,7 +91,11 @@ const Nav = () => {
                                         minWidth:'fit-content !important',
                                     }}
                                     >
-                                        Signin
+                                       { smResp ? 
+
+                                    <LoginRoundedIcon />
+
+                                    : 'Signin' }
                                     </CustomButton>
                                 </Link>}
                     </Box>
