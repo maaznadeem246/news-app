@@ -11,4 +11,8 @@ const getRedistUrl = () => {
 }
 
 
-export const redis = new Redis(getRedistUrl())
+export const redis = new Redis(getRedistUrl(),{
+    tls: {
+    rejectUnauthorized: false
+  }}
+  )

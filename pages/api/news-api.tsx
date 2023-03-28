@@ -6,6 +6,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { NextRequest, NextResponse } from 'next/server'
 
 import { getCachedData, setCachedData } from '@/modules/services/redis';
+import { newsFetcherApi } from '@/modules/services/news';
 
 
 
@@ -43,31 +44,48 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
 
         const cachedData = await  getCachedData()
         
-        const datalist = new Map([...cachedData])
+        let cachedObj = new Map([...cachedData])
 
          console.log('Got cached')
-         console.log(datalist.size)
+         let cachedObjLenth = 0
 
+        for (let objvl of Object.values(Object.fromEntries(cachedObj))){
+            if(objvl) {
+                cachedObjLenth += (Object.values(objvl)).length 
+            }
+        } 
 
-         // TODO --- add new data response to the cached data and send to the client -----------
+        let newObj = new Map()
+        console.log(cachedObjLenth)
 
-        //  if(datalist.size < defaultResNewsCount){
+         if(cachedObjLenth < defaultResNewsCount){
       
-        //     console.log('getting new data')
-        //     const newsResponse = await newsServiceApi()
+            console.log('getting new data')
+            const newsResponse = await newsFetcherApi()
+            const newRes =  await setCachedData(newsResponse)
+            const cachedKeys = new Set([...cachedData.keys()]) 
+            const newKeys = new Set([...newRes.keys()]);
+            const finalKeys = new Set([...cachedKeys,...newKeys])
+    
+ 
+            console.log(finalKeys)
+        
+            
+            finalKeys.forEach(vl => {
+                newObj.set(vl,{...newObj.get(vl),...cachedData.get(vl), ...newRes.get(vl)})
+  
+            })
 
+            console.log(newObj)
+            // cachedObj = new Map([...cachedData,...newRes])
 
-        //     await setCachedData(newsResponse)
+            console.log('got new and saved in cache')
+        }
 
-        //     // const newList = new Map([])
-
-        //     console.log('got new and saved in cache')
-        // }
-      
-
-        console.log('sent Data')
-
-       return res.status(200).send(datalist);
+        let finalObj = new Map([...cachedObj, ...newObj])
+        const convertedObj = Object.fromEntries(finalObj)
+ 
+       return res.status(200).send(convertedObj);
 
     }catch(error){
         console.log(error)

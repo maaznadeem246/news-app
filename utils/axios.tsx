@@ -6,7 +6,12 @@ export const axiosInstance = axios.create({
 // For GET requests
 axiosInstance.interceptors.request.use(
    (req) => {
-      // Add configurations here
+      // Add configurations herez
+      const authCookie = localStorage.getItem('supabase-auth-token');
+      if(authCookie){
+         req.headers.set('Cookies',`supabase-auth-token=${authCookie}`)
+      }
+
       return req;
    },
    (err) => {

@@ -67,7 +67,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
           // console.log(session)
           // console.log(state)
           const {redirectedFrom} = router.query
-          console.log(redirectedFrom)       
+          // console.log(redirectedFrom)       
           if(state.session?.access_token != session?.access_token){
             if( _event == 'INITIAL_SESSION' || _event === 'SIGNED_IN'){
               console.log('in ---- INITIAL_SESSION')

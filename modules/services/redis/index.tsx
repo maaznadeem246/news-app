@@ -38,17 +38,24 @@ export const getCachedData = async (props?:getCachedDataType) => {
         // console.log(hashkeys)
         const getAllList = hashkeys.map((hv => ['hgetall',hv]))
         const newsRedisgetall = await redis.pipeline(getAllList).exec();
-        console.log(newsRedisgetall)
+        // console.log(newsRedisgetall)
         let dataValuse = new Map()
         let inc = 0
         newsRedisgetall?.forEach((vl:[error: Error | null, result: unknown| ReturnType<typeof Object>])=>{
             // dataValuse = { [hashkeys[inc]]: vl[1] }
             // inc++;
-          
+            // console.log('-------------------------------')
+            // console.log(vl[1])
+
+            // console.log(dataValuse.get(hashkeys[inc]) )
+            // console.log('---------------------------------')
             if(typeof vl[1] == 'object' && vl[1] && Object.keys(vl[1]).length  > 0){
-                dataValuse.set(hashkeys[inc],vl[1])
+                // console.log('--------------------------------- in')
+                // console.log('vl[1]')
+                // console.log(vl[1])
+                dataValuse.set(hashkeys[inc],{...vl[1]})
             }
-      
+            inc += 1 
         })
         // console.log("dataValuse")
         // console.log(dataValuse)
@@ -76,7 +83,7 @@ export const getCachedData = async (props?:getCachedDataType) => {
         // }));   
         
        
-
+        // console.log(dataValuse)  
         return dataValuse
 
   
@@ -98,7 +105,7 @@ export const setCachedData = async (data:newsType[]) => {
             let d = formatedDate(v?.publishedAt||  todayDate)
             let nv = { [v?.url||'unknown'] : JSON.stringify(v)}
             let objectData = {...nv,...dataWithDates.get(d)}
-            dataWithDates.set(d , objectData ) //,
+            dataWithDates.set(`news-${d}` , objectData ) //,
         }
     );   
 
@@ -107,12 +114,12 @@ export const setCachedData = async (data:newsType[]) => {
 
     const listtoExc:Array<Array<string>> = [];
      Object.keys(newsObject).forEach(key => {
-        listtoExc.push(['hmset',`news-${key}`,newsObject[key]] )
+        listtoExc.push(['hmset',key,newsObject[key]] )
     });
      
     const saveresponse =  await redis.pipeline(listtoExc).exec()
 
-    console.log(saveresponse)
+    // console.log(saveresponse)
    
-  
+    return dataWithDates
 }

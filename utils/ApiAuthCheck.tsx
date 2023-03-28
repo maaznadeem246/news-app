@@ -22,6 +22,7 @@ const ApiAuthCheck = async (req:NextApiRequest & NextRequest, res:NextApiRespons
     
     if (!(access_token && refresh_token)) {
         throw new AxiosError("User not Authorized.")
+        
     }
 
     const userData:PostgrestSingleResponse<UserDetails> = await supabaseServer.from("users_profile")
@@ -31,6 +32,7 @@ const ApiAuthCheck = async (req:NextApiRequest & NextRequest, res:NextApiRespons
     
     if(!userData?.data){
         throw new AxiosError("User not Authorized.")
+        
     }
 
     return {

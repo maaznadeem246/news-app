@@ -14,7 +14,7 @@ import TagsSection from "../news/components/tagsSections"
 
 const Nav = () => {
     const {session,isLoading} = useUser()
-    // //console.log(userData)
+    // console.log(session)
     return (
         <AppBar component='nav'>
             <Toolbar

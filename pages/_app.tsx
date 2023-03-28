@@ -34,6 +34,7 @@ const queryClient = new QueryClient()
 
 
 export default function App({ Component, pageProps,  emotionCache = clientSideEmotionCache, }: MyAppProps) {
+
   const [supabaseClientState] = useState(() => supabaseClient())
 
   const getLayout = Component.getLayout || ((page) => page)
@@ -67,7 +68,7 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
       </QueryClientProvider>
      </SessionContextProvider>
      </CacheProvider>
-     <Analytics  />
+     <Analytics  mode='production'/>
      </>
      )
 }

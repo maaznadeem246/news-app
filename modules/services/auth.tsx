@@ -1,6 +1,6 @@
 import { signInForType } from "@/components/auth/signIn";
 import { signUpForType } from "@/components/auth/signUp";
-import {  supabaseClient } from "@/lib/supabase";
+// import {  supabaseClient } from "@/lib/supabase";
 import { SupabaseClient } from "@supabase/supabase-js";
 
 

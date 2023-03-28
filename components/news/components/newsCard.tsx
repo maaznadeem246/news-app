@@ -13,7 +13,7 @@ import { memo,ReactNode } from "react"
 export interface newsType {
     author: string|null,
 content: string|null,
-
+fullContent?:string | null,
 description: string|null,
 publishedAt:string|null,
 source:{

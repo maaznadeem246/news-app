@@ -13,34 +13,42 @@ interface  newsServiceType {
 
 export const newsService = async (props:newsServiceType & QueryFunctionContext<string[], any>) =>  {
     
-        const data = await newsServiceApi(props)
+        const datav:object = await newsServiceApi()
+        
+        
+        console.log('dat1')
+        console.log((Object.values(datav))) 
+        const dat = await (Object.values(datav)).reduce((prev,curr) => Object.assign({},{...prev,...curr}))
+
+        console.log('dat')  
+        console.log(Object.values(dat))  
+        const data:newsType[] = []
         const  dataTob = data?.map((vl:newsType) => ({...vl, uid: typeof window !== "undefined" ? window.crypto.randomUUID() :   crypto.randomUUID()})) || []
         return dataTob
 
 
 }
 
-export const newsServiceApi= async (props?:newsServiceType) :Promise<newsType[]> => {
-    const defaultQueries =  `&pageSize=30`
-    const qq = defaultQueries + props?.queries || ''
-    const data = await axiosInstance.request({
+
+export const newsServiceApi = async () => {
+    // const validateData = articalContentDataSchema.safeParse({url});
+    // // console.log(url)
+    // // console.log(validateData)
+    // if(!validateData.success){
+    //     throw new Error('Not Valid Url')
+    // }
+
+    const repsonseJson = await  axiosInstance.request({
         method:'GET',
-        // url:`${process.env.NEXT_PUBLIC_NEWS_API_URL}/article-date/01-04-2021`,
-        url:`${process.env.NEXT_PUBLIC_NEWS_API_URL}/top-headlines?language=en${qq}&apiKey=${ process.env.NEXT_PUBLIC_NEWS_API_KEY}`,
-
-        // params:{...params},
-        // headers: {
-
-        //     'X-RapidAPI-Key': process.env.NEXT_PUBLIC_NEWS_API_KEY,
-        //     'X-RapidAPI-Host': 'reuters-business-and-financial-news.p.rapidapi.com'
-        //   }
+        url:`/api/news-api`,
+        
+        // data:{
+        //     "url":url
+        // }
     })
-    //console.log(data)
-  
-    // console.log(dataTob)
-    return data?.data?.articles || []
+    // console.log(repsonseJson)
+    return repsonseJson.data
 }
-
 
 export const newsContentService = async ({url}:{url:string}) => {
 
@@ -63,4 +71,19 @@ export const newsContentService = async ({url}:{url:string}) => {
     
 
 }
+
+
+export const newsFetcherApi= async (props?:newsServiceType) :Promise<newsType[]> => {
+    const defaultQueries =  `&pageSize=50`
+    const qq = defaultQueries + props?.queries || ''
+    const data = await axiosInstance.request({
+        method:'GET',
+        url:`${process.env.NEXT_PUBLIC_NEWS_API_URL}/top-headlines?language=en${qq}&apiKey=${ process.env.NEXT_PUBLIC_NEWS_API_KEY}`,
+    })
+    const resList = (data?.data?.articles || []).map((vl:newsType) => Object.assign({},{...vl, fullContent:null}) )
+    return resList
+}
+
+
+
 
