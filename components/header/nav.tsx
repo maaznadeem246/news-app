@@ -49,7 +49,7 @@ const Nav = () => {
                 
                 {!isLoading && 
                     <Box 
-                            sx={{display:'flex', gap:'7px'}}
+                            sx={{display:'flex', gap:'12px'}}
                     >
                         { session&&
                         <>
