@@ -48,9 +48,9 @@ export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
   const {
     data: { session }
   } = await supabase.auth.getSession();
-  //console.log(session)
+  //// console.log(session)
 
-  // console.log(users)
+  // // console.log(users)
   if (!session)
     return {
       redirect: {
@@ -66,7 +66,7 @@ const stripe = initStripe(process.env.STRIPE_SECRET_KEY)
 const {data:prices} = await stripe.prices.list()
 
  const plans =  await Promise.all(prices.map(async(price:keyable) => {
-    // console.log(price)
+    // // console.log(price)
     const product = await stripe.products.retrieve(price.product)
     return {
       id:price.id,

@@ -11,45 +11,47 @@ import {ReactElement, ReactNode} from 'react'
 
 export default function AuthLayout({ children  }: { children: ReactElement | ReactNode}) {
  
-  const router = useRouter()  
+//   const router = useRouter()  
 
-     const {isLoading,session,isRouteLoading} = useUser();
-  
-  
-    if(isLoading || isRouteLoading)  {return ( 
+    //  const {isLoading,session,isRouteLoading} = useUser();
 
-            <Box
+
+  
+    // if(isLoading || isRouteLoading)  {return ( 
+
+    //         <Box
            
-                sx={{
-                    marginTop:'5rem'
-                }}
-            >
+    //             sx={{
+    //                 marginTop:'5rem'
+    //             }}
+    //         >
 
-                <Heading  
-                variant="h2"
-                sx={{
-                    fontWeight:'600',
-                    textAlign:'center',
-                    margin:'auto',
-                    marginBottom:'30px',
-                    marginTop:'30px'
-                    }}
-                    headingStyle={true}
-                >
-                  Loading
-                </Heading>
-            </Box>
-    )}
+    //             <Heading  
+    //             variant="h2"
+    //             sx={{
+    //                 fontWeight:'600',
+    //                 textAlign:'center',
+    //                 margin:'auto',
+    //                 marginBottom:'30px',
+    //                 marginTop:'30px'
+    //                 }}
+    //                 headingStyle={true}
+    //             >
+    //               Loading
+    //             </Heading>
+    //         </Box>
+    // )}
     
-      if(!session) {
-            if(router.pathname.startsWith('/signup') || router.pathname.startsWith('/signin')){
+      // if(!session) {
+      //       if(router.pathname.startsWith('/signup') || router.pathname.startsWith('/signin')){
             
-              return   <>{ children }</>
-            }else{
-              return <SingInPage  />
-            }
-      }
+      //         return   <>{ children }</>
+      //       }else{
+      //         return <SingInPage  />
+      //       }
+      // }
     
+      
       return  <>{ children }</>   
 
    

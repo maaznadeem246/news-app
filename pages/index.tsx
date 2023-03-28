@@ -8,8 +8,6 @@ import { GetServerSidePropsContext, NextPage } from 'next'
 
 
 import NewsPage from '@/components/news'
-import { QueryClient, dehydrate } from '@tanstack/react-query'
-import { newsService } from '@/modules/services/news'
 import SubNavLayout from '@/Project/layouts/subNavLayout'
 import { ReactNode } from 'react'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
@@ -17,7 +15,7 @@ import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 const inter = Inter({ subsets: ['latin'] })
 
 const Home = (props:NextPage) => {
-  // //console.log(props)
+  // //// console.log(props)
  
   return (
     <>
@@ -65,7 +63,7 @@ export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
   const {
     data: { session }
   } = await supabase.auth.getSession();
-  // //console.log(session)
+  // // console.log(session)
   const {data:users} = await supabase.from("users_profile").select("*").eq('id',session?.user.id).single()
 
   if (!session  || !users?.is_subscribed )

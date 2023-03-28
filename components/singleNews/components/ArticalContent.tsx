@@ -18,7 +18,7 @@ const ArticalContent  = ({news}:{news:newsType  }) => {
 
   
     
-    // console.log(contentQuery.data)
+    // // console.log(contentQuery.data)
 
     return (
         <>
@@ -33,7 +33,7 @@ const ArticalContent  = ({news}:{news:newsType  }) => {
         sx={{
             marginTop:'1rem',
             '& > p,pre':{
-                whiteSpace: 'break-spaces',
+                whiteSpace: 'normal',
             }
         }}
         >

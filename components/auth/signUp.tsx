@@ -10,6 +10,7 @@ import { memo } from "react";
 import useSignup from "@/modules/hooks/useSignUp";
 import theme from "@/styles/theme/theme";
 import { useRouter } from "next/router";
+import { useUser } from "../context/UserProvider";
 
 type SignUpTypes  = {
     handleToggle?: handleToggle 
@@ -48,6 +49,7 @@ const SignUp = memo(({
   
       
     })
+    const {isLoading,isRouteLoading} = useUser();
     
     const signUpMutaion = useSignup()    
 
@@ -59,8 +61,8 @@ const SignUp = memo(({
             email:data.email,
             password:data.password,
           })  
-        //   // //console.log('response')
-        //   // //console.log(response)
+        //   // //// console.log('response')
+        //   // //// console.log(response)
     }
 
 
@@ -103,6 +105,7 @@ const SignUp = memo(({
                     control={formData.control}
                     variant="outlined"
                     label="Full Name"
+                    disabled={signUpMutaion.isLoading || isLoading || isRouteLoading}
                     error={Boolean(formData.errors.fullname?.message)}
                     helperText={Boolean(formData.errors.fullname?.message) ? formData.errors.fullname?.message : ""}
                 />
@@ -114,6 +117,7 @@ const SignUp = memo(({
                     sxMainBox={{
                         marginTop:'10px',   
                     }}
+                    disabled={signUpMutaion.isLoading || isLoading || isRouteLoading}
                     error={Boolean(formData.errors.email?.message)}
                     helperText={Boolean(formData.errors.email?.message) ? formData.errors.email?.message : ""}
                 />
@@ -126,6 +130,7 @@ const SignUp = memo(({
                     sxMainBox={{
                         marginTop:'10px',   
                     }}
+                    disabled={signUpMutaion.isLoading || isLoading || isRouteLoading}
                     error={Boolean(formData.errors.password?.message)}
                     helperText={Boolean(formData.errors.password?.message) ? formData.errors.password?.message : ""}
                 />
@@ -138,6 +143,7 @@ const SignUp = memo(({
                     sxMainBox={{
                         marginTop:'10px',   
                     }}
+                    disabled={signUpMutaion.isLoading || isLoading || isRouteLoading}
                     error={Boolean(formData.errors.confirmPassword?.message)}
                     helperText={Boolean(formData.errors.confirmPassword?.message) ? formData.errors.confirmPassword?.message : ""}
                 />
@@ -151,7 +157,7 @@ const SignUp = memo(({
                             maxWidth:['100%','300px']
                         }}
                         type="submit"
-                        disabled={signUpMutaion.isLoading}
+                        disabled={signUpMutaion.isLoading || isLoading || isRouteLoading}
                 >
                     Sign Up
                 </CustomButton>

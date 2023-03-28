@@ -25,7 +25,7 @@ export default function uzseSignup() {
   return useMutation<keyable, Error, signUpServiceType, unknown>((user: signUpServiceType) => signUpService(user,supabaseClient), {
     retry:0,
     onSuccess: async(data:keyable,variables) => {
-      // //console.log(data)
+      // //// console.log(data)
    
       // const insertData = await createUser({data,variables});
 

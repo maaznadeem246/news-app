@@ -39,7 +39,8 @@ export default function App({ Component, pageProps,  emotionCache = clientSideEm
 
   const getLayout = Component.getLayout || ((page) => page)
   
-  // supabaseClientState.auth.stopAutoRefresh()
+
+
 
   return(
     <>

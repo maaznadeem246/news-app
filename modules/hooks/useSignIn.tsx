@@ -21,8 +21,9 @@ export default function useSignIn() {
 
   return useMutation<keyable, Error, signInServiceType, unknown>((user: signInServiceType) => signInService(user,supabaseClient), {
       retry:0,
+      
     onSuccess: async(data:keyable,variables) => {
-      // //console.log(redirectedFrom)
+      // // console.log('redirectedFrom')
       // if(redirectedFrom && typeof redirectedFrom == 'string'){
 
       //     router.push(redirectedFrom)        

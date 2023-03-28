@@ -41,7 +41,7 @@ interface singleNewsModalType{
 export default function SingleNewsModal({open=false,handleClose,news}:singleNewsModalType) {
   
 
-const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} / ${new Date(news?.publishedAt).getMonth()} / ${new Date(news?.publishedAt).getFullYear()}` :  null
+const dateValue = news?.publishedAt ? new Intl.DateTimeFormat('en-US').format(new Date(news.publishedAt)) :  null
   return (
     <div>
       <Dialog
@@ -218,6 +218,7 @@ const dateValue = news?.publishedAt ? `${new Date(news?.publishedAt).getDate()} 
                   <StyledDataText
                     sx={{
                       marginTop:'1rem',
+                     
                     }}
                   >
                      {news?.description  && 

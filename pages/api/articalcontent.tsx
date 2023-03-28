@@ -49,10 +49,10 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
     }catch(error){
 
         let message = 'Unknown Error';
-        let code  = 400;
+        let code  = 401;
         if (error instanceof AxiosError){
                 message = error.message
-                code = Number(error?.status) || 400
+                code = Number(error?.status) || 401
             };
         
        return  res.status(code).send(message);

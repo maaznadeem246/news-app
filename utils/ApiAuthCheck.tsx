@@ -31,7 +31,8 @@ const ApiAuthCheck = async (req:NextApiRequest & NextRequest, res:NextApiRespons
                                         .single();
     
     if(!userData?.data){
-        throw new AxiosError("User not Authorized.")
+        // throw new AxiosError()
+        res.status(401).send("User not Authorized.")
         
     }
 

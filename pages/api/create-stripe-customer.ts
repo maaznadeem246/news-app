@@ -13,7 +13,7 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
               
 
 
-              // // //console.log(req.body)
+              // // //// console.log(req.body)
               if(req.query.API_ROUTE_SECRET !== process.env.API_ROUTE_SECRET){
                      return res.status(401).send('You are not authorized to call this api')
               }
@@ -25,8 +25,8 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
                             email:req.body?.record?.email || '',
                             
                      })
-                     // // //console.log('customer')
-                     // // //console.log(customer)
+                     // // //// console.log('customer')
+                     // // //// console.log(customer)
                      if(customer?.id && req.body?.record?.id){
                            
                             try{                      
@@ -36,12 +36,12 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
                                    stripe_customer:customer.id
                             })
                             .eq("id",req.body.record.id).single()    
-                     //        // //console.log('dff')
-                     //      // //console.log(dff)
+                     //        // //// console.log('dff')
+                     //      // //// console.log(dff)
                             }catch(er){
 
-                                   // //console.log(er)     
-                                   return res.status(400).send('Not Authorized')     
+                                   // //// console.log(er)     
+                                   return res.status(401).send('Not Authorized')     
                             }
 
                      }

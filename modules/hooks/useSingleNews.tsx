@@ -19,7 +19,7 @@ const useSingleNews = ():useSingleNewsType=>{
 
     const router = useRouter()
     const {nid} = router.query
-    // console.log(nid)
+    // // console.log(nid)
     const {newsModal,handleNewsModalClose} = useGlobalState()
 
     const newsData = useNews()
@@ -47,13 +47,13 @@ const useSingleNews = ():useSingleNewsType=>{
  
 
     useEffect(()=>{
-            // console.log(newsModal)
+            // // console.log(newsModal)
         if(newsData.data?.length > 0 && typeof newsModal == 'string'){
             
             const singleNewsData : newsType | null = newsData?.data.find((nv:newsType)=>{ 
-                    // console.log(nv.uid == newsModal)
+                    // // console.log(nv.uid == newsModal)
                 return nv?.uid == newsModal}) || null
-            // console.log(singleNewsData)
+            // // console.log(singleNewsData)
             if(singleNewsData){
                 setNewsState((props)=>({
                     ...props,

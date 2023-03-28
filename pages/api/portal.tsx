@@ -27,8 +27,8 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
                                                 .single();
             
           if( qData?.data?.stripe_customer && typeof qData?.data?.stripe_customer == 'string'){
-            // console.log('qData?.data?.stripe_customer')
-            // console.log(qData?.data?.stripe_customer)
+            // // console.log('qData?.data?.stripe_customer')
+            // // console.log(qData?.data?.stripe_customer)
             //@ts-ignore
             const stripe  = await initStripe(process.env.STRIPE_SECRET_KEY) 
   
@@ -51,7 +51,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
          
 
         }catch(er){
-          //console.log(er)
+          //// console.log(er)
          return  res.status(401).send("User not Authorized.")
         }
 

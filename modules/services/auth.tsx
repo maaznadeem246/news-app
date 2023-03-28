@@ -15,8 +15,8 @@ export const signUpService = async (user: signUpServiceType,supabaseClient:Supab
     
     },)
     
-    // //console.log(data)
-    // //console.log(signUpError)
+    // //// console.log(data)
+    // //// console.log(signUpError)
     if(signUpError) {
       throw signUpError
     }
@@ -27,14 +27,14 @@ export const signUpService = async (user: signUpServiceType,supabaseClient:Supab
 
 
   export const signInService = async (user: signInServiceType, supabaseClient:SupabaseClient) => {
-   
+   // console.log('fs')
     const { data, error:signUpError } = await supabaseClient.auth.signInWithPassword({
       email: user.email,
       password: user.password,
     })
     
-    // //console.log(data)
-    // //console.log(signUpError)
+    // //// console.log(data)
+    // //// console.log(signUpError)
     if(signUpError) {
       throw signUpError
     }

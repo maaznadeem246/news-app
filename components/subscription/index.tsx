@@ -26,6 +26,8 @@ const SubscriptionPrices = memo(({plans=[],handleSubscribe,showSubscribedButon}:
     return (
         <Grid container spacing={2} justifyContent="center">
                 {plans.map((planV,indx)=>{
+                    let prTob:number = Number((planV.price).toString().substring(0,(planV.price).toString().length-2))
+                    // let prTob = new Intl.NumberFormat("en-RS",{style: 'currency', currency: 'PKR'}).format(pr)
                     return (
                         <Grid key={`subBox-${indx}`} item xs={12} md={6} > 
                             
@@ -34,7 +36,8 @@ const SubscriptionPrices = memo(({plans=[],handleSubscribe,showSubscribedButon}:
                                         {planV.name}
                                     </Heading>
                                     <Heading variant="h3" sx={{textTransform:'capitalize',  textAlign:'left'}}>
-                                        {(planV.price).toString().substring(0,(planV.price).toString().length-2)} 
+                                        {/*  */}
+                                        {prTob}
                                         <Box sx={{display:'inline-block', fontSize:'clamp(1.8rem, 1vw, 2.8rem)', marginLeft:'0.5rem'}}>{(planV.currency).toUpperCase()} / {planV.interval}</Box>
                                     </Heading>
                                     {!showSubscribedButon && <CustomButton
@@ -66,12 +69,13 @@ const SubscriptionDetails = ({priceDetails,userProfile}:{priceDetails:priceType,
 
     const handleUpdateSubscription = async() => {
        const {data} =  await changeSubscriptionService()
-        console.log(data)
+        // console.log(data)
         if(data){
             router.push(data)
         }
 
     }
+    let prTob:number = Number((priceDetails.price).toString().substring(0,(priceDetails.price).toString().length-2))
 
     return (
         <Grid container spacing={2} justifyContent="center" >
@@ -82,7 +86,7 @@ const SubscriptionDetails = ({priceDetails,userProfile}:{priceDetails:priceType,
             </Grid>   
             <Grid item xs={12}>
                 <Heading variant="h2" sx={{textTransform:'capitalize'}}>
-                        {(priceDetails.price).toString().substring(0,(priceDetails.price).toString().length-2)} 
+                        {(prTob)}
                         <Box sx={{display:'inline-block', fontSize:'clamp(1.8rem, 1vw, 2.8rem)', marginLeft:'0.5rem'}}>
                             {(priceDetails.currency).toUpperCase()} / {priceDetails.interval}
                         </Box>
@@ -104,16 +108,16 @@ const SubscriptionDetails = ({priceDetails,userProfile}:{priceDetails:priceType,
 
 const Subscription = ({plans=[]}:SubscriptionType) => {
 
-    const {userProfile} = useUser()
+    const {userProfile, isLoading} = useUser()
     // const [planeState] = useState(plans || [])
    
-    // console.log(plans)
+    // // console.log(plans)
     // console.log(userProfile)
     const logoutMuation = useSignOut()
     
     const handleSubscribe = async(pId:string) => {
             const {data:{id}, error} = await  subscriptionService(pId)
-            //console.log(error)
+            //// console.log(error)
             if(process.env.NEXT_PUBLIC_STRIPE_KEY != undefined && id && error == null){
                 const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
                 await stripe?.redirectToCheckout({sessionId:id})
@@ -150,6 +154,7 @@ const Subscription = ({plans=[]}:SubscriptionType) => {
                 </Heading>
             </Box>
             {/* <pre>{JSON.stringify(planeState,null,2)}</pre> */}
+        {!isLoading && <> 
             {showSubscribedButon && priceDetails &&  <SubscriptionDetails priceDetails={ priceDetails } userProfile={userProfile}/>}
 
             { showSubscribedButon && 
@@ -172,6 +177,7 @@ const Subscription = ({plans=[]}:SubscriptionType) => {
             }
 
           <SubscriptionPrices plans={subscriptionPricesList} handleSubscribe={handleSubscribe}  showSubscribedButon={showSubscribedButon}/>
+          </>}
         </Box>
         </>
     )

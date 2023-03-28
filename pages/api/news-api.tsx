@@ -7,11 +7,12 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { getCachedData, setCachedData } from '@/modules/services/redis';
 import { newsFetcherApi } from '@/modules/services/news';
+import { redis } from '@/lib/redis';
 
 
 
 
-const defaultResNewsCount = 25
+const defaultResNewsCount = 1
 
 // export const newsQuerySchema = z.object({
 //     country:z.string().optional(),
@@ -38,15 +39,15 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
         // if(!validateData.success){
         //     throw new Error('Not Valid Url');
         // }
-        
-        
+        // await  redis.connect()
+        // console.log('in news')
       
 
         const cachedData = await  getCachedData()
         
         let cachedObj = new Map([...cachedData])
 
-         console.log('Got cached')
+         // console.log('Got cached')
          let cachedObjLenth = 0
 
         for (let objvl of Object.values(Object.fromEntries(cachedObj))){
@@ -56,11 +57,11 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
         } 
 
         let newObj = new Map()
-        console.log(cachedObjLenth)
+        // // console.log(cachedObjLenth)
 
          if(cachedObjLenth < defaultResNewsCount){
       
-            console.log('getting new data')
+            // console.log('getting new data')
             const newsResponse = await newsFetcherApi()
             const newRes =  await setCachedData(newsResponse)
             const cachedKeys = new Set([...cachedData.keys()]) 
@@ -68,7 +69,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
             const finalKeys = new Set([...cachedKeys,...newKeys])
     
  
-            console.log(finalKeys)
+            // // console.log(finalKeys)
         
             
             finalKeys.forEach(vl => {
@@ -76,24 +77,33 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
   
             })
 
-            console.log(newObj)
+            // // console.log(newObj)
             // cachedObj = new Map([...cachedData,...newRes])
 
-            console.log('got new and saved in cache')
+            // console.log('got new and saved in cache')
         }
 
         let finalObj = new Map([...cachedObj, ...newObj])
-        const convertedObj = Object.fromEntries(finalObj)
- 
-       return res.status(200).send(convertedObj);
+        const convertedObj:object = Object.fromEntries(finalObj)
+        
+
+        // convert the data in to right formate
+        const dataTobe =  Object.values( await (Object.values(convertedObj)).reduce((prev,curr) => Object.assign({},{...prev,...curr}))).map((vl) => {if(typeof vl == 'string') return  JSON.parse(vl)}).reverse()
+
+        // // console.log(dataTobe)
+        // .map((vl:string) => JSON.parse(vl))  
+       
+       return res.status(200).send(dataTobe);
 
     }catch(error){
-        console.log(error)
+
+        // console.log(' in error')
+        // console.log(error)
         let message = 'Unknown Error';
-        let code  = 400;
+        let code  = 401;
         if (error instanceof AxiosError){
                 message = error.message
-                code = Number(error?.status) || 400
+                code = Number(error?.status) || 401
             };
         
        return  res.status(code).send(message);

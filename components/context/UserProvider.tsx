@@ -7,7 +7,8 @@ import {
     User,
     Session,
     useSupabaseClient,
-    useSession
+    useSession,
+    useUser as useUserSup,
   } from '@supabase/auth-helpers-react';
 import { getUserProfileData } from "@/modules/services/user";
 
@@ -22,13 +23,14 @@ export const initialData ={
 }
 
 export interface ContextType  {
-    session:Session | null;
-    user: User | null;
+    session:Session | null,
+    user:User | null,
     userProfile: UserDetails | null;
     isLoading: boolean;
     isRouteLoading?:boolean;
   }
-  
+
+  type UserContextState = Omit<ContextType,'session'|'user'>
   
 
 const UserContext = createContext<ContextType| undefined>(undefined);
@@ -39,23 +41,90 @@ export interface Props {
 
 export const UserProvider : FC<ProviderType>  = (props: Props) => {
       const statusRef = useRef<string|null>(null)
-    const [state,setState] = useState<ContextType>({
-      session:null,
-      user:null,
+    const [state,setState] = useState<UserContextState>({
       userProfile:null,
       isLoading:true,
       isRouteLoading:false
     });
+
     const supabaseClient = useSupabaseClient()
     // const data = useUserProvider()
 
-
+    // supabaseClient.auth.stopAutoRefresh()
 
 
 
     const router = useRouter()
+             const {redirectedFrom} = router.query
+
+    const session = useSession()
+    const user = useUserSup()
+  
+    // useEffect(() => {
+    //   if(user != null && state.userProfile == null){
+    //     // console.log(session)      
+       
+
+    //     }
+    // },[state.userProfile,user])
     
+    // useEffect(()=>{
+    //   if(user == null && !(router.pathname.startsWith('/signup') || router.pathname.startsWith('/signin'))){
+    //     router.push(router.pathname.startsWith('/signup') ? '/signup' : '/signin')       
+    //   }
       
+    // },[user])
+
+
+
+    useEffect(()=>{
+
+        if( statusRef.current == 'INITIAL_SESSION' || statusRef.current === 'SIGNED_IN'){
+          if(session){
+            if(state.userProfile == null ){
+               getUserProfileData(supabaseClient,session?.user.id).then((data => {
+                // console.log(data)
+                setState((props)=>({  
+                  ...props,
+                  userProfile: data ?? null,
+                  isLoading:false,
+                }))
+                
+
+              })).catch((er)=>{
+                // console.log(er)
+                router.reload()
+              })    
+            }
+            
+            if(redirectedFrom && typeof redirectedFrom == 'string'){
+              router.push(redirectedFrom)                  
+            }else{
+              router.push('/')
+            }                  
+          }else{
+            setState((props)=>({  
+              ...props,
+              userProfile: null,
+              isLoading:false,
+            }))
+          }
+
+         
+    }
+    
+    if (statusRef.current === 'SIGNED_OUT'){
+      setState((props)=>({  
+        ...props,
+        userProfile: null,
+        isLoading:false,
+      }))
+        router.push('/signin')
+      }
+
+    
+    },[statusRef.current])
+    
 
 
   useEffect(()=>{
@@ -66,91 +135,14 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
           // console.log(_event)
           // console.log(session)
           // console.log(state)
-          const {redirectedFrom} = router.query
-          // console.log(redirectedFrom)       
-          if(state.session?.access_token != session?.access_token){
-            if( _event == 'INITIAL_SESSION' || _event === 'SIGNED_IN'){
-              console.log('in ---- INITIAL_SESSION')
-            
-              await getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
-                      console.log(data)
-                      setState((props)=>({  
-                        ...props,
-                        session:session, 
-                        user: session?.user ?? null ,
-                        userProfile: data ?? null,
-                        isLoading:false,
-                      }))
-                    })).catch((er)=>{
-                      console.log(er)
-                      router.reload()
-                    })
-                  if(_event === 'SIGNED_IN'){
-                    if(redirectedFrom && typeof redirectedFrom == 'string'){
-                      router.push(redirectedFrom)                  
-                    }else{
-                      router.push('/') 
-                    }      
-                  }
-            }
-
-         }else{
-          if(state.isLoading){
-            setState((prev) => ({
-              ...prev,
-              isLoading:false
-            }))
-          }
-         }
-         if (_event === 'SIGNED_OUT'){
-          router.reload()
-        }
-        //    if(_event != statusRef.current){
-        //     if ((_event === 'SIGNED_IN' || _event == 'INITIAL_SESSION') && session) {
-        //       await getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
-        //       console.log(data)
-        //       setState((props)=>({  
-        //         ...props,
-        //         session:session, 
-        //         user: session?.user ?? null ,
-        //         userProfile: data ?? null,
-        //         isLoading:false,
-        //       }))
-  
-        // }));
-        //   console.log('redirectedFrom')
-        //   console.log(redirectedFrom)
-        //   if(_event === 'SIGNED_IN' ){
-        //     if(redirectedFrom && typeof redirectedFrom == 'string'){
-        //       router.push(redirectedFrom)                  
-        //     }else{
-        //       router.push('/') 
-        //     }
-        //   }
-
-        //   } else if (_event === 'SIGNED_OUT' || _event === 'USER_DELETED' || ( _event == 'INITIAL_SESSION' && session == null)) { 
-        //     if( _event != 'INITIAL_SESSION'){
-        //       router.reload()
-        //     }else{
-        //       setState((props)=>({  
-        //         ...props,
-        //         session:null, 
-        //         user:  null ,
-        //         userProfile: null,
-        //         isLoading:false,
-        //       }))
-              
-
-        //     }
 
 
+
+          statusRef.current = _event;
               
 
         //       }   
     
-        //       statusRef.current = _event
-             
-        //   }
       
       
         })
@@ -163,19 +155,19 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
   useEffect(()=>{
     
-    if(state.user){
+    if(user){
       const profileSubs =  supabaseClient
                             .channel('changes')
-                            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'users_profile',filter:`id=in.(${state.user.id})` }, payload => {
-                              // console.log('Change received!', payload)
-                              // console.log(state.userProfile)
+                            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'users_profile',filter:`id=in.(${user.id})` }, payload => {
+                              // // console.log('Change received!', payload)
+                              // // console.log(state.userProfile)
                               let  userProfile = state.userProfile
                               if(userProfile){
                                 userProfile = {
                                   ...userProfile,
                                   ...payload.new
                                 }
-                                // console.log(userProfile)
+                                // // console.log(userProfile)
                                 setState((props)=>({  
                                   ...props,
                                   userProfile
@@ -188,11 +180,11 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
       
       return () =>{  supabaseClient.removeChannel(profileSubs) }
     }               
-  },[state.user])
+  },[user])
 
 
   const handleRouteChangeStart = () => {
-    // console.log('route is changing')
+    // // console.log('route is changing')
     setState((props)=>({  
       ...props,
       isRouteLoading:true,
@@ -201,7 +193,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
   
   const handleRouteChangeComplete = () => {
-    // console.log('route is complete')
+    // // console.log('route is complete')
       
           setState((props)=>({  
             ...props,
@@ -212,7 +204,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
 
   
   const handleRouteChangeError = () => {
-    // console.log('route is error')
+    // // console.log('route is error')
    
       setState((props)=>({  
         ...props,
@@ -239,7 +231,10 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
         // userDetails,
         // isLoading:  isLoadingData,
         // subscription.
-        ...state
+        
+        ...state,
+        session,
+        user,
       };
     
     
@@ -285,17 +280,17 @@ export const useUser = () => {
     // useEffect(()=>{
 
   //       const { data: authListener } =  supabaseClient.auth.onAuthStateChange(async (_event, session) => {
-  //         console.log(statusRef.current)
-  //         console.log('_event')
-  //         console.log(_event)
-  //         console.log(session)
+  //         // console.log(statusRef.current)
+  //         // console.log('_event')
+  //         // console.log(_event)
+  //         // console.log(session)
   //         const {redirectedFrom} = router.query       
 
 
   //          if(_event != statusRef.current){
   //           if ((_event === 'SIGNED_IN' || _event == 'INITIAL_SESSION') && session) {
   //             await getUserProfileData(supabaseClient,data.session?.user.id).then((data => {
-  //             console.log(data)
+  //             // console.log(data)
   //             setState((props)=>({  
   //               ...props,
   //               session:session, 
@@ -305,8 +300,8 @@ export const useUser = () => {
   //             }))
   
   //       }));
-  //         console.log('redirectedFrom')
-  //         console.log(redirectedFrom)
+  //         // console.log('redirectedFrom')
+  //         // console.log(redirectedFrom)
   //         if(_event === 'SIGNED_IN' ){
   //           if(redirectedFrom && typeof redirectedFrom == 'string'){
   //             router.push(redirectedFrom)                  

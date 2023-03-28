@@ -21,7 +21,7 @@ interface createUser {
 //     )
 
 //   if(insertError) {
-//     // //console.log(insertError)
+//     // //// console.log(insertError)
 //     throw insertError
 //   }
 
@@ -35,7 +35,7 @@ export const getUserProfileData = async(supabaseClient:SupabaseClient,id?:string
 
   try{
     // const userSession= await  supabaseClient.auth.getSession();
-    // //console.log(userSession)
+    // //// console.log(userSession)
     // if(userSession){
     let eqId : string | undefined | null = id
     if(!eqId){
@@ -47,7 +47,7 @@ export const getUserProfileData = async(supabaseClient:SupabaseClient,id?:string
       if(eqId){
   
       const {data:users}:{data:UserDetails|null} = await supabaseClient.from("users_profile").select("*").eq('id',eqId).single()
-      // //console.log(users)
+      // //// console.log(users)
         return users
      
       }
@@ -55,7 +55,7 @@ export const getUserProfileData = async(supabaseClient:SupabaseClient,id?:string
     // }
 
     }catch(er){
-      // // //console.log(er)
+      // // //// console.log(er)
       return null
     }
 

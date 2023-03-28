@@ -11,6 +11,7 @@ import { Box } from "@mui/system";
 import useSignIn from "@/modules/hooks/useSignIn";
 import theme from "@/styles/theme/theme";
 import { useRouter } from "next/router";
+import { useUser } from "../context/UserProvider";
 
 type SignInTypes  = {
     handleToggle?: handleToggle 
@@ -43,6 +44,8 @@ const SignIn = memo(({handleToggle}:SignInTypes) => {
       
     })
 
+    const {isLoading,isRouteLoading} = useUser();
+
     const signInMutaion = useSignIn()    
 
     const handleSubmit : SubmitHandler<signInForType>= async(data) => {
@@ -52,13 +55,16 @@ const SignIn = memo(({handleToggle}:SignInTypes) => {
             email:data.email,
             password:data.password,
           })  
-        //   // //console.log('response')
-        //   // //console.log(response)
+        //   // //// console.log('response')
+        //   // //// console.log(response)
     }
     
+        // if (signInMutaion.data?.session){
+        //     // console.log(signInMutaion.data)
+        //     router.push('/')
+        // } 
 
-
-    // // //console.log(formData.errors)
+    // // //// console.log(formData.errors)
 
     return (
         <Stack
@@ -103,6 +109,7 @@ const SignIn = memo(({handleToggle}:SignInTypes) => {
                     sxMainBox={{
                         marginTop:'10px',   
                     }}
+                    disabled={signInMutaion.isLoading || isLoading || isRouteLoading}
                     error={Boolean(formData.errors.email?.message)}
                     helperText={Boolean(formData.errors.email?.message) ? formData.errors.email?.message : ""}
                 />
@@ -115,6 +122,7 @@ const SignIn = memo(({handleToggle}:SignInTypes) => {
                     sxMainBox={{
                         marginTop:'10px',   
                     }}
+                    disabled={signInMutaion.isLoading || isLoading || isRouteLoading}
                     error={Boolean(formData.errors.password?.message)}
                     helperText={Boolean(formData.errors.password?.message) ? formData.errors.password?.message : ""}
                 />
@@ -128,7 +136,7 @@ const SignIn = memo(({handleToggle}:SignInTypes) => {
                             maxWidth:['100%','300px']
                         }}
                         type="submit"
-                        disabled={signInMutaion.isLoading}
+                        disabled={signInMutaion.isLoading || isLoading || isRouteLoading}
 
                 >
                     Sign In
