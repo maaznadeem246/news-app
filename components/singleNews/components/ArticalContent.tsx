@@ -1,10 +1,12 @@
 import { StyledDataHead, StyledDataText } from "@/components/styledComp";
-import { Skeleton } from "@mui/material";
 import { newsType } from '@/components/news/components/newsCard';
 import useArticalContent from "@/modules/hooks/useArticalContent";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import rehypeRaw from "rehype-raw";
 import DOMPurify from "dompurify";
+import { LoadingSkeleton } from "@/components/loadingSkeletons";
+
+
 
 
 
@@ -30,16 +32,16 @@ const ArticalContent  = ({news}:{news:newsType  }) => {
             Content :
         </StyledDataHead>
         <StyledDataText
-        sx={{
-            marginTop:'1rem',
-            '& > p,pre':{
-                whiteSpace: 'normal',
-            }
-        }}
+            sx={{
+                marginTop:'1rem',
+                '& > p,pre':{
+                    whiteSpace: 'normal',
+                }
+            }}
         >
   
             {contentQuery.isLoading ? 
-            <Skeleton variant="rounded"  sx={{width:'100%',height:['150px','250px','350px']}} />
+                <LoadingSkeleton skOption="one" />
             :
               news?.description  && 
             <ReactMarkdown 
@@ -55,4 +57,4 @@ const ArticalContent  = ({news}:{news:newsType  }) => {
     )
 }
 
-export default ArticalContent;
+export default ArticalContent;  

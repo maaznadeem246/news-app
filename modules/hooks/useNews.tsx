@@ -1,8 +1,8 @@
 import {  useQuery, useQueryClient } from "@tanstack/react-query"
 import { newsService } from "../services/news"
-import { useRouter } from "next/router"
+// import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
-import { newsType } from "@/components/news/components/newsCard"
+// import { newsType } from "@/components/news/components/newsCard"
 
 
 
@@ -16,7 +16,7 @@ const useNews = (nprops?:{enabled?:boolean}) => {
     const getRef = useRef(0);
 
 
-    const queryClient = useQueryClient()
+    // const queryClient = useQueryClient()
 
     // const oldNews:newsType[]|undefined = queryClient.getQueryData(['news'])
 
@@ -57,7 +57,8 @@ const useNews = (nprops?:{enabled?:boolean}) => {
     
 
     return {
-        data:newsQ.data   
+        // data:newsQ.data  
+        ...newsQ 
     }
 }
 

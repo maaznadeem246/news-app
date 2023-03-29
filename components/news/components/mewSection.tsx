@@ -5,28 +5,38 @@ import Heading from "@/components/headings";
 import { useGlobalState } from "@/modules/hooks/useGlobal";
 import { useQueryClient } from "@tanstack/react-query";
 import { ReactNode, memo } from "react";
+import { LoadingSkeleton } from "@/components/loadingSkeletons";
 
 
 
-const NewsHeading = memo(({activeTag}:{activeTag:string})=>{
+const NewsHeading = memo(({activeTag,loading}:{activeTag:string,loading:boolean})=>{
 return(
     <Box 
     sx={{
         display:'flex',
         justifyContent:'center',
-        marginTop:'3rem',
-        marginBottom:'3rem',
+        marginTop:['1.5rem','3rem','3rem'],
+        marginBottom:['1.5rem','3rem','3rem'],
     }}
 >
-    <Heading
-        variant="h3"
-        headingStyle={true}
-        sx={{
-            textTransform:'capitalize'
-        }}
-    >
-      {activeTag}
-    </Heading>
+    {
+        loading ?
+            <Box width={['95vw','60vw','40vw']}>
+                <LoadingSkeleton skOption="three" />
+            </Box>
+
+        :
+        <Heading
+            variant="h3"
+            headingStyle={true}
+            sx={{
+                textTransform:'capitalize'
+            }}
+        >
+          {activeTag}
+        </Heading>
+    }
+
 </Box>
 )
 })
@@ -62,7 +72,8 @@ const NewsSection = () => {
     // console.log(newsList)
     return (
         <>
-        <NewsHeading activeTag={activeTag} />
+        {/* (newQuery.isFetching && !newQuery.isFetchedAfterMount) */}
+        <NewsHeading loading={ (newQuery.isFetching && !newQuery.isFetchedAfterMount)} activeTag={activeTag} />
         <AllNews newsList={newsList} />
         </>
     )

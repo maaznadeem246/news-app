@@ -40,7 +40,7 @@ axiosInstance.interceptors.response.use(
  
     if (err?.response?.status === 401) {
       //   console.log(err);
-      // location.reload()
+      window.location.replace('/')
       console.log(err.response?.statusText);
       
       }
