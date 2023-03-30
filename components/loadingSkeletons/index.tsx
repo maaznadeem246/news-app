@@ -45,7 +45,10 @@ const SkeletonTypeFour =  ({sx,...props}:SkeletonProps) => {
             position:'relative',
             overflow:'hidden',
             // boxShadow:theme.shadows[10],
-            
+            [theme.breakpoints.down('sm')]:{
+                padding:'0px',
+                // margin:'',
+            } 
         }}
         >        
             <SkeletionComp {...props} sx={{width:'100%', height:'100%', transform:'scale(1,1)', minHeight: 'inherit'}} />

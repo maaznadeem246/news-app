@@ -15,7 +15,7 @@ return(
     sx={{
         display:'flex',
         justifyContent:'center',
-        marginTop:['1.5rem','3rem','3rem'],
+        marginTop:['2.5rem','3rem','3rem'],
         marginBottom:['1.5rem','3rem','3rem'],
     }}
 >
