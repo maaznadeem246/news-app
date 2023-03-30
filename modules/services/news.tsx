@@ -1,5 +1,5 @@
 import { newsType } from "@/components/news/components/newsCard"
-import { articalContentDataSchema } from "@/pages/api/articalcontent"
+import { articalContentDataSchema, articalContentDataType } from "@/pages/api/articalcontent"
 import { keyable } from "@/types"
 import { axiosInstance } from "@/utils/axios"
 import { QueryFunctionContext, useQueryClient } from "@tanstack/react-query"
@@ -10,6 +10,8 @@ import crypto from "crypto"
 interface  newsServiceType {
     queries?:string | undefined
 }
+
+
 
 export const newsService = async (props:newsServiceType & QueryFunctionContext<string[], any>) =>  {
     // try{
@@ -23,13 +25,7 @@ export const newsService = async (props:newsServiceType & QueryFunctionContext<s
 
 
 export const newsServiceApi = async () => {
-    // const validateData = articalContentDataSchema.safeParse({url});
-    // // // console.log(url)
-    // // // console.log(validateData)
-    // if(!validateData.success){
-    //     throw new Error('Not Valid Url')
-    // }
-  
+     
         const token = localStorage.getItem('supabase-auth-token')
         const repsonseJson = await  axiosInstance.request({
             method:'GET',
@@ -38,31 +34,34 @@ export const newsServiceApi = async () => {
             headers:{
                 Authorization:`Bearer ${token}`
             }
-            // data:{
-            //     "url":url
-            // }
+    
         })
-        // console.log(repsonseJson)
         return repsonseJson.data
     
 
 }
 
-export const newsContentService = async ({url}:{url:string}) => {
+export const newsContentService = async ({url,publishedAt}:articalContentDataType) => {
 
-    const validateData = articalContentDataSchema.safeParse({url});
-    // // console.log(url)
-    // // console.log(validateData)
+    const validateData = articalContentDataSchema.safeParse({url,publishedAt});
+    // console.log(publishedAt)
+    // console.log(validateData)
     if(!validateData.success){
         throw new Error('Not Valid Url')
+    }
+
+    let data = {
+        "url":url,
+    }
+
+    if(publishedAt){
+        data = Object.assign(data,{publishedAt})
     }
 
     const repsonseJson = await  axiosInstance.request({
         method:'POST',
         url:`/api/articalcontent`,
-        data:{
-            "url":url
-        }
+        data:data
     })
     // // console.log(repsonseJson)
     return repsonseJson.data

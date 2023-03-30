@@ -82,9 +82,16 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
         if( statusRef.current == 'INITIAL_SESSION' || statusRef.current === 'SIGNED_IN'){
           if(session){
             if(state.userProfile == null ){
-               getUserProfileData(supabaseClient,session?.user.id).then((data => {
-                // console.log(data)
-                setState((props)=>({  
+               getUserProfileData(supabaseClient,session?.user.id).then((async (data) => {
+                console.log(user)
+                if(!data){
+                 await supabaseClient.auth.refreshSession()
+                  router.reload()
+                } 
+                // if(data== null){
+                //   throw Error('Data is null')
+                // }
+                 setState((props)=>({  
                   ...props,
                   userProfile: data ?? null,
                   isLoading:false,

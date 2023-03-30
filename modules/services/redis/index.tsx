@@ -1,10 +1,12 @@
 import { newsType } from "@/components/news/components/newsCard";
 import { redis } from "@/lib/redis";
+import { articalContentDataType } from "@/pages/api/articalcontent";
 import { keyable } from "@/types";
 
 import { format, toDate } from 'date-fns'
 import { object, z } from "zod";
 
+const dateSchema = z.date()
 
 
 const getCachedDataSchema = z.object({
@@ -15,6 +17,7 @@ const getCachedDataSchema = z.object({
 
 type getCachedDataType  = z.infer<typeof getCachedDataSchema>
 
+type updateCachedDataType = articalContentDataType & {data:string}
 
 const formatedDate = (d:string|Date) => format(( toDate( new Date(d) )),'MM-dd-yyyy').toString()
 
@@ -119,7 +122,7 @@ export const setCachedData = async (data:newsType[]) => {
     const listtoExc:Array<Array<string|number>> = [];
      Object.keys(newsObject).forEach(key => {
         listtoExc.push(['hmset',key,newsObject[key]] )
-        listtoExc.push(['expire',key, 4 * 24 * 60 * 60] )
+        listtoExc.push(['expire',key, 1 * 24 * 60 * 60] )
     });
      
     const saveresponse =  await redis.pipeline(listtoExc).exec()
@@ -127,4 +130,34 @@ export const setCachedData = async (data:newsType[]) => {
     // // console.log(saveresponse)
    
     return dataWithDates
+}
+
+
+
+
+export const updateCachedData = async({url,publishedAt,data}:updateCachedDataType) => {
+    // console.log('in updated cachedData')
+    try{
+
+        // console.log({url,publishedAt})
+        const validateDate = dateSchema.safeParse(publishedAt ? new Date(publishedAt) : '')
+        // console.log(validateDate)
+        if(validateDate.success && publishedAt != null){
+            
+            let formateddate =  format(new Date(publishedAt),'MM-dd-yyyy')
+            const getData = await redis.hget(`news-${formateddate}`,url)
+            const parsedData:newsType = await JSON.parse(getData)
+            const newData = {...parsedData, fullContent:data}
+            const newDataStringify = await JSON.stringify(newData)
+            const updatedData = await redis.hset(`news-${formateddate}`,url, newDataStringify)
+
+            // console.log(updatedData)
+
+        }
+
+    }catch(error){
+        console.log(error)
+    }
+
+        // console.log('out updated cachedData ')
 }

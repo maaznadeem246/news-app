@@ -7,7 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { getCachedData, setCachedData } from '@/modules/services/redis';
 import { newsFetcherApi } from '@/modules/services/news';
-import { redis } from '@/lib/redis';
+
 
 
 

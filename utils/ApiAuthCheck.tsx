@@ -16,12 +16,12 @@ const ApiAuthCheck = async (req:NextApiRequest & NextRequest, res:NextApiRespons
       data:{session}
     } = await supabaseServer.auth.getSession();
     //console.log('subscribe api')
-    //console.log(session)
+    // console.log(session)
     const access_token = session?.access_token;
     const refresh_token =session?.refresh_token;
     
     if (!(access_token && refresh_token)) {
-        throw new AxiosError("User not Authorized.")
+        throw new AxiosError("User not Authorized.",'401')
         
     }
 
@@ -32,7 +32,8 @@ const ApiAuthCheck = async (req:NextApiRequest & NextRequest, res:NextApiRespons
     
     if(!userData?.data){
         // throw new AxiosError()
-        res.status(401).send("User not Authorized.")
+        throw new AxiosError("User not Authorized.",'401')
+        // res.status(401).send("User not Authorized.")
         
     }
 

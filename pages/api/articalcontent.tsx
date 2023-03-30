@@ -7,15 +7,17 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import { NextRequest, NextResponse } from 'next/server'
 import {JSDOM} from "jsdom"
 import { z } from 'zod'
+import { updateCachedData } from '@/modules/services/redis';
 
-const { htmlToText } = require('html-to-text');
+
 
 export const articalContentDataSchema = z.object({
     url: z.string().url(),
+    publishedAt:z.date().nullable(),
 });
 
 
-type articalContentDataType = z.infer<typeof articalContentDataSchema>
+export type articalContentDataType = z.infer<typeof articalContentDataSchema>
 
 
 
@@ -23,19 +25,19 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
     try{
 
 
-        const data = await  ApiAuthCheck(req,res);
-        const {url} = req.body;
-        const validateData = articalContentDataSchema.safeParse({url});
+        await ApiAuthCheck(req,res);
+        // console.log('in content')
+        const {url,publishedAt} = req.body;
+        const validateData = articalContentDataSchema.safeParse({url, publishedAt: publishedAt ? new Date(publishedAt) : null});
    
 
         if(!validateData.success){
-            throw new Error('Not Valid Url');
+            throw new AxiosError('Not Valid Data','400');
         }
         
         const contentResponse = await axios.get(url);
 
-        // const ch = await cheerio.load(contentResponse.data)
-        // const contentResponse = await rp(url);
+
         
         let dom =   new JSDOM(contentResponse.data, {
             url: url,        
@@ -43,18 +45,23 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
     
         let content  =  new Readability(dom.window.document).parse();
   
+        if(publishedAt && content?.textContent ){
+            // here for this we should not wait to finish for returning response 
+            updateCachedData({url,publishedAt,data:content?.textContent })
+        }
 
-       return res.status(200).send(content?.textContent || '');
+        return res.status(200).send(content?.textContent || '');
 
     }catch(error){
-
+        console.log(error)
         let message = 'Unknown Error';
         let code  = 401;
-        if (error instanceof AxiosError){
+        if (error instanceof AxiosError ){
                 message = error.message
                 code = Number(error?.status) || 401
-            };
+        };
         
+        console.log('sending')
        return  res.status(code).send(message);
       
     }

@@ -51,15 +51,16 @@ export const getServerSideProps = async (ctx:GetServerSidePropsContext) => {
   //// console.log(session)
 
   // // console.log(users)
-  if (!session)
+  if (!session){
     return {
       redirect: {
         destination: '/signin',
         permanent: false
       }
     };
+  }
 
-
+  try{
 //@ts-ignore
 const stripe = initStripe(process.env.STRIPE_SECRET_KEY)
 
@@ -76,10 +77,20 @@ const {data:prices} = await stripe.prices.list()
       currency:price.currency
     }
   }))
-
   return {
     props:{plans}
   }
+
+  }catch(er){
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false
+      }
+    };
+  }
+
+
 }
 
 

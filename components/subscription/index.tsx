@@ -43,6 +43,7 @@ const SubscriptionPrices = memo(({plans=[],handleSubscribe,showSubscribedButon}:
                                     {!showSubscribedButon && <CustomButton
                                         sx={{
                                             width:'fit-content',
+                                            marginLeft:'1.5rem',
                                             backgroundColor:theme.palette.primary.main,
                                             color:theme.typography.body1.color
                                         }}

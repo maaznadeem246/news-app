@@ -15,7 +15,7 @@ export interface newsType {
 content: string|null,
 fullContent?:string | null,
 description: string|null,
-publishedAt:string|null,
+publishedAt:Date|null,
 source:{
     id:string|null
     name:string |null,    

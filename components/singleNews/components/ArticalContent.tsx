@@ -5,6 +5,7 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import rehypeRaw from "rehype-raw";
 import DOMPurify from "dompurify";
 import { LoadingSkeleton } from "@/components/loadingSkeletons";
+import { memo } from "react";
 
 
 
@@ -14,9 +15,13 @@ import { LoadingSkeleton } from "@/components/loadingSkeletons";
 
 
 
-const ArticalContent  = ({news}:{news:newsType  }) => {
+const ArticalContent  = memo(({news}:{news:newsType  }) => {
 
-    const contentQuery = useArticalContent({url:news?.url || '' })
+    const contentQuery = useArticalContent({
+            url:news?.url || '',publishedAt: 
+            news?.publishedAt ? new Date(news?.publishedAt) : null,
+            enabled:Boolean(news?.url && !news?.fullContent)
+        })
 
   
     
@@ -29,7 +34,7 @@ const ArticalContent  = ({news}:{news:newsType  }) => {
             width:'fit-content'
             }}
         >
-            Content :
+            News Artical :
         </StyledDataHead>
         <StyledDataText
             sx={{
@@ -40,21 +45,22 @@ const ArticalContent  = ({news}:{news:newsType  }) => {
             }}
         >
   
-            {contentQuery.isLoading? 
+            {!news?.fullContent && contentQuery.isFetching? 
                 <LoadingSkeleton skOption="custom" skprops={{sx:{width:['100%','100%','100%'],margin:'auto',aspectRatio:['1/0.6','1/0.45','1/0.35'], transform:'scale(1)' }}} />
             :
-              news?.description  && 
+             
             <ReactMarkdown 
                 rehypePlugins={[rehypeRaw]}
             >
-                { news?.content  ? DOMPurify.sanitize(contentQuery.data) : news?.content || ''}
+                { !news?.fullContent  ? DOMPurify.sanitize(contentQuery.data) : DOMPurify.sanitize(news?.fullContent) ||  news?.content || 'News will be available Soon'}
             </ReactMarkdown>
+            
         }
             
             
         </StyledDataText>
     </>
     )
-}
+})
 
 export default ArticalContent;  

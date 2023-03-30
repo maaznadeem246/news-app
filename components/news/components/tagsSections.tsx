@@ -19,7 +19,6 @@ interface TagsSectionType {
 
 const TagsSection = memo((props:TagsSectionType) =>{
     const newQuery = useNews()
-    // const newQuery = {data:[], isLoading:true}
 
     const val = newQuery?.data?.map((newObj:newsType) => newObj?.source?.name ?  newObj.source.name : '').filter(vl => Boolean(vl))        
     const tagsList:(string)[] = (val && newQuery?.data?.length > 0) ? [...new Set<string>(val)]  : []
@@ -80,7 +79,8 @@ const TagsSection = memo((props:TagsSectionType) =>{
                             flex:'0 0 auto',
                             scrollSnapAlign:'start',
                             scrollSnapStop:'always',
-                            cursor:'pointer'
+                            cursor:'pointer',
+                            webkitTapHighlightColor:'transparent',
                         }}
                     >{vl}</Box>
                 ))}
