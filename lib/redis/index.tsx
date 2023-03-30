@@ -2,12 +2,13 @@ const Redis = require("ioredis");
 
 
 const getRedistUrl = () => {
-    // console.log(process.env.REDIS_URL)
+
     if(process.env.REDIS_URL){
         return  process.env.REDIS_URL
+        throw new Error("Redis_url is not defined")
     }
 
-    // throw new Error("Redis_url is not defined")
+
 
 }
 

@@ -7,6 +7,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { getCachedData, setCachedData } from '@/modules/services/redis';
 import { newsFetcherApi } from '@/modules/services/news';
+import { newsType } from '@/components/news/components/newsCard';
 
 
 
@@ -14,14 +15,12 @@ import { newsFetcherApi } from '@/modules/services/news';
 
 const defaultResNewsCount = 1
 
-// export const newsQuerySchema = z.object({
-//     country:z.string().optional(),
-//     category:z.string().optional(),
-//     q:z.string().optional(),
-//     pageSize:z.number().optional(),
-//     page:z.number().optional(),
-// });
-
+const sortDatawithDates = (data:newsType[]) => {
+    let copyData = [...data].map( (vl:newsType)=> ({...vl, publishedAt: vl?.publishedAt ?  new Date(vl?.publishedAt ) : 0 }));
+    return copyData.sort(
+        (d1, d2) => Number(d2.publishedAt) - Number(d1.publishedAt),
+      );
+}
 
 
 
@@ -90,10 +89,11 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
         // convert the data in to right formate
         const dataTobe =  Object.values( await (Object.values(convertedObj)).reduce((prev,curr) => Object.assign({},{...prev,...curr}))).map((vl) => {if(typeof vl == 'string') return  JSON.parse(vl)}).reverse()
 
-        // // console.log(dataTobe)
+        // console.log(dataTobe)
         // .map((vl:string) => JSON.parse(vl))  
-       
-       return res.status(200).send(dataTobe);
+        let sortedData = sortDatawithDates(dataTobe)
+
+       return res.status(200).send(sortedData);
 
     }catch(error){
 

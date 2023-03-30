@@ -83,7 +83,7 @@ export const UserProvider : FC<ProviderType>  = (props: Props) => {
           if(session){
             if(state.userProfile == null ){
                getUserProfileData(supabaseClient,session?.user.id).then((async (data) => {
-                console.log(user)
+                // console.log(user)
                 if(!data){
                  await supabaseClient.auth.refreshSession()
                   router.reload()
