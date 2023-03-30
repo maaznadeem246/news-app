@@ -12,14 +12,27 @@ const SuccessPage = () => {
             sx={{
                 display:'flex',
                 justifyContent:'center',
+                marginTop:'3rem',
+                marginBottom:'3rem',
             }}>
                 <Heading
                     variant="h3"
                     headingStyle={true}
                    
                 >
-                    Success
+                    Congratulation
                 </Heading>
+            </Box>
+            <Box
+            sx={{
+                display:'flex',
+                justifyContent:'center',
+                marginBottom:'2rem',
+            }}
+            >
+                 <Heading variant="h6"  >
+                    Your Payment Proccess is completed successfully. 
+                 </Heading>
             </Box>
             <Box
             sx={{
@@ -31,8 +44,8 @@ const SuccessPage = () => {
                     <CustomButton
                     
                     >
-                    News
-                    </CustomButton>
+                    Check Some News
+                </CustomButton>
                 </Link>
             </Box>
             
@@ -42,4 +55,4 @@ const SuccessPage = () => {
 }
 
 
-export default SuccessPage;
+export default SuccessPage; 

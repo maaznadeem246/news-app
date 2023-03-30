@@ -171,7 +171,7 @@ const Subscription = ({plans=[]}:SubscriptionType) => {
                     headingStyle={true}
                     textTransform="capitalize"
                 >
-                    Our other Planes 
+                    Our other Plans 
                 </Heading>
             </Box> 
             }
