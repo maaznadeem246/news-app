@@ -10,7 +10,7 @@ type skOptionType = 'custom' | 'one' | 'two' | 'three' | 'four'
 const SkeletionComp = ({sx,...props}:SkeletonProps) => {
     return (
 
-             <Skeleton {...props}   sx={{width:['90%','100%','100%'],margin:'auto',...sx}} />
+             <Skeleton {...props}   sx={{width:['90%','100%','100%'], margin:'auto',  ...sx}} />
 
     )
 }
@@ -25,7 +25,7 @@ const SkeletonTypeOne =  ({sx,...props}:SkeletonProps) => {
 }
 
 const SkeletonTypeTwo =  ({sx,...props}:SkeletonProps) => {
-    return  <SkeletionComp {...props}  sx={{ aspectRatio:['1/0.2','1/0.116','1/0.085','1/0.07'], transform:'scale(1,0.85)', ...sx}} />  
+    return  <SkeletionComp {...props}  sx={{ aspectRatio:['1/0.18','1/0.116','1/0.075','1/0.065'], transform:'scale(1,0.85)', ...sx}} />  
 }
 
 const SkeletonTypeThree =  ({sx,...props}:SkeletonProps) => {
@@ -40,7 +40,6 @@ const SkeletonTypeFour =  ({sx,...props}:SkeletonProps) => {
         sx={{
             margin:'8px',
             padding:'0px',
-            cursor:'pointer',
             minHeight:'230px',
             position:'relative',
             overflow:'hidden',

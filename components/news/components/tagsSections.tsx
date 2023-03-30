@@ -30,10 +30,8 @@ const TagsSection = memo((props:TagsSectionType) =>{
     }
     return (
         <>
-            {(newQuery.isFetching && !newQuery.isFetchedAfterMount) &&
-                <LoadingSkeleton skOption="two" />
-            }
-            {!(newQuery.isFetching && !newQuery.isFetchedAfterMount) &&_tagsList.length > 0 && 
+          
+           
             <>
             <Box 
                 sx={{
@@ -65,8 +63,11 @@ const TagsSection = memo((props:TagsSectionType) =>{
                     // }
                 }}
             >
-
-                {_tagsList.map((vl:string) => (
+            {(newQuery.isFetching && !newQuery.isFetchedAfterMount) &&
+                <LoadingSkeleton skOption="two" skprops={{sx:{width:['100%','100%','100%']}}}/>
+            }
+              
+                { !(newQuery.isFetching && !newQuery.isFetchedAfterMount) &&_tagsList.length > 0 &&  _tagsList.map((vl:string) => (
                     <Box
                         onClick={() => handleTag(vl)}
                         sx={{
@@ -93,7 +94,7 @@ const TagsSection = memo((props:TagsSectionType) =>{
                 }}
             />
             </>
-            }
+            
         </>
     )
 })

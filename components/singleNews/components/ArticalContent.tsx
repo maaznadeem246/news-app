@@ -40,8 +40,8 @@ const ArticalContent  = ({news}:{news:newsType  }) => {
             }}
         >
   
-            {contentQuery.isLoading ? 
-                <LoadingSkeleton skOption="one" />
+            {contentQuery.isLoading? 
+                <LoadingSkeleton skOption="custom" skprops={{sx:{width:['100%','100%','100%'],margin:'auto',aspectRatio:['1/0.6','1/0.45','1/0.35'], transform:'scale(1)' }}} />
             :
               news?.description  && 
             <ReactMarkdown 

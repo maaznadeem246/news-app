@@ -57,7 +57,7 @@ const AllNews = memo(({newsList,loading}:{newsList:newsType[], loading:boolean})
             }
             {
                 loading && [...Array(6)].map((ind:number) => {
-                    console.log('inload')
+                    
                     return (
                         <Grid key={`newskey-loading-${ind}`} item xs={12} sm={6} md={6} lg={4} alignContent={'center'}   >
                             <LoadingSkeleton skOption="four" />
