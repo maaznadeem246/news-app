@@ -56,7 +56,7 @@ const NewsCard = memo((props:newsType) => {
                 // margin:'auto !important',
                 // marginBottom:'10px !important',
                 position:'relative',
-                boxShadow:theme.shadows[13],
+                boxShadow:theme.shadows[10],
                 // transition:'top  3s ease',
                 // border:`4px solid ${theme.palette.primary.light}`
                 // ':hover':{

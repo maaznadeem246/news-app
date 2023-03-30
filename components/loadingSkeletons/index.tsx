@@ -1,9 +1,9 @@
 import theme from "@/styles/theme/theme"
-import { Skeleton, SkeletonProps,  } from "@mui/material"
+import { Card, Skeleton, SkeletonProps,  } from "@mui/material"
 
 
 
-type skOptionType = 'custom' | 'one' | 'two' | 'three'
+type skOptionType = 'custom' | 'one' | 'two' | 'three' | 'four'
 
 
 
@@ -33,6 +33,28 @@ const SkeletonTypeThree =  ({sx,...props}:SkeletonProps) => {
 }
 
 
+const SkeletonTypeFour =  ({sx,...props}:SkeletonProps) => {
+
+    return(
+        <Card
+        sx={{
+            margin:'8px',
+            padding:'0px',
+            cursor:'pointer',
+            minHeight:'230px',
+            position:'relative',
+            overflow:'hidden',
+            // boxShadow:theme.shadows[10],
+            
+        }}
+        >        
+            <SkeletionComp {...props} sx={{width:'100%', height:'100%', transform:'scale(1,1)', minHeight: 'inherit'}} />
+        </Card>
+    )
+    // return  <SkeletionComp {...props}  sx={{ aspectRatio:['1/0.15','1/0.12','1/0.12','1/0.10'], transform:'scale(1,0.85)', minHeight:'50px', maxHeight:'100px',...sx} } />  
+}
+
+
 
 export const LoadingSkeleton = ({skOption, skprops}:{skOption:skOptionType,skprops?: SkeletonProps}) => {
 
@@ -44,7 +66,9 @@ export const LoadingSkeleton = ({skOption, skprops}:{skOption:skOptionType,skpro
         case 'two':
             return  <SkeletonTypeTwo {...skprops} /> 
         case 'three':
-            return  <SkeletonTypeThree {...skprops} />    
+            return  <SkeletonTypeThree {...skprops} />   
+        case 'four':
+            return <SkeletonTypeFour  {...skprops} /> 
         default:
             return <SkeletonTypeCustom {...skprops} />   
     }

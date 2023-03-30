@@ -42,20 +42,29 @@ return(
 })
 
 
-const AllNews = memo(({newsList}:{newsList:newsType[]})=>{
+const AllNews = memo(({newsList,loading}:{newsList:newsType[], loading:boolean})=>{
     // console.log('list')
     return(
     <Grid container spacing={1} padding={['20px','0px','0px',]} marginBottom={'20px'} justifyContent={'center'}>
             {
-                newsList.map((val:newsType,ind:number) => {
+              !loading &&  newsList.map((val:newsType,ind:number) => {
                     return (
-                        <Grid key={`newskye-${ind}-${val.uid}`} item xs={12} sm={6} md={6} lg={4} alignContent={'center'}   >
+                        <Grid key={`newskey-${ind}-${val.uid}`} item xs={12} sm={6} md={6} lg={4} alignContent={'center'}   >
                                 <NewsCard {...val}/>
                         </Grid>
                     )
                 })
             }
-
+            {
+                loading && [...Array(6)].map((ind:number) => {
+                    console.log('inload')
+                    return (
+                        <Grid key={`newskey-loading-${ind}`} item xs={12} sm={6} md={6} lg={4} alignContent={'center'}   >
+                            <LoadingSkeleton skOption="four" />
+                        </Grid>
+                    )
+                })
+            }
         </Grid>
     )
 })
@@ -74,7 +83,7 @@ const NewsSection = () => {
         <>
         {/* (newQuery.isFetching && !newQuery.isFetchedAfterMount) */}
         <NewsHeading loading={ (newQuery.isFetching && !newQuery.isFetchedAfterMount)} activeTag={activeTag} />
-        <AllNews newsList={newsList} />
+        <AllNews newsList={newsList} loading={(newQuery.isFetching && !newQuery.isFetchedAfterMount)} />
         </>
     )
 }
