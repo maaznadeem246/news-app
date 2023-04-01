@@ -25,7 +25,7 @@ const formatedDate = (d:string|Date) => format(( toDate( new Date(d) )),'MM-dd-y
 export const getCachedData = async (props?:getCachedDataType) => {
    
         
-        const  validate = getCachedDataSchema.safeParse(props)
+        // const  validate = getCachedDataSchema.safeParse(props)
 
         // const datetobeused =( props && props?.date && validate.success ) ? formatedDate(props.date) : formatedDate(new Date())
         // // console.log(datetobeused)

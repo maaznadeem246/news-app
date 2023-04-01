@@ -2,7 +2,7 @@ import {  useQuery, useQueryClient } from "@tanstack/react-query"
 import { newsService } from "../services/news"
 // import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
-// import { newsType } from "@/components/news/components/newsCard"
+import { newsType } from "@/components/news/components/newsCard"
 
 
 
@@ -16,13 +16,12 @@ const useNews = (nprops?:{enabled?:boolean}) => {
     const getRef = useRef(0);
 
 
-    // const queryClient = useQueryClient()
+    const queryClient = useQueryClient()
 
     // const oldNews:newsType[]|undefined = queryClient.getQueryData(['news'])
 
     const newsQ =  useQuery({
         queryKey:['news'],
-        initialData:[],
         queryFn: (props) => newsService(props),
         staleTime:getRef.current,
         // enabled:true,
@@ -36,16 +35,41 @@ const useNews = (nprops?:{enabled?:boolean}) => {
             getRef.current = 1000000
         },
         // select:(data) => {
+        //     let dataTobe:newsType[] = []
+        //     let dub = [...(data),
+        //     //      {
+        //     //     author: '',
+        //     //     content: '',
+        //     //     fullContent:'',
+        //     //     description:'',
+        //     //     publishedAt:new Date(),
+        //     //     source:{
+        //     //         id:'',
+        //     //         name:'',    
+        //     //     } ,
+        //     //     title:'',
+        //     //     uid:'',
+        //     //     url:'testurl',  
+        //     //     urlToImage:'',
+        //     // }
+        // ]
         //     if(oldNews){
-        //         console.log(data.filter(vl =>{
-        //             // console.log(vl)
-        //             console.log(oldNews.findIndex((vl2 => vl2.title != vl.title)))
-        //             return Boolean(oldNews.findIndex((vl2 => vl2.url != vl.url)))
-        //         } ))
+        //         console.log('in')
+        //         dataTobe = dub.filter(vl1 =>{
+        //             console.log(!(oldNews.some((vl2) => vl1.url == vl2.url )))
+                    
+        //             return !(oldNews.some((vl2) => vl1.url == vl2.url ))
+                    
+        //         } )
+
         //        }
 
 
-        //     return data
+        //     console.log(oldNews)
+        //     console.log(dub)
+
+
+        //     return dataTobe
         // },
     
          onError:(er)=>{

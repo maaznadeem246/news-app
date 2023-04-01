@@ -1,5 +1,6 @@
 import { newsType } from "@/components/news/components/newsCard"
 import { articalContentDataSchema, articalContentDataType } from "@/pages/api/articalcontent"
+import { newSApirResDatatype } from "@/pages/api/news-api"
 import { keyable } from "@/types"
 import { axiosInstance } from "@/utils/axios"
 import { QueryFunctionContext, useQueryClient } from "@tanstack/react-query"
@@ -16,9 +17,10 @@ interface  newsServiceType {
 export const newsService = async (props:newsServiceType & QueryFunctionContext<string[], any>) =>  {
     // try{
 
-        const data:newsType[] = await newsServiceApi()
-        const  dataTob = data?.map((vl:newsType) => ({...vl, uid: typeof window !== "undefined" ? window.crypto.randomUUID() :   crypto.randomUUID()})) || []
-        return dataTob
+        const data:newSApirResDatatype = await newsServiceApi()
+        const  dataTob = data.data?.map((vl:newsType) => ({...vl, uid: typeof window !== "undefined" ? window.crypto.randomUUID() :   crypto.randomUUID()})) || []
+        data['data'] = dataTob
+        return  data
     
 
 }
@@ -26,11 +28,13 @@ export const newsService = async (props:newsServiceType & QueryFunctionContext<s
 
 export const newsServiceApi = async () => {
      
+        //-TODO- Add this to the axios inspector
         const token = localStorage.getItem('supabase-auth-token')
+
         const repsonseJson = await  axiosInstance.request({
             method:'GET',
-            url:`/api/news-api`,
-        
+            url:`/api/news-api?page=${2}`,
+            
             headers:{
                 Authorization:`Bearer ${token}`
             }

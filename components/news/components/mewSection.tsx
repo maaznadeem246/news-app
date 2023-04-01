@@ -75,7 +75,7 @@ const NewsSection = () => {
 
     // console.log(newQuery.data)
     const {activeTag} = useGlobalState()
-    const newsList :  Array<newsType>  = (activeTag).toLowerCase()== 'latest news' ? newQuery?.data  : newQuery?.data.filter((dv:newsType)=> (dv.source.name)?.toLowerCase()== (activeTag)?.toLowerCase()) || []
+    const newsList :  Array<newsType>  = newQuery?.data?.data ?  (activeTag).toLowerCase()== 'latest news' ? newQuery?.data?.data  : newQuery?.data?.data.filter((dv:newsType)=> (dv.source.name)?.toLowerCase()== (activeTag)?.toLowerCase()) || [] : []
    
    
     // console.log(newsList)
