@@ -143,7 +143,8 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
 
 
          const paginatedDataTobe = paginatedData(page,limit,sortedData)
-         console.log({...paginatedDataTobe, data:paginatedDataTobe.data.length})
+         
+        console.log({...paginatedDataTobe, data:paginatedDataTobe.data.length})
          
 
        return res.status(200).send(paginatedDataTobe);

@@ -82,8 +82,8 @@ const NewsSection = () => {
     return (
         <>
         {/* (newQuery.isFetching && !newQuery.isFetchedAfterMount) */}
-        <NewsHeading loading={ (newQuery.isFetching && !newQuery.isFetchedAfterMount)} activeTag={activeTag} />
-        <AllNews newsList={newsList} loading={(newQuery.isFetching && !newQuery.isFetchedAfterMount)} />
+        <NewsHeading loading={ (newQuery.isInitialLoading)} activeTag={activeTag} />
+        <AllNews newsList={newsList} loading={(newQuery.isInitialLoading)} />
         </>
     )
 }

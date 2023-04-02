@@ -16,7 +16,7 @@ const useNews = (nprops?:{enabled?:boolean}) => {
     const getRef = useRef(0);
 
 
-    const queryClient = useQueryClient()
+    // const queryClient = useQueryClient()
 
     // const oldNews:newsType[]|undefined = queryClient.getQueryData(['news'])
 

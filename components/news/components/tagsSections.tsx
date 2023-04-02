@@ -62,11 +62,11 @@ const TagsSection = memo((props:TagsSectionType) =>{
                     // }
                 }}
             >
-            {(newQuery.isFetching && !newQuery.isFetchedAfterMount) &&
+            {(newQuery.isInitialLoading) &&
                 <LoadingSkeleton skOption="two" skprops={{sx:{width:['100%','100%','100%']}}}/>
             }
               
-                { !(newQuery.isFetching && !newQuery.isFetchedAfterMount) &&_tagsList.length > 0 &&  _tagsList.map((vl:string) => (
+                { !(newQuery.isInitialLoading) &&_tagsList.length > 0 &&  _tagsList.map((vl:string) => (
                     <Box
                         onClick={() => handleTag(vl)}
                         sx={{
