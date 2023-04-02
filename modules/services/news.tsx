@@ -14,10 +14,10 @@ interface  newsServiceType {
 
 
 
-export const newsService = async (props:newsServiceType & QueryFunctionContext<string[], any>) =>  {
+export const newsService = async ({pageParam=1}:newsServiceType & QueryFunctionContext<string[], any>) =>  {
     // try{
 
-        const data:newSApirResDatatype = await newsServiceApi()
+        const data:newSApirResDatatype = await newsServiceApi({pageParam})
         const  dataTob = data.data?.map((vl:newsType) => ({...vl, uid: typeof window !== "undefined" ? window.crypto.randomUUID() :   crypto.randomUUID()})) || []
         data['data'] = dataTob
         return  data
@@ -26,14 +26,14 @@ export const newsService = async (props:newsServiceType & QueryFunctionContext<s
 }
 
 
-export const newsServiceApi = async () => {
+export const newsServiceApi = async ({pageParam}:{pageParam:number}) => {
      
         //-TODO- Add this to the axios inspector
         const token = localStorage.getItem('supabase-auth-token')
 
         const repsonseJson = await  axiosInstance.request({
             method:'GET',
-            url:`/api/news-api?page=${2}`,
+            url:`/api/news-api?page=${pageParam}`,
             
             headers:{
                 Authorization:`Bearer ${token}`
@@ -75,7 +75,7 @@ export const newsContentService = async ({url,publishedAt}:articalContentDataTyp
 
 
 export const newsFetcherApi= async (props?:newsServiceType) :Promise<newsType[]> => {
-    const defaultQueries =  `&pageSize=50`
+    const defaultQueries =  `&pageSize=80`
     const qq = defaultQueries + props?.queries || ''
     const data = await axiosInstance.request({
         method:'GET',

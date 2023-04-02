@@ -38,10 +38,10 @@ export type newSApirResDatatype<T={page:number,limit:number}> = {
 
 const paginatedData = (page:number,limit:number,orgData:newsType[]) => {
 
-    console.log(orgData.length)
+    // console.log(orgData.length)
     // calculating the starting and ending index
-    const totalPages = orgData.length / defaulPageSize;     
-    if(page > totalPages){
+    const totalPages = Math.floor(orgData.length / defaulPageSize);     
+    if(page > totalPages || page <= 0){
         page = 1
     }
     const startIndex = (page - 1) * limit ;
@@ -79,9 +79,9 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
         await  ApiAuthCheck(req,res);
         // const {url} = req.body;
         // const validateData = newsQuerySchema.safeParse({url});
-        console.log(req.query)
+        // console.log(req.query)
         const page = req.query?.page &&  typeof  req.query?.page == 'string'  ? parseInt(req.query?.page) : defaultPage;
-        const limit = req.query?.limit &&  typeof  req.query?.limit == 'string'? parseInt(req.query?.limit) : defaultLimit ;
+        const limit = req.query?.limit &&  typeof  req.query?.limit == 'string'? parseInt(req.query?.limit) : defaulPageSize ;
 
         // if(!validateData.success){
         //     throw new Error('Not Valid Url');
@@ -137,7 +137,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
         // convert the data in to right formate
         const dataTobe =  Object.values( await (Object.values(convertedObj)).reduce((prev,curr) => Object.assign({},{...prev,...curr}))).map((vl) => {if(typeof vl == 'string') return  JSON.parse(vl)}).reverse()
 
-        // console.log(dataTobe)
+
         // .map((vl:string) => JSON.parse(vl))  
         let sortedData = sortDatawithDates(dataTobe)
 

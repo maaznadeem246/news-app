@@ -1,8 +1,10 @@
-import {  useQuery, useQueryClient } from "@tanstack/react-query"
+import {  useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query"
 import { newsService } from "../services/news"
 // import { useRouter } from "next/router"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { newsType } from "@/components/news/components/newsCard"
+import { useInView } from "react-intersection-observer"
+import { useGlobalState } from "./useGlobal"
 
 
 
@@ -14,18 +16,20 @@ import { newsType } from "@/components/news/components/newsCard"
 const useNews = (nprops?:{enabled?:boolean}) => {
 
     const getRef = useRef(0);
+    const {activeTag} = useGlobalState()
 
-
+    const {ref , inView} = useInView()
+    const [showNoMore,setShowNoMore] = useState(false)
     // const queryClient = useQueryClient()
 
     // const oldNews:newsType[]|undefined = queryClient.getQueryData(['news'])
+   
 
-    const newsQ =  useQuery({
+    const newsQ =  useInfiniteQuery({
         queryKey:['news'],
         queryFn: (props) => newsService(props),
         staleTime:getRef.current,
-        // enabled:true,
-        // retryDelay:1000000,
+        getNextPageParam: (pageD, pages) => pageD.next?.page ?? undefined,
         retry:2,
         // select:(data) => {
         //     const filterList = data.filter(((vl:newsType) => vl?.content != null)) 
@@ -34,43 +38,6 @@ const useNews = (nprops?:{enabled?:boolean}) => {
         onSuccess:()=>{
             getRef.current = 1000000
         },
-        // select:(data) => {
-        //     let dataTobe:newsType[] = []
-        //     let dub = [...(data),
-        //     //      {
-        //     //     author: '',
-        //     //     content: '',
-        //     //     fullContent:'',
-        //     //     description:'',
-        //     //     publishedAt:new Date(),
-        //     //     source:{
-        //     //         id:'',
-        //     //         name:'',    
-        //     //     } ,
-        //     //     title:'',
-        //     //     uid:'',
-        //     //     url:'testurl',  
-        //     //     urlToImage:'',
-        //     // }
-        // ]
-        //     if(oldNews){
-        //         console.log('in')
-        //         dataTobe = dub.filter(vl1 =>{
-        //             console.log(!(oldNews.some((vl2) => vl1.url == vl2.url )))
-                    
-        //             return !(oldNews.some((vl2) => vl1.url == vl2.url ))
-                    
-        //         } )
-
-        //        }
-
-
-        //     console.log(oldNews)
-        //     console.log(dub)
-
-
-        //     return dataTobe
-        // },
     
          onError:(er)=>{
             console.log(er)
@@ -78,11 +45,32 @@ const useNews = (nprops?:{enabled?:boolean}) => {
          }
     })
 
+    useEffect(()=>{
+        if(!newsQ.hasNextPage && (!newsQ.isInitialLoading && !newsQ.isFetchingNextPage )){
+            setShowNoMore(true)
+        }
+    },[ newsQ.hasNextPage, newsQ.isInitialLoading, newsQ.isFetchingNextPage  ])
+
+    // useEffect(()=>{
+    //     if((activeTag).toLowerCase() != 'latest news' && showNoMore){
+    //         console.log('in shonowmore false')
+    //         setShowNoMore(false)
+    //     }
+    // },[activeTag])
     
+    useEffect(() => {
+        if (inView && !newsQ.isInitialLoading) {
+            console.log('fetchmore')
+            newsQ.fetchNextPage()
+        }
+      }, [inView])
 
     return {
         // data:newsQ.data  
-        ...newsQ 
+        ...newsQ ,
+        inViewRef : ref,
+        showNoMore,
+        activeTag,
     }
 }
 

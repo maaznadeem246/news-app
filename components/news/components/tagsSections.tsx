@@ -19,10 +19,18 @@ interface TagsSectionType {
 
 const TagsSection = memo((props:TagsSectionType) =>{
     const newQuery = useNews()
+    
+    const reducedlVal:newsType[] = []
+    // console.log(newQuery.data)
+    if(newQuery.data?.pages){
+        newQuery.data?.pages?.forEach((pvl) => reducedlVal.push(...pvl.data))
+    }
 
-    const val = newQuery?.data?.data.map((newObj:newsType) => newObj?.source?.name ?  newObj.source.name : '').filter(vl => Boolean(vl))        
-    const tagsList:(string)[] = (val && newQuery?.data?.data && newQuery?.data?.data.length > 0) ? [...new Set<string>(val)]  : []
+    // console.log(reducedlVal)
+    const val = reducedlVal.map((newObj:newsType) => newObj?.source?.name ?  newObj.source.name : '').filter(vl => Boolean(vl))        
+    const tagsList:(string)[] = (val  && val.length > 0) ? [...new Set<string>(val)]  : []
     const _tagsList = tagsList?.length > 0 ? ['Latest News'].concat(tagsList) : []
+    // const _tagsList:string[] = []
     const {handleTagOption,activeTag} = useGlobalState()
     const handleTag = (k:string) => {
         handleTagOption(k)

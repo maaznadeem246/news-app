@@ -49,6 +49,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.2",
+    "react-intersection-observer": "^9.4.3",
     "react-markdown": "^8.0.5",
     "rehype-raw": "^6.1.1",
     "request-promise": "^4.2.6",

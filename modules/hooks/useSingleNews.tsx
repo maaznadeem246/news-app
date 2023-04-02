@@ -24,6 +24,11 @@ const useSingleNews = ():useSingleNewsType=>{
 
     const newsData = useNews()
 
+    const newsAllData:newsType[] = []
+    // console.log(newQuery.data)
+    if(newsData.data?.pages){
+        newsData.data?.pages?.forEach((pvl) => newsAllData.push(...pvl.data))
+    }
 
     const [newState,setNewsState] = useState<newsType>({
         author: null,
@@ -48,9 +53,9 @@ const useSingleNews = ():useSingleNewsType=>{
 
     useEffect(()=>{
             // // console.log(newsModal)
-        if(newsData.data?.length > 0 && typeof newsModal == 'string'){
+        if(newsAllData?.length > 0 && typeof newsModal == 'string'){
             
-            const singleNewsData : newsType | null = newsData?.data.find((nv:newsType)=>{ 
+            const singleNewsData : newsType | null = newsAllData.find((nv:newsType)=>{ 
                     // // console.log(nv.uid == newsModal)
                 return nv?.uid == newsModal}) || null
             // // console.log(singleNewsData)
