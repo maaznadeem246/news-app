@@ -80,8 +80,8 @@ const NewsCard = memo((props:newsType) => {
                     filter: 'blur(3px) contrast(0.9)',
                 }}
             >
-                <img src={urlToImage || ''} width='100%' height="100%" />
-                </Box>
+                <img loading="lazy" src={urlToImage || ''} width='100%' height="100%" />
+            </Box>
                 
 
  

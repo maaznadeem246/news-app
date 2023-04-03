@@ -75,7 +75,7 @@ export const newsContentService = async ({url,publishedAt}:articalContentDataTyp
 
 
 export const newsFetcherApi= async (props?:newsServiceType) :Promise<newsType[]> => {
-    const defaultQueries =  `&pageSize=80`
+    const defaultQueries =  `&pageSize=100`
     const qq = defaultQueries + props?.queries || ''
     const data = await axiosInstance.request({
         method:'GET',

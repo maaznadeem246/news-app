@@ -16,7 +16,7 @@ import { newsType } from '@/components/news/components/newsCard';
 const defaultResNewsCount = 20
 const defaultPage = 1
 const defaultLimit = 20
-const defaulPageSize = 20
+const defaulPageSize = 12
 
 
 const sortDatawithDates = (data:newsType[]) => {
@@ -40,7 +40,7 @@ const paginatedData = (page:number,limit:number,orgData:newsType[]) => {
 
     // console.log(orgData.length)
     // calculating the starting and ending index
-    const totalPages = Math.floor(orgData.length / defaulPageSize);     
+    const totalPages = Math.ceil(orgData.length / defaulPageSize);     
     if(page > totalPages || page <= 0){
         page = 1
     }
@@ -144,7 +144,7 @@ export default async (req:NextApiRequest & NextRequest, res:NextApiResponse & Ne
 
          const paginatedDataTobe = paginatedData(page,limit,sortedData)
          
-        console.log({...paginatedDataTobe, data:paginatedDataTobe.data.length})
+        // console.log({...paginatedDataTobe, data:paginatedDataTobe.data.length})
          
 
        return res.status(200).send(paginatedDataTobe);
