@@ -15,7 +15,7 @@ const Nav = () => {
     const smResp = useMediaQuery((theme:Theme) => theme.breakpoints.down('sm'));
     // // console.log(session)
     return (
-        <AppBar component='nav'>
+        <AppBar  component='nav'>
             <Toolbar
                 sx={{
                     background:'white',
@@ -49,6 +49,7 @@ const Nav = () => {
                 
                 {!isLoading && 
                     <Box 
+                        key={`nav-key-${session?.user?.id}`}
                             sx={{display:'flex', gap:'12px'}}
                     >
                         { session&&
